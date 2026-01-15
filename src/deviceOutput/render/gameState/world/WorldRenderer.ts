@@ -1,6 +1,6 @@
-import type { GameState } from '../../../../game/state/GameState';
-import { IRenderer } from '../../IRenderer';
-import type { IRenderAPI } from '../../common/IRenderAPI';
+import type { GameState } from '@/game/state/GameState';
+import { IRenderer } from '@/deviceOutput/render/IRenderer';
+import type { IRenderAPI } from '@/deviceOutput/render/common/IRenderAPI';
 
 export class WorldRenderer implements IRenderer {
   constructor(private draw: IRenderAPI) {}

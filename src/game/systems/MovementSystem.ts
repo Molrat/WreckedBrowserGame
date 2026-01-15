@@ -1,7 +1,7 @@
-import type { GameState } from '../state/GameState';
-import { isAcceleratable } from '../queries/Acceleratable/isAcceleratable';
-import { ISystem } from './ISystem';
-import { EventBus } from '../events/EventBus';
+import type { GameState } from '@/game/state/GameState';
+import { isAcceleratable } from '@/game/queries/Acceleratable/isAcceleratable';
+import { ISystem } from '@/game/systems/ISystem';
+import { EventBus } from '@/game/events/EventBus';
 
 export class MovementSystem implements ISystem {
   update(state: GameState, eventBus: EventBus, dt: number) {

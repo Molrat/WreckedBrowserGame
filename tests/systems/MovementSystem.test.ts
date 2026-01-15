@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { MovementSystem } from '../../src/game/systems/MovementSystem';
-import { createInitialGameState } from '../../src/game/state/GameState';
+import { MovementSystem } from '@/game/systems/MovementSystem';
+import { createInitialGameState } from '@/game/state/GameState';
 
 describe('MovementSystem', () => {
   it('moves movable entities by velocity * dt', () => {

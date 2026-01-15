@@ -2,7 +2,7 @@ import { EventBus } from "../../../events/EventBus";
 import { isControllableAndDrivable } from "../../../queries/Combined/isControllableAndDrivable";
 import { GameState } from "../../../state/GameState";
 import { ISystem } from "../../ISystem";
-import { IDriveIntentComputer } from "./driveIntentComputer/IDriveIntention";
+import { IDriveIntentComputer } from "./driveIntentComputer/IDriveIntentComputer";
 import { ICarControlComputer } from "./drivIntentToCarStateComputer/ICarControlComputer";
 
 export class CarControlSystem implements ISystem {

@@ -1,7 +1,7 @@
 import { Vector2 } from "../../../math/Vector2";
 
 export type GamepadState = {
-  id: String;
+  id: string;
   // Axes
   leftStick: Vector2;       // x: -1..1, y: -1..1
   rightStick: Vector2;      // x: -1..1, y: -1..1

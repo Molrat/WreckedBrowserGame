@@ -1,5 +1,5 @@
-import type { Player } from '../Player';
-import { nextId } from '../../../../utils/id';
+import type { Player } from '@/game/state/entities/Player';
+import { nextId } from '@/utils/id';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
@@ -85,15 +85,12 @@ export class PlayerFactory {
 
       rollingResistance: 200,     // N
       airDragCoefficient: 0.4,     // used with v²
+      
       // car controller state:
       throttle: 0,
       brake: 0,
       wheelAngle: 0,
       handBrake: 0,
-      handBrakeIntent: 0,
-      brakeIntent: 0,
-      throttleIntent: 0,
-      wheelAngleIntent: 0,
       // car state
       frontWheelsHaveTraction: true,
       rearWheelsHaveTraction: true,

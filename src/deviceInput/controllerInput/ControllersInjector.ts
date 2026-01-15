@@ -1,6 +1,6 @@
-import type { GameState } from '../../game/state/GameState';
-import { IInputInjector } from '../IInputInjector';
-import type { IGamepadProvider } from './controllerProviders/IGamepadProvider';
+import type { GameState } from '@/game/state/GameState';
+import { IInputInjector } from '@/deviceInput/IInputInjector';
+import type { IGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/IGamepadProvider';
 
 export class ControllersInjector implements IInputInjector{
   constructor(private gamepads: IGamepadProvider) {}

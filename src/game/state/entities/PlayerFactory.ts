@@ -1,5 +1,5 @@
-import type { Player } from './Player';
-import { nextId } from '../../../utils/id';
+import type { Player } from '@/game/state/entities/Player';
+import { nextId } from '@/utils/id';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
@@ -11,7 +11,6 @@ export class PlayerFactory {
       position: { x: 400, y: 300 },
       orientation: 0,
       velocity: { x: 0, y: 0 },
-      acceleration: { x: 0, y: 0 },
       // Damageable
       health: 100,
       maxHealth: 100,
@@ -21,6 +20,7 @@ export class PlayerFactory {
       // Controllable
       controllerId,
       currentGamepad: {
+        id: controllerId,
         leftStick: { x: 0, y: 0 },
         rightStick: { x: 0, y: 0 },
         leftTrigger: 0,
@@ -44,6 +44,7 @@ export class PlayerFactory {
         home: false,
       },
       previousGamepad: {
+        id: controllerId,
         leftStick: { x: 0, y: 0 },
         rightStick: { x: 0, y: 0 },
         leftTrigger: 0,
@@ -66,6 +67,32 @@ export class PlayerFactory {
         select: false,
         home: false,
       },
+      // car state
+      // controls
+      throttle: 0, 
+      handBrake: 0, 
+      wheelAngle: 0, 
+      brake: 0,
+
+      // physics
+      angularVelocity: 0, 
+      frontWheelsHaveTraction: true, 
+      rearWheelsHaveTraction: true,
+
+      // CarTunable properties (default values, adjust as needed)
+      mass: 1200,
+      inertia: 1500,
+      wheelBase: 2.5,
+      centerOfMassOffset: 0.3,
+      engineForce: 8000,
+      brakeForce: 12000,
+      maxSteeringAngle: Math.PI / 6, // rad (30°)
+      steeringResponse: 5,
+      tireGripFront: 1.05,
+      tireGripRear: 0.95,
+      driftGripMultiplier: 0.7,
+      rollingResistance: 200,     // N
+      airDragCoefficient: 0.4,     // used with v²
     };
   }
 }

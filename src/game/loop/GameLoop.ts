@@ -1,10 +1,10 @@
-import { EventBus } from '../events/EventBus';
-import { IRenderer} from '../../deviceOutput/render/IRenderer';
-import { IEffectRenderer } from '../../deviceOutput/render/effects/IEffectRenderer';
-import { ISoundPlayer } from '../../deviceOutput/soundPlayers/ISoundPlayer';
-import { ISystem } from '../systems/ISystem';
-import { IInputInjector } from '../../deviceInput/IInputInjector';
-import { GameState } from '../state/GameState';
+import { EventBus } from '@/game/events/EventBus';
+import { IRenderer} from '@/deviceOutput/render/IRenderer';
+import { IEffectRenderer } from '@/deviceOutput/render/effects/IEffectRenderer';
+import { ISoundPlayer } from '@/deviceOutput/soundPlayers/ISoundPlayer';
+import { ISystem } from '@/game/systems/ISystem';
+import { IInputInjector } from '@/deviceInput/IInputInjector';
+import { GameState } from '@/game/state/GameState';
 
 
 export class GameLoop {
