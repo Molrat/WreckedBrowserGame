@@ -11,3 +11,19 @@ export function scale(v: Vector2, s: number): Vector2 {
 export function length(v: Vector2): number {
   return Math.sqrt(v.x * v.x + v.y * v.y);
 }
+
+
+function rotate(v: Vector2, angle: number): Vector2 {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  return { x: v.x * cos - v.y * sin, y: v.x * sin + v.y * cos };
+}
+
+function normalize(v: Vector2): Vector2 {
+  const len = length(v);
+  return len === 0 ? { x: 0, y: 0 } : scale(v, 1 / len);
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}

@@ -1,7 +1,7 @@
 import { Vector2 } from "@/math/Vector2";
 
 import { IControllable } from "@/game/queries/Controllable/IControllable";
-import { IWithCarControls } from "@/game/queries/WithCarControls/IWithCarControls";
+import { IWithCarControls } from "@/game/systems/drivingSystems/carControlSystem/IWithCarControls";
 import { IDriveIntentComputer } from "./IDriveIntentComputer";
 import { IBrakeIntent } from "./brakeIntent/IBrakeIntent";
 import { IThrottleIntent } from "./throttleIntent/IThrottleIntent";
