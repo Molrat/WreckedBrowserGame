@@ -85,7 +85,7 @@ export class PlayerFactory {
 
       rollingResistance: 200,     // N
       airDragCoefficient: 0.4,     // used with v²
-      
+
       // car controller state:
       throttle: 0,
       brake: 0,

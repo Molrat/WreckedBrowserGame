@@ -1,4 +1,4 @@
-export type CarTunable = {
+export type WithCarProperties = {
   mass: number;
   inertia: number;
 
