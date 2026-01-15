@@ -1,4 +1,4 @@
-import { IWithCarControls } from "@/game/systems/drivingSystems/carControlSystem/IWithCarControls";
+import { IWithCarControls } from "@/game/systems/CarSystems/carControlSystem/IWithCarControls";
 
 import { IBrakeControl } from "./brakeControl/IBrakeControl";
 import { IHandbrakeControl } from "./handbrakeControl/IHandbrakeControl";
