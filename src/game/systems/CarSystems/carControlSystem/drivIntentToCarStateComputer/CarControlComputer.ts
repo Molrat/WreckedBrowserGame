@@ -20,7 +20,7 @@ export class CarControlComputer implements ICarControlComputer{
       throttle: this.throttleControl.compute(intent.throttle, current.throttle, deltaT),
       brake: this.brakeControl.compute(intent.brake, current.brake, deltaT),
       handBrake: this.handbrakeControl.compute(intent.handBrake, current.handBrake, deltaT),
-      wheelAngle: this.steeringControl.compute(intent.wheelAngle, current.wheelAngle, deltaT)
+      steeringWheelAngle: this.steeringControl.compute(intent.steeringWheelAngle, current.steeringWheelAngle, deltaT)
     };
   }
 }

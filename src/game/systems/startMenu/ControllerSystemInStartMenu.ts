@@ -47,7 +47,7 @@ export class ControllerSystemInStartMenu implements ISystem {
                 state.entities.push(PlayerFactory.create(pc.controllerId));
                 }
             });
-            state.ui.openMenu = 'controllerTest';
+            state.ui.openMenu = null;
         }
     }
 

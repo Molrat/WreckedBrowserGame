@@ -12,7 +12,7 @@ export class CarPhysicsSystem implements ISystem{
     const cars = state.entities.filter(isWithCarPhysics);
     cars.forEach(car => {
       const updatedCar = this.physics.compute(car, dt);
-      car = { ...car, ...updatedCar}
+      Object.assign(car, updatedCar);
     });
   };
 }

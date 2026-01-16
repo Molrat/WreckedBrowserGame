@@ -6,6 +6,7 @@ export type WithCarProperties = {
   centerOfMassOffset: number;
 
   maxSteeringAngle: number;
+  maxSteeringWheelAngle: number;
   steeringResponse: number;
 
   engineForce: number;

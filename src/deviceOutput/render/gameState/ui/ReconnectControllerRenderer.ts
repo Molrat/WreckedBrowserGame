@@ -8,6 +8,7 @@ export class ReconnectControllerRenderer implements IGameStateRenderer {
   render(gameState: GameState): void {
     if (gameState.ui.openMenu !== 'reconnectControllerMenu') return;
     const { draw } = this;
+    draw.clearCamera();
     const height = draw.height();
     draw.clear();
     draw.fillBackground('#111');

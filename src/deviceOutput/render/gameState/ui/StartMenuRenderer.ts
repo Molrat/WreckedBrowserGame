@@ -10,6 +10,7 @@ export class StartMenuRenderer implements IRenderer{
         const s = gameState.ui.startMenu;
         const statuses = s.playerConnections.map(pc => pc.status);
         const { draw } = this;
+        draw.clearCamera();
         const width = draw.width();
         const height = draw.height();
         draw.clear();
@@ -32,8 +33,8 @@ export class StartMenuRenderer implements IRenderer{
             draw.rectFill(x, y, rectW, rectH, tileColor);
 
             const label = st === 'notJoined' ? 'Press X to join' : st === 'joined' ? 'Press Triangle to be ready' : 'Ready!';
-                        draw.textDraw(`P${i + 1}`, x + 12, y + 24, '#fff', '16px sans-serif');
-                        draw.textDraw(label, x + 12, y + 48, '#fff', '16px sans-serif');
+            draw.textDraw(`P${i + 1}`, x + 12, y + 24, '#fff', '16px sans-serif');
+            draw.textDraw(label, x + 12, y + 48, '#fff', '16px sans-serif');
         }
     }
 }

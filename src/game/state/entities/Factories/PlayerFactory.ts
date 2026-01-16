@@ -15,7 +15,7 @@ export class PlayerFactory {
       health: 100,
       maxHealth: 100,
       // Renderable
-      shape: { type: 'triangle', base: 24, height: 24},
+      shape: { type: 'triangle', base: 1.6, height: 3},
       color,
       // Controllable
       controllerId,
@@ -74,9 +74,10 @@ export class PlayerFactory {
       centerOfMassOffset: 0.3,    // m
 
       maxSteeringAngle: Math.PI / 6, // rad (30°)
+      maxSteeringWheelAngle: Math.PI * 3, // 540°
       steeringResponse: 5,
 
-      engineForce: 8000,          // N
+      engineForce: 16000,          // N
       brakeForce: 12000,          // N
 
       tireGripFront: 1.05,
@@ -89,7 +90,7 @@ export class PlayerFactory {
       // car controller state:
       throttle: 0,
       brake: 0,
-      wheelAngle: 0,
+      steeringWheelAngle: 0,
       handBrake: 0,
       // car state
       frontWheelsHaveTraction: true,

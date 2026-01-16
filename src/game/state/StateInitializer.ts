@@ -1,5 +1,4 @@
 import { GameState } from "./GameState";
-import { StartMenuState } from './ui/StartMenuState';
 
 export class StateInitializer {
   static createInitialGameState(): GameState {
@@ -17,6 +16,8 @@ export class StateInitializer {
         previousGamepads: [],
         gamePads: []
       },
+      camera: { position: { x: 0, y: 0 }, width: 100, height: 100 },
+      aspectRatio: 1,
     };
   }
 }

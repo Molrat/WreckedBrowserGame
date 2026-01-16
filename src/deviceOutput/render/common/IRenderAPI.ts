@@ -1,6 +1,9 @@
 import type { IRenderable } from "../../../game/queries/Renderable/IRenderable";
+import type { Camera } from "../../../game/state/components/camera/Camera";
 
 export interface IRenderAPI {
+  setCamera(cam: Camera): void;
+  clearCamera(): void;
   clear(): void;
   fillBackground(color: string): void;
 

@@ -7,8 +7,7 @@ export class WorldRenderer implements IRenderer {
 
   render(state: GameState) {
     if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null)) return;
-    const { draw } = this;
-    draw.clear();
-    draw.fillBackground('#0a0a0a');
+    this.draw.setCamera(state.camera);
+    // draw world entities here via polygonDrawPhysical etc
   }
 }
