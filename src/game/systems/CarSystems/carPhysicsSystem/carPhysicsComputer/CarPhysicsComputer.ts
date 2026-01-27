@@ -4,6 +4,7 @@ import { ICarPhysicsComputer } from "./ICarPhysicsComputer";
 
 export class CarPhysicsComputer implements ICarPhysicsComputer {
   compute(car: ICarState, dt: number): ICarState {
+    // Standard math: 0° = +X (right), 90° = +Y (up), counterclockwise positive
     const direction = (angle: number): Vector2 => ({ x: Math.cos(angle), y: Math.sin(angle) });
     const perpendicular = (v: Vector2): Vector2 => ({ x: -v.y, y: v.x });
     const dotProduct = (a: Vector2, b: Vector2): number => a.x * b.x + a.y * b.y;
@@ -21,11 +22,12 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
     const gripFactors = [car.tireGripFront, car.tireGripFront, car.tireGripRear, car.tireGripRear];
 
     // Wheel definitions (local positions and initial angular speeds)
+    // Forward = +X, Left = +Y, Right = -Y (standard math convention)
     const wheels = [
-      { localPosition: { x: car.lengthToFrontAxle, y: -car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFL },
-      { localPosition: { x: car.lengthToFrontAxle, y: +car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFR },
-      { localPosition: { x: -car.lengthToRearAxle, y: -car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRL },
-      { localPosition: { x: -car.lengthToRearAxle, y: +car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRR },
+      { localPosition: { x: +car.lengthToFrontAxle, y: +car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFL },
+      { localPosition: { x: +car.lengthToFrontAxle, y: -car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFR },
+      { localPosition: { x: -car.lengthToRearAxle,  y: +car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRL },
+      { localPosition: { x: -car.lengthToRearAxle,  y: -car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRR },
     ];
 
     // AWD torque distribution and braking
@@ -54,12 +56,14 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
 
       // 3. Compute slip
       const wheelSurfaceSpeed = wheels[i].angularSpeed * car.wheelRadius;
-      const longitudinalSlip = wheelSurfaceSpeed - forwardSpeed;
+      // Slip is how much faster the road is moving relative to wheel surface
+      // Positive slip = wheel spinning faster than ground = acceleration
+      const longitudinalSlip = forwardSpeed - wheelSurfaceSpeed;
       const lateralSlip = sideSpeed;
       perWheelSlipLongitudinal[i] = longitudinalSlip;
       perWheelSlipLateral[i] = lateralSlip;
 
-      // 4. Raw tire forces from slip
+      // 4. Raw tire forces from slip (force opposes slip)
       const longitudinalStiffness = car.tireStiffLong * gripFactors[i];
       const lateralStiffness = car.tireStiffLat * gripFactors[i];
       let longitudinalForceRaw = -longitudinalSlip * longitudinalStiffness;
@@ -79,10 +83,18 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       totalYawMoment += contactPointWorld.x * forceWorld.y - contactPointWorld.y * forceWorld.x;
 
       // 7. Apply reaction torque to the wheel
+      // When tire pushes car forward (positive force), reaction slows wheel (negative torque)
       const tireReactionTorque = -longitudinalForce * car.wheelRadius;
       const wheelBrakeTorque = brakeTorquePerWheel + (i >= 2 ? handbrakeExtraRearTorque : 0);
-      const netWheelTorque = engineTorquePerWheel - wheelBrakeTorque + tireReactionTorque;
+      // Rolling resistance torque (always opposes wheel rotation)
+      const rollingResistanceTorque = -Math.sign(wheels[i].angularSpeed) * car.rollingResistance * car.wheelRadius * 0.25;
+      const netWheelTorque = engineTorquePerWheel - wheelBrakeTorque + tireReactionTorque + rollingResistanceTorque;
       wheels[i].angularSpeed += (netWheelTorque / wheelInertia) * dt;
+      
+      // Prevent wheel from reversing due to braking/resistance when nearly stopped
+      if (Math.abs(wheels[i].angularSpeed) < 0.1 && engineTorquePerWheel === 0) {
+        wheels[i].angularSpeed = 0;
+      }
     }
 
     const linearAcceleration = scale(totalForceWorld, 1 / Math.max(1e-3, car.mass));

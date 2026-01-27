@@ -8,11 +8,12 @@ import type { Vector2 } from "@/math/Vector2";
 const TIRE_LENGTH = 0.7;
 const TIRE_WIDTH = 0.25;
 
+// Tire shape oriented with forward=+X (length along X axis)
 const TIRE_SHAPE: Vector2[] = [
-  { x: -TIRE_WIDTH / 2, y: -TIRE_LENGTH / 2 },
-  { x: TIRE_WIDTH / 2, y: -TIRE_LENGTH / 2 },
-  { x: TIRE_WIDTH / 2, y: TIRE_LENGTH / 2 },
-  { x: -TIRE_WIDTH / 2, y: TIRE_LENGTH / 2 },
+  { x: -TIRE_LENGTH / 2, y: -TIRE_WIDTH / 2 },
+  { x: TIRE_LENGTH / 2, y: -TIRE_WIDTH / 2 },
+  { x: TIRE_LENGTH / 2, y: TIRE_WIDTH / 2 },
+  { x: -TIRE_LENGTH / 2, y: TIRE_WIDTH / 2 },
 ];
 
 export class TireRenderer implements IRenderer {
@@ -25,12 +26,13 @@ export class TireRenderer implements IRenderer {
     }
   }
 
+  // Standard math: forward=+X, left=+Y, rotation counterclockwise
   private wheelCenter(car: { position: Vector2; orientation: number }, offsetX: number, offsetY: number): Vector2 {
     const cos = Math.cos(car.orientation);
     const sin = Math.sin(car.orientation);
     return {
-      x: car.position.x + sin * offsetX + cos * offsetY,
-      y: car.position.y - cos * offsetX + sin * offsetY,
+      x: car.position.x + cos * offsetX - sin * offsetY,
+      y: car.position.y + sin * offsetX + cos * offsetY,
     };
   }
 
@@ -50,10 +52,11 @@ export class TireRenderer implements IRenderer {
     const frontAngle = car.orientation + (car.frontWheelAngle || 0);
     const rearAngle = car.orientation;
 
-    const FL = this.wheelCenter(car, car.lengthToFrontAxle, -halfTrack);
-    const FR = this.wheelCenter(car, car.lengthToFrontAxle, +halfTrack);
-    const RL = this.wheelCenter(car, -car.lengthToRearAxle, -halfTrack);
-    const RR = this.wheelCenter(car, -car.lengthToRearAxle, +halfTrack);
+    // Forward=+X, Left=+Y, Right=-Y
+    const FL = this.wheelCenter(car, car.lengthToFrontAxle, +halfTrack);
+    const FR = this.wheelCenter(car, car.lengthToFrontAxle, -halfTrack);
+    const RL = this.wheelCenter(car, -car.lengthToRearAxle, +halfTrack);
+    const RR = this.wheelCenter(car, -car.lengthToRearAxle, -halfTrack);
 
     d.drawPolygon(this.createTire(FL, frontAngle, this.colorFromSlip(car.slipLongFL, car.slipLatFL)));
     d.drawPolygon(this.createTire(FR, frontAngle, this.colorFromSlip(car.slipLongFR, car.slipLatFR)));

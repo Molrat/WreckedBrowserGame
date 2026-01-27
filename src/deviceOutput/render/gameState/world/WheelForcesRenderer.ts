@@ -16,23 +16,28 @@ export class WheelForcesRenderer implements IRenderer {
     }
   }
 
+  // Standard math: forward=+X, left=+Y, rotation counterclockwise
   private basis(ori: number){
-    const f = { x: Math.sin(ori), y: -Math.cos(ori) };
-    const r = { x: Math.cos(ori), y: Math.sin(ori) };
+    const f = { x: Math.cos(ori), y: Math.sin(ori) };
+    const r = { x: -Math.sin(ori), y: Math.cos(ori) };
     return { f, r };
   }
 
-  private wheelPos(car: any, x: number, y: number): Vector2 {
+  private wheelPos(car: any, forwardOffset: number, leftOffset: number): Vector2 {
     const { f, r } = this.basis(car.orientation);
-    return { x: car.position.x + f.x * x + r.x * y, y: car.position.y + f.y * x + r.y * y };
+    return { 
+      x: car.position.x + f.x * forwardOffset + r.x * leftOffset, 
+      y: car.position.y + f.y * forwardOffset + r.y * leftOffset 
+    };
   }
 
   private drawForces(d: ICameraRenderAPI, car: any){
     const halfTrack = car.trackHalfWidth;
-    const FL = this.wheelPos(car, car.lengthToFrontAxle, -halfTrack);
-    const FR = this.wheelPos(car, car.lengthToFrontAxle, +halfTrack);
-    const RL = this.wheelPos(car, -car.lengthToRearAxle, -halfTrack);
-    const RR = this.wheelPos(car, -car.lengthToRearAxle, +halfTrack);
+    // Forward=+X, Left=+Y, Right=-Y
+    const FL = this.wheelPos(car, car.lengthToFrontAxle, +halfTrack);
+    const FR = this.wheelPos(car, car.lengthToFrontAxle, -halfTrack);
+    const RL = this.wheelPos(car, -car.lengthToRearAxle, +halfTrack);
+    const RR = this.wheelPos(car, -car.lengthToRearAxle, -halfTrack);
     const scale = 1/2000; // N->m scaling for visualization
     const arrows: Array<{pos:Vector2,force:Vector2}> = [
       { pos: FL, force: car.forceFL },

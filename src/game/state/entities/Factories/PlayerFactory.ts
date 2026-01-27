@@ -14,13 +14,13 @@ export class PlayerFactory {
       // Damageable
       health: 100,
       maxHealth: 100,
-      // Renderable - simple car polygon (meters, oriented forward=up)
+      // Renderable - simple car polygon (meters, oriented forward=right, 0° = +X)
       shape: [
-          { x: -0.8, y: 1.7 },  // rear-left
-          { x: 0.8, y: 1.7 },   // rear-right
-          { x: 0.9, y: -1.3 },  // front-right fender
-          { x: 0.0, y: -1.7 },  // nose
-          { x: -0.9, y: -1.3 }, // front-left fender
+          { x: -1.7, y: -0.8 },  // rear-left
+          { x: -1.7, y: 0.8 },   // rear-right
+          { x: 1.3, y: 0.9 },    // front-right fender
+          { x: 1.7, y: 0.0 },    // nose
+          { x: 1.3, y: -0.9 },   // front-left fender
         ],
       fillColor: color,
       borderColor: '#000000',
