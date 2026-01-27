@@ -1,18 +1,14 @@
 import { IRenderer } from "../../IRenderer";
 import type { GameState } from "../../../../game/state/GameState";
-import type { IRenderAPI } from "../../common/IRenderAPI";
+import type { ICameraRenderAPI } from "../../common/ICameraRenderAPI";
 
 export class ControllerTestBackgroundRenderer implements IRenderer {
-  constructor(private draw: IRenderAPI) {}
 
-  render(state: GameState): void {
+  render(state: GameState, draw: ICameraRenderAPI): void {
     if (! (state.ui.openMenu == 'controllerTest' || state.ui.openMenu == null)) return;
-    const { draw } = this;
-    draw.setCamera(state.camera);
     draw.clear();
     draw.fillBackground('#0b0b0f');
-    const grid = 40;
-    draw.lineStrokeVerticalGrid(grid, 'rgba(255,255,255,0.06)', 1);
-    draw.lineStrokeHorizontalGrid(grid, 'rgba(255,255,255,0.06)', 1);
+    const gridSpacing = 40;
+    draw.drawGrid(gridSpacing, 'rgba(255,255,255,0.06)', 1);
   }
 }

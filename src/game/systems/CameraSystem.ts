@@ -4,6 +4,7 @@ import type { GameState } from '@/game/state/GameState';
 import { isControllablePositionable } from '@/game/queries/ControllablePositionable/isControllablePositionable';
 
 export class CameraSystem implements ISystem {
+  constructor(private marginMeters: number) {}
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     const targets = state.entities.filter(isControllablePositionable);
     if (targets.length === 0) return;
@@ -14,8 +15,8 @@ export class CameraSystem implements ISystem {
       if (x < minX) minX = x; if (x > maxX) maxX = x;
       if (y < minY) minY = y; if (y > maxY) maxY = y;
     }
-    const margin = 50; // meters
-    minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+    const m = this.marginMeters;
+    minX -= m; maxX += m; minY -= m; maxY += m;
 
     let width = maxX - minX;
     let height = maxY - minY;

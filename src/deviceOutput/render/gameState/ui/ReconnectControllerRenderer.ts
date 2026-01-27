@@ -1,17 +1,13 @@
-import { IRenderer as IGameStateRenderer } from "../../IRenderer";
-import type { GameState } from "../../../../game/state/GameState";
-import type { IRenderAPI } from "../../common/IRenderAPI";
+import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
+import type { GameState } from "@/game/state/GameState";
+import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
 
-export class ReconnectControllerRenderer implements IGameStateRenderer {
-  constructor(private draw: IRenderAPI) {}
+export class ReconnectControllerRenderer implements IScreenRenderer {
 
-  render(gameState: GameState): void {
+  render(gameState: GameState, draw: IScreenRenderAPI): void {
     if (gameState.ui.openMenu !== 'reconnectControllerMenu') return;
-    const { draw } = this;
-    draw.clearCamera();
-    const height = draw.height();
     draw.clear();
     draw.fillBackground('#111');
-    draw.textDrawCenteredOnCanvas('Reconnect controller', height / 2, '#fff', '20px sans-serif');
+    draw.drawText('Reconnect controller', { x: 200, y: 200 }, '#fff', '20px sans-serif');
   }
 }

@@ -16,7 +16,7 @@ export class StateInitializer {
         previousGamepads: [],
         gamePads: []
       },
-      camera: { position: { x: 0, y: 0 }, width: 100, height: 100 },
+      camera: { position: { x: 0, y: 0 }, width: 10, height: 5 },
       aspectRatio: 1,
     };
   }

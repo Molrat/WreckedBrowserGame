@@ -35,8 +35,8 @@ export const THROTTLE_CONTROL = {
 }
 
 export const STEERING_CONTROL = {
-  steeringRate: 6,     // rad/s
-  centeringRate: 8     // rad/s
+  steeringRate: 50,     // rad/s
+  centeringRate: 50    // rad/s
 }
 
 export const HANDBRAKE_CONTROL = {

@@ -14,9 +14,17 @@ export class PlayerFactory {
       // Damageable
       health: 100,
       maxHealth: 100,
-      // Renderable
-      shape: { type: 'triangle', base: 1.6, height: 3},
-      color,
+      // Renderable - simple car polygon (meters, oriented forward=up)
+      shape: [
+          { x: -0.8, y: 1.7 },  // rear-left
+          { x: 0.8, y: 1.7 },   // rear-right
+          { x: 0.9, y: -1.3 },  // front-right fender
+          { x: 0.0, y: -1.7 },  // nose
+          { x: -0.9, y: -1.3 }, // front-left fender
+        ],
+      fillColor: color,
+      borderColor: '#000000',
+      borderWidth: 2,
       // Controllable
       controllerId,
       currentGamepad: {
@@ -69,19 +77,25 @@ export class PlayerFactory {
       },
       // car properties
       mass: 1000,                 // kg
-      inertia: 2800,              // kg·m²
-      wheelBase: 2.5,             // m
-      centerOfMassOffset: 0.3,    // m
+      centerOfMassOffset: 0.0,    // m (0 = CoM centered)
+      lengthToFrontAxle: 1.25,    // m
+      lengthToRearAxle: 1.25,     // m
+      trackHalfWidth: 0.75,       // m
+      wheelRadius: 0.3,           // m
 
       maxSteeringAngle: Math.PI / 6, // rad (30°)
       maxSteeringWheelAngle: Math.PI * 3, // 540°
       steeringResponse: 5,
+      steeringSpeedReductionK: 0.01,
 
-      engineForce: 16000,          // N
+      engineForce: 16000,          // N (AWD)
       brakeForce: 12000,          // N
 
-      tireGripFront: 1.05,
-      tireGripRear: 0.95,
+      tireGripFront: 1.12,
+      tireGripRear: 0.92,
+      tireMu: 1.0,
+      tireStiffLong: 20000,
+      tireStiffLat: 25000,
       driftGripMultiplier: 0.7,
 
       rollingResistance: 200,     // N
@@ -93,9 +107,25 @@ export class PlayerFactory {
       steeringWheelAngle: 0,
       handBrake: 0,
       // car state
-      frontWheelsHaveTraction: true,
-      rearWheelsHaveTraction: true,
       angularVelocity: 0,
+      tiltAngle: 0,
+      frontWheelAngle: 0,
+      omegaFL: 0,
+      omegaFR: 0,
+      omegaRL: 0,
+      omegaRR: 0,
+      slipLongFL: 0,
+      slipLongFR: 0,
+      slipLongRL: 0,
+      slipLongRR: 0,
+      slipLatFL: 0,
+      slipLatFR: 0,
+      slipLatRL: 0,
+      slipLatRR: 0,
+      forceFL: { x: 0, y: 0 },
+      forceFR: { x: 0, y: 0 },
+      forceRL: { x: 0, y: 0 },
+      forceRR: { x: 0, y: 0 },
     };
   }
 }

@@ -12,7 +12,6 @@ export function length(v: Vector2): number {
   return Math.sqrt(v.x * v.x + v.y * v.y);
 }
 
-
 export function rotate(v: Vector2, angle: number): Vector2 {
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);

@@ -1,13 +1,13 @@
 import { EffectsState } from "./EffectsState";
 import { GameEvent } from "../../../game/events/eventTypes/GameEvent";
 import { IEffectRenderer } from "./IEffectRenderer";
-import type { IRenderAPI } from "../common/IRenderAPI";
+import type { IScreenRenderAPI } from "../common/IScreenRenderAPI";
+import { Vector2 } from "@/math/Vector2";
 
 export class PlayerReadyEffectRenderer implements IEffectRenderer {
   private effectsState: EffectsState = {};
-  constructor(private draw: IRenderAPI) {}
 
-  render(events: GameEvent[]) {
+  render(events: GameEvent[], draw: IScreenRenderAPI) {
     const now = performance.now();
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerReady') {
@@ -17,13 +17,12 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
       }
     }
 
-    const { draw } = this;
     const readyEffects = this.effectsState.readyEffects ?? [];
     const cols = 4;
     const rows = 2;
     const pad = 20;
-    const width = draw.width();
-    const height = draw.height();
+    const width = draw.getWidth();
+    const height = draw.getHeight();
     const rectW = (width - pad * (cols + 1)) / cols;
     const rectH = (height - pad * (rows + 1)) / rows;
 
@@ -44,21 +43,24 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
       const thickness = 4 + Math.sin(t * Math.PI) * 4;
 
       // Stroke border with alpha
-      draw.rectStrokeAlpha(
-        x - thickness / 2,
-        y - thickness / 2,
-        rectW + thickness,
-        rectH + thickness,
-        '#22c55e',
-        thickness,
-        alpha
-      );
+       const polygon: Vector2[] = [
+            { x: 0, y: 0 },
+            { x: rectW, y: 0 },
+            { x: rectW, y: rectH },
+            { x: 0, y: rectH }
+        ];
+        draw.drawPolygon(
+            {
+                shape: polygon,
+                position: { x: x, y: y },
+                orientation: 0,
+                fillColor: `rgba(34, 197, 94, ${alpha * 0.2})`,
+                borderColor: `rgba(34, 197, 94, ${alpha})`,
+                borderWidth: thickness,
+            }
+        );
 
-      // Fill with combined alpha
-      const fillAlpha = alpha * 0.2;
-      draw.rectFill(x, y, rectW, rectH, 'rgba(34, 197, 94, 1)', fillAlpha);
+      this.effectsState.readyEffects = remaining;
     }
-
-    this.effectsState.readyEffects = remaining;
   }
 }

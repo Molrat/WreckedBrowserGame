@@ -1,21 +1,27 @@
 import { EventBus } from '@/game/events/EventBus';
 import { IRenderer} from '@/deviceOutput/render/IRenderer';
+import { IScreenRenderer } from '@/deviceOutput/render/IScreenRenderer';
 import { IEffectRenderer } from '@/deviceOutput/render/effects/IEffectRenderer';
 import { ISoundPlayer } from '@/deviceOutput/soundPlayers/ISoundPlayer';
 import { ISystem } from '@/game/systems/ISystem';
 import { IInputInjector } from '@/deviceInput/IInputInjector';
 import { GameState } from '@/game/state/GameState';
+import { ICameraRenderAPI } from '@/deviceOutput/render/common/ICameraRenderAPI';
+import { IScreenRenderAPI } from '@/deviceOutput/render/common/IScreenRenderAPI';
 
 
 export class GameLoop {
   private lastTime = 0;
 
   constructor(
+    private cameraDraw: ICameraRenderAPI,
+    private screenDraw: IScreenRenderAPI,
     private gameState: GameState,
     private eventBus: EventBus,
     private inputInjectors: IInputInjector[],
     private systems: ISystem[], 
-    private renderers: IRenderer[], 
+    private renderers: IRenderer[],
+    private screenRenderers: IScreenRenderer[], 
     private effectRenderers: IEffectRenderer[], 
     private soundPlayers: ISoundPlayer[]) {
   }
@@ -51,8 +57,12 @@ export class GameLoop {
   }
 
   private renderGameState() {
+    this.cameraDraw.beginFrame(this.gameState.camera);
     for (const renderer of this.renderers) {
-      renderer.render(this.gameState);
+      renderer.render(this.gameState, this.cameraDraw);
+    }
+    for (const renderer of this.screenRenderers) {
+      renderer.render(this.gameState, this.screenDraw);
     }
   }
 
@@ -62,7 +72,7 @@ export class GameLoop {
       sp.play(events);
     }
     for (const effect of this.effectRenderers) {
-      effect.render(events);
+      effect.render(events, this.screenDraw);
     }
   }
 }

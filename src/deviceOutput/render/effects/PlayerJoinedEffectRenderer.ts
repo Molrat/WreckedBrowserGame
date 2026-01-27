@@ -1,13 +1,13 @@
 import { EffectsState } from "./EffectsState";
 import { GameEvent } from "../../../game/events/eventTypes/GameEvent";
 import { IEffectRenderer } from "./IEffectRenderer";
-import type { IRenderAPI } from "../common/IRenderAPI";
+import type { IScreenRenderAPI } from "../common/IScreenRenderAPI";
+import { Vector2 } from "@/math/Vector2";
 
 export class PlayerJoinedEffectRenderer implements IEffectRenderer {
     private effectsState: EffectsState = {};
-    constructor(private draw: IRenderAPI) {}
 
-    render(events: GameEvent[]) {
+    render(events: GameEvent[], draw: IScreenRenderAPI) {
         const now = performance.now();
         // Ingest events into effects state
         for (const ev of events) {
@@ -19,13 +19,12 @@ export class PlayerJoinedEffectRenderer implements IEffectRenderer {
         }
 
         // Draw active join effects (fade/scale over time)
-        const { draw } = this;
         const joinEffects = this.effectsState.joinEffects ?? [];
         const cols = 4;
         const rows = 2;
         const pad = 20;
-        const width = draw.width();
-        const height = draw.height();
+        const width = draw.getWidth();
+        const height = draw.getHeight();
         const rectW = (width - pad * (cols + 1)) / cols;
         const rectH = (height - pad * (rows + 1)) / rows;
 
@@ -43,23 +42,26 @@ export class PlayerJoinedEffectRenderer implements IEffectRenderer {
             const y = pad + row * (rectH + pad);
 
             // Pulse alpha and border thickness
-                        const alpha = 1 - t;
-                        const thickness = 4 + Math.sin(t * Math.PI) * 4;
+            const alpha = 1 - t;
+            const thickness = 4 + Math.sin(t * Math.PI) * 4;
 
-                        // Stroke border with alpha
-                        draw.rectStrokeAlpha(
-                            x - thickness / 2,
-                            y - thickness / 2,
-                            rectW + thickness,
-                            rectH + thickness,
-                            '#f59e0b',
-                            thickness,
-                            alpha
-                        );
-
-                        // Simple flare fill with combined alpha
-                        const fillAlpha = alpha * 0.2;
-                        draw.rectFill(x, y, rectW, rectH, 'rgba(245, 158, 11, 1)', fillAlpha);
+            // Stroke border with alpha
+            const polygon: Vector2[] = [
+                { x: 0, y: 0 },
+                { x: rectW, y: 0 },
+                { x: rectW, y: rectH },
+                { x: 0, y: rectH }
+            ];
+            draw.drawPolygon(
+                {
+                    shape: polygon,
+                    position: { x: x, y: y },
+                    orientation: 0,
+                    fillColor: `rgba(245, 158, 11, 1, ${alpha * 0.2})`,
+                    borderColor: `rgba(245, 158, 11, ${alpha})`,
+                    borderWidth: thickness,
+                }
+            );
         }
 
         // Keep only non-expired animations

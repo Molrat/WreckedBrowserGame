@@ -7,12 +7,14 @@ import { ICarControlComputer } from "@/game/systems/CarSystems/carControlSystem/
 
 export class CarControlSystem implements ISystem {
 
-    constructor(private driveIntentSystem: IDriveIntentComputer, private carControlComputer: ICarControlComputer){}
+    constructor(private driveIntentComputer: IDriveIntentComputer, private carControlComputer: ICarControlComputer){}
     update(state: GameState, eventBus: EventBus, deltaTime: number): void {
         const drivableEntities = state.entities.filter(isCarControllable);
         for (const car of drivableEntities) {
-          const driveIntent = this.driveIntentSystem.compute(car);
+          const driveIntent = this.driveIntentComputer.compute(car);
           const carControlState = this.carControlComputer.compute(car, driveIntent, deltaTime);
+          const frontWheelAngle = carControlState.steeringWheelAngle / car.maxSteeringWheelAngle * car.maxSteeringAngle;
+          car.frontWheelAngle = frontWheelAngle;
           Object.assign(car, carControlState);
         }
     }

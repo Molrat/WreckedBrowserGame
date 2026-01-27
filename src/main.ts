@@ -5,6 +5,9 @@ import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/Player
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
 import { WorldRenderer } from '@/deviceOutput/render/gameState/world/WorldRenderer';
 import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
+import { RandomTrackRenderer } from '@/deviceOutput/render/gameState/world/RandomTrackRenderer';
+import { WheelForcesRenderer } from '@/deviceOutput/render/gameState/world/WheelForcesRenderer';
+import { TireRenderer } from '@/deviceOutput/render/gameState/world/TireRenderer';
 import { ControllerTestPlayerRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestPlayerRenderer';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
@@ -17,9 +20,11 @@ import { SetPreviousButtonsSystem } from '@/game/systems/gamePadSystems/SetPrevi
 import { ReconnectControllerRenderer } from '@/deviceOutput/render/gameState/ui/ReconnectControllerRenderer';
 import { StartMenuRenderer } from '@/deviceOutput/render/gameState/ui/StartMenuRenderer';
 import { SpeedometerRenderer } from '@/deviceOutput/render/gameState/ui/SpeedometerRenderer';
-import { CanvasRenderAPI } from '@/deviceOutput/render/common/CanvasRenderAPI';
+import { CameraRenderAPI } from '@/deviceOutput/render/common/CameraRenderAPI';
+import { ScreenRenderAPI } from '@/deviceOutput/render/common/ScreenRenderAPI';
 import { AspectRatioInjector } from '@/deviceInput/windowInput/AspectRatioInjector';
 import { CameraSystem } from '@/game/systems/CameraSystem';
+import { CAMERA_CONSTANTS } from '@/deviceOutput/render/constants';
 import { ControllerSystemInStartMenu } from '@/game/systems/startMenu/ControllerSystemInStartMenu';
 import { AssignButtonsToPlayerSystem } from '@/game/systems/gamePadSystems/AssignButtonsToPlayerSystem';
 import { CarControlSystem } from '@/game/systems/CarSystems/carControlSystem/CarControlSystem';
@@ -39,7 +44,8 @@ import { CarPhysicsComputer } from './game/systems/CarSystems/carPhysicsSystem/c
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-const renderAPI = new CanvasRenderAPI(ctx);
+const cameraRenderAPI = new CameraRenderAPI(ctx);
+const screenRenderAPI = new ScreenRenderAPI(ctx);
 
 function resizeCanvasToViewport() {
     canvas.width = window.innerWidth;
@@ -84,7 +90,7 @@ const systems = [
     new ControllerSystemInStartMenu(),
     new AssignButtonsToPlayerSystem(),
     new DisconnectCheckSystem(),
-    new CameraSystem(),
+    new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
     new CarPhysicsSystem(new CarPhysicsComputer),
     new MovementSystem(),
@@ -94,18 +100,25 @@ const systems = [
 
 // DEVICE OUTPUT: Renderers, Effects, SoundPlayers
 const gameStateRenderers = [
-    new ReconnectControllerRenderer(renderAPI),
-    new StartMenuRenderer(renderAPI),
-    new ControllerTestBackgroundRenderer(renderAPI),
-    new ControllerTestPlayerRenderer(renderAPI),
-    new WorldRenderer(renderAPI),
-    new SpeedometerRenderer(renderAPI),
+    new ControllerTestBackgroundRenderer(),
+    new RandomTrackRenderer(),
+    new ControllerTestPlayerRenderer(),
+    new TireRenderer(),
+    new WheelForcesRenderer(),
+    new WorldRenderer(),
+];
+
+// Screen renderers render in pixel coordinates (no camera projection)
+const screenRenderers = [
+    new ReconnectControllerRenderer(),
+    new StartMenuRenderer(),
+    new SpeedometerRenderer(),
 ];
 
 // Effect renderers only take events from the bus as input, such as "player joined"
 const effectRenderers = [
-    new PlayerJoinedEffectRenderer(renderAPI),
-    new PlayerReadyEffectRenderer(renderAPI),
+    new PlayerJoinedEffectRenderer(),
+    new PlayerReadyEffectRenderer(),
 ];
 
 // Sound players only take events from the bus as input
@@ -115,11 +128,14 @@ const soundPlayers = [
 
 // Game loop triggers each frame: input injection -> gamestate update ->gamestate rendering -> effect rendering -> sound playing 
 const loop = new GameLoop(
+    cameraRenderAPI,
+    screenRenderAPI,
     gameState, 
     eventBus, 
     inputInjectors, 
     systems, 
-    gameStateRenderers, 
+    gameStateRenderers,
+    screenRenderers, 
     effectRenderers, 
     soundPlayers);
 

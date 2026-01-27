@@ -1,97 +1,111 @@
 import { ICarState } from "@/game/queries/WithCarPhysics/ICarState";
-import { clamp } from "@/math/numberFunctions";
-import { Vector2, add, length, scale } from "@/math/Vector2";
+import { Vector2, add, scale, rotate } from "@/math/Vector2";
 import { ICarPhysicsComputer } from "./ICarPhysicsComputer";
 
-export class CarPhysicsComputer implements ICarPhysicsComputer{
+export class CarPhysicsComputer implements ICarPhysicsComputer {
   compute(car: ICarState, dt: number): ICarState {
-    const forward = this.forward(car.orientation);
-    const right = this.right(forward);
-    const local = this.toLocal(car.velocity, forward, right);
-    const rearGrip = car.tireGripRear * (car.handBrake > 0 ? car.driftGripMultiplier : 1);
+    const direction = (angle: number): Vector2 => ({ x: Math.cos(angle), y: Math.sin(angle) });
+    const perpendicular = (v: Vector2): Vector2 => ({ x: -v.y, y: v.x });
+    const dotProduct = (a: Vector2, b: Vector2): number => a.x * b.x + a.y * b.y;
 
-    // Map wheel angle (±maxSteeringWheelAngle) to tire angle (±maxSteeringAngle)
-    const wheel = clamp(car.steeringWheelAngle, -car.maxSteeringWheelAngle, car.maxSteeringWheelAngle);
-    const steer = (wheel / car.maxSteeringWheelAngle) * car.maxSteeringAngle;
-    const _turningRadius = car.wheelBase / Math.tan(steer || 0.0001); // reserved for future use
+    // Steering angle already computed by the control system
+    const frontSteeringAngle = car.frontWheelAngle;
 
-    const longForce = this.longitudinalForce(local.x, car);
-    const slip = this.slipForces(local, steer, rearGrip, car);
+    // Normal forces per axle
+    const computedWheelbase = car.lengthToFrontAxle + car.lengthToRearAxle;
+    const gravity = 9.81;
+    const safeWheelbase = Math.max(1e-3, computedWheelbase);
+    const frontAxleNormal = car.mass * gravity * (car.lengthToRearAxle / safeWheelbase);
+    const rearAxleNormal = car.mass * gravity * (car.lengthToFrontAxle / safeWheelbase);
+    const normalForces = [frontAxleNormal / 2, frontAxleNormal / 2, rearAxleNormal / 2, rearAxleNormal / 2];
+    const gripFactors = [car.tireGripFront, car.tireGripFront, car.tireGripRear, car.tireGripRear];
 
-    // Body-frame integration with Coriolis terms
-    const ax = longForce / car.mass;
-    const ay = slip.latForce / car.mass;
-    const newLocal = {
-      x: local.x + (ax - car.angularVelocity * local.y) * dt,
-      y: local.y + (ay + car.angularVelocity * local.x) * dt,
-    };
+    // Wheel definitions (local positions and initial angular speeds)
+    const wheels = [
+      { localPosition: { x: car.lengthToFrontAxle, y: -car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFL },
+      { localPosition: { x: car.lengthToFrontAxle, y: +car.trackHalfWidth }, steeringAngle: frontSteeringAngle, angularSpeed: car.omegaFR },
+      { localPosition: { x: -car.lengthToRearAxle, y: -car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRL },
+      { localPosition: { x: -car.lengthToRearAxle, y: +car.trackHalfWidth }, steeringAngle: 0,                    angularSpeed: car.omegaRR },
+    ];
 
-    // Yaw integration from slip moment, with response smoothing
-    const yawAcc = slip.mz / car.inertia;
-    const yawRateTarget = newLocal.x * Math.tan(steer) / car.wheelBase;
-    const smoothedYaw = this.integrateYawRate(yawRateTarget, car.angularVelocity + yawAcc * dt, car.steeringResponse, dt);
-    const newOrientation = car.orientation + smoothedYaw * dt;
+    // AWD torque distribution and braking
+    const engineTorquePerWheel = car.throttle * car.engineForce * car.wheelRadius / 4;
+    const brakeTorquePerWheel = car.brake * car.brakeForce * car.wheelRadius / 4;
+    const handbrakeExtraRearTorque = car.handBrake * car.brakeForce * car.wheelRadius / 4;
 
-    // Convert back to world with updated orientation
-    const f2 = this.forward(newOrientation);
-    const r2 = this.right(f2);
-    const newVelocity = this.toWorld(newLocal, f2, r2);
+    let totalForceWorld: Vector2 = { x: 0, y: 0 };
+    let totalYawMoment = 0;
+    const perWheelForceWorld: Vector2[] = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
+    const perWheelSlipLongitudinal = [0, 0, 0, 0];
+    const perWheelSlipLateral = [0, 0, 0, 0];
+    const wheelInertia = Math.max(1e-3, 0.02 * car.mass * car.wheelRadius * car.wheelRadius);
+
+    for (let i = 0; i < 4; i++) {
+      // 1. Contact velocity (world space)
+      const contactPointWorld = rotate(wheels[i].localPosition, car.orientation);
+      const contactVelocityWorld = add(car.velocity, scale(perpendicular(contactPointWorld), car.angularVelocity));
+
+      // 2. Transform velocity into wheel local space
+      const wheelYaw = car.orientation + wheels[i].steeringAngle;
+      const forwardVector = direction(wheelYaw);
+      const sideVector = perpendicular(forwardVector);
+      const forwardSpeed = dotProduct(contactVelocityWorld, forwardVector);
+      const sideSpeed = dotProduct(contactVelocityWorld, sideVector);
+
+      // 3. Compute slip
+      const wheelSurfaceSpeed = wheels[i].angularSpeed * car.wheelRadius;
+      const longitudinalSlip = wheelSurfaceSpeed - forwardSpeed;
+      const lateralSlip = sideSpeed;
+      perWheelSlipLongitudinal[i] = longitudinalSlip;
+      perWheelSlipLateral[i] = lateralSlip;
+
+      // 4. Raw tire forces from slip
+      const longitudinalStiffness = car.tireStiffLong * gripFactors[i];
+      const lateralStiffness = car.tireStiffLat * gripFactors[i];
+      let longitudinalForceRaw = -longitudinalSlip * longitudinalStiffness;
+      let lateralForceRaw = -lateralSlip * lateralStiffness;
+
+      // 5. Enforce friction circle
+      const maxFrictionForce = car.tireMu * normalForces[i];
+      const rawMagnitude = Math.hypot(longitudinalForceRaw, lateralForceRaw);
+      const scaleFactor = rawMagnitude > maxFrictionForce ? (maxFrictionForce / (rawMagnitude + 1e-6)) : 1;
+      const longitudinalForce = longitudinalForceRaw * scaleFactor;
+      const lateralForce = lateralForceRaw * scaleFactor;
+
+      // 6. Apply forces to the car
+      const forceWorld = add(scale(forwardVector, longitudinalForce), scale(sideVector, lateralForce));
+      perWheelForceWorld[i] = forceWorld;
+      totalForceWorld = add(totalForceWorld, forceWorld);
+      totalYawMoment += contactPointWorld.x * forceWorld.y - contactPointWorld.y * forceWorld.x;
+
+      // 7. Apply reaction torque to the wheel
+      const tireReactionTorque = -longitudinalForce * car.wheelRadius;
+      const wheelBrakeTorque = brakeTorquePerWheel + (i >= 2 ? handbrakeExtraRearTorque : 0);
+      const netWheelTorque = engineTorquePerWheel - wheelBrakeTorque + tireReactionTorque;
+      wheels[i].angularSpeed += (netWheelTorque / wheelInertia) * dt;
+    }
+
+    const linearAcceleration = scale(totalForceWorld, 1 / Math.max(1e-3, car.mass));
+    const newVelocity = add(car.velocity, scale(linearAcceleration, dt));
+    const yawInertia = car.mass * safeWheelbase * safeWheelbase / 12;
+    const newAngularVelocity = car.angularVelocity + (totalYawMoment / Math.max(1e-3, yawInertia)) * dt;
+    const newOrientation = car.orientation + newAngularVelocity * dt;
     const newPosition = add(car.position, scale(newVelocity, dt));
 
-    return { ...car, position: newPosition, orientation: newOrientation, velocity: newVelocity, angularVelocity: smoothedYaw };
-  }
-
-  private forward(orientation: number): Vector2 {
-    // Align with rendering: orientation 0 points up (negative Y in canvas)
-    return { x: Math.sin(orientation), y: -Math.cos(orientation) };
-  }
-  private right(fwd: Vector2): Vector2 { return { x: -fwd.y, y: fwd.x }; }
-
-  private toLocal(v: Vector2, fwd: Vector2, right: Vector2): { x: number; y: number } {
-    return { x: v.x * fwd.x + v.y * fwd.y, y: v.x * right.x + v.y * right.y };
-  }
-  private toWorld(local: { x: number; y: number }, fwd: Vector2, right: Vector2): Vector2 {
-    return add(scale(fwd, local.x), scale(right, local.y));
-  }
-
-  private longitudinalForce(localVelX: number, car: ICarState): number {
-    const speedX = Math.abs(localVelX);
-    const dir = speedX > 0.001 ? Math.sign(localVelX) : 0; // oppose motion; no reverse kick at near zero
-
-    const engine = car.throttle * car.engineForce; // always forward
-    const brakeOppose = -dir * (car.brake * car.brakeForce);
-    const rollingOppose = -dir * (car.rollingResistance * speedX);
-    const airOppose = -dir * (car.airDragCoefficient * speedX * speedX);
-
-    return engine + brakeOppose + rollingOppose + airOppose;
-  }
-
-  private slipForces(local: { x: number; y: number }, steer: number, rearGrip: number, car: ICarState): { Fy_f: number; Fy_r: number; latForce: number; mz: number } {
-    const a = car.wheelBase * 0.5 - car.centerOfMassOffset;
-    const b = car.wheelBase - a;
-    const u = local.x;
-    const v = local.y;
-    const r = car.angularVelocity;
-    const denom = Math.max(0.5, Math.abs(u));
-    const alpha_f = Math.atan2(v + a * r, denom) - steer;
-    const alpha_r = Math.atan2(v - b * r, denom);
-    const Cf = car.tireGripFront * 50000;
-    const Cr = rearGrip * 50000;
-    const Fy_f = -Cf * alpha_f;
-    const Fy_r = -Cr * alpha_r;
-    const latForce = Fy_f + Fy_r;
-    const mz = a * Fy_f - b * Fy_r;
-    return { Fy_f, Fy_r, latForce, mz };
-  }
-
-  private integrateLocal(local: { x: number; y: number }, longForce: number, latForce: number, mass: number, dt: number): { x: number; y: number } {
-    const ax = longForce / mass;
-    const ay = latForce / mass;
-    return { x: local.x + ax * dt, y: local.y + ay * dt };
-  }
-
-  private integrateYawRate(target: number, current: number, response: number, dt: number): number {
-    const alpha = Math.min(1, response * dt);
-    return current + (target - current) * alpha;
+    return {
+      ...car,
+      position: newPosition,
+      orientation: newOrientation,
+      velocity: newVelocity,
+      angularVelocity: newAngularVelocity,
+      frontWheelAngle: frontSteeringAngle,
+      omegaFL: wheels[0].angularSpeed, omegaFR: wheels[1].angularSpeed, omegaRL: wheels[2].angularSpeed, omegaRR: wheels[3].angularSpeed,
+      slipLongFL: perWheelSlipLongitudinal[0], slipLongFR: perWheelSlipLongitudinal[1], slipLongRL: perWheelSlipLongitudinal[2], slipLongRR: perWheelSlipLongitudinal[3],
+      slipLatFL:  perWheelSlipLateral[0],     slipLatFR:  perWheelSlipLateral[1],     slipLatRL:  perWheelSlipLateral[2],     slipLatRR:  perWheelSlipLateral[3],
+      forceFL: perWheelForceWorld[0],
+      forceFR: perWheelForceWorld[1],
+      forceRL: perWheelForceWorld[2],
+      forceRR: perWheelForceWorld[3],
+    };
   }
 }

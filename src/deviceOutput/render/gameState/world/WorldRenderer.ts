@@ -1,13 +1,12 @@
 import type { GameState } from '@/game/state/GameState';
 import { IRenderer } from '@/deviceOutput/render/IRenderer';
-import type { IRenderAPI } from '@/deviceOutput/render/common/IRenderAPI';
+import type { ICameraRenderAPI } from '@/deviceOutput/render/common/ICameraRenderAPI';
 
 export class WorldRenderer implements IRenderer {
-  constructor(private draw: IRenderAPI) {}
 
-  render(state: GameState) {
+  render(state: GameState, draw: ICameraRenderAPI) {
     if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null)) return;
-    this.draw.setCamera(state.camera);
+    draw.setCamera(state.camera);
     // draw world entities here via polygonDrawPhysical etc
   }
 }
