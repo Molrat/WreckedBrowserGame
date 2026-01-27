@@ -11,7 +11,6 @@ export class WheelForcesRenderer implements IRenderer {
     const d = draw;
     const cars = state.entities.filter(isWithCarPhysics);
     for (const car of cars) {
-      this.drawCarOutline(d, car);
       this.drawForces(d, car);
     }
   }

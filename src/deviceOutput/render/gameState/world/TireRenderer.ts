@@ -37,7 +37,7 @@ export class TireRenderer implements IRenderer {
   }
 
   private colorFromSlip(sLong: number, sLat: number): string {
-    const m = Math.max(0, Math.min(1, Math.abs(sLong) + Math.abs(sLat)));
+    const m = Math.max(0, Math.min(1, Math.abs(sLong) / 100 + Math.abs(sLat) / 100));
     const r = Math.round(255 * m);
     const g = Math.round(255 * (1 - m));
     return `rgb(${r},${g},0)`;

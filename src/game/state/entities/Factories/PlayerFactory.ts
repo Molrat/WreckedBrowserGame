@@ -4,7 +4,7 @@ import { nextId } from '@/utils/id';
 export class PlayerFactory {
   static create(controllerId: string): Player {
     const idx = Number(controllerId) || 0;
-    const palette = ['#ef4444', '#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#14b8a6', '#f97316', '#eab308'];
+    const palette = ['#44c7ef', '#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#14b8a6', '#f97316', '#eab308'];
     const color = palette[idx % palette.length];
     return {
       id: nextId(),
@@ -98,8 +98,8 @@ export class PlayerFactory {
       tireStiffLat: 25000,
       driftGripMultiplier: 0.7,
 
-      rollingResistance: 200,     // N
-      airDragCoefficient: 0.4,     // used with v²
+      rollingResistance: 800,     // N
+      airDragCoefficient: 5.0,     // used with v² - gives ~200 km/h top speed
 
       // car controller state:
       throttle: 0,
