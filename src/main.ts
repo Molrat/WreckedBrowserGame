@@ -3,12 +3,11 @@ import { MovementSystem } from '@/game/systems/MovementSystem';
 import { DisconnectCheckSystem } from '@/game/systems/gamePadSystems/DisconnectCheckSystem';
 import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/PlayerJoinedEffectRenderer';
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
-import { WorldRenderer } from '@/deviceOutput/render/gameState/world/WorldRenderer';
 import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
 import { RandomTrackRenderer } from '@/deviceOutput/render/gameState/world/RandomTrackRenderer';
 import { WheelForcesRenderer } from '@/deviceOutput/render/gameState/world/WheelForcesRenderer';
 import { TireRenderer } from '@/deviceOutput/render/gameState/world/TireRenderer';
-import { ControllerTestPlayerRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestPlayerRenderer';
+import { DepthSortedRenderer } from '@/deviceOutput/render/gameState/world/DepthSortedRenderer';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
 import { BrowserGamepadProvider as FourPlayerGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/BrowserGamepadProvider';
@@ -41,6 +40,14 @@ import { HandbrakeControl } from '@/game/systems/CarSystems/carControlSystem/dri
 import { BrakeControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/brakeControl/BrakeControl';
 import { CarPhysicsSystem } from './game/systems/CarSystems/carPhysicsSystem/CarPhysicsSystem';
 import { CarPhysicsComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/CarPhysicsComputer';
+import { PlatformProgressionSystem } from './game/systems/platformSystems/PlatformProgressionSystem';
+import { OffPlatformDamageSystem } from './game/systems/platformSystems/OffPlatformDamageSystem';
+import { PlayerDeathSystem } from './game/systems/roundSystems/PlayerDeathSystem';
+import { RoundStartSystem } from './game/systems/roundSystems/RoundStartSystem';
+import { InbetweenLevelsMenuSystem } from './game/systems/menuSystems/InbetweenLevelsMenuSystem';
+import { EndOfGameMenuSystem } from './game/systems/menuSystems/EndOfGameMenuSystem';
+import { InbetweenLevelsMenuRenderer } from './deviceOutput/render/gameState/ui/InbetweenLevelsMenuRenderer';
+import { EndOfGameMenuRenderer } from './deviceOutput/render/gameState/ui/EndOfGameMenuRenderer';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -88,30 +95,38 @@ const carControlSystem = new CarControlSystem(
 // GAMESTATE UPDATE SYSTEMS: systems update gamestate in series and emit events
 const systems = [
     new ControllerSystemInStartMenu(),
+    new InbetweenLevelsMenuSystem(),
+    new EndOfGameMenuSystem(),
     new AssignButtonsToPlayerSystem(),
     new DisconnectCheckSystem(),
+    new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
     new CarPhysicsSystem(new CarPhysicsComputer),
     new MovementSystem(),
+    new PlatformProgressionSystem(),
+    new OffPlatformDamageSystem(),
+    new PlayerDeathSystem(),
 
     new SetPreviousButtonsSystem(),
 ]
 
 // DEVICE OUTPUT: Renderers, Effects, SoundPlayers
+// DepthSortedRenderer handles both polygons and text, sorted by depth
 const gameStateRenderers = [
     new ControllerTestBackgroundRenderer(),
     new RandomTrackRenderer(),
-    new ControllerTestPlayerRenderer(),
-    new TireRenderer(),
+    new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2)
+    new TireRenderer(),         // tires on top (depth 3)
     new WheelForcesRenderer(),
-    new WorldRenderer(),
 ];
 
 // Screen renderers render in pixel coordinates (no camera projection)
 const screenRenderers = [
     new ReconnectControllerRenderer(),
     new StartMenuRenderer(),
+    new InbetweenLevelsMenuRenderer(),
+    new EndOfGameMenuRenderer(),
     new SpeedometerRenderer(),
 ];
 

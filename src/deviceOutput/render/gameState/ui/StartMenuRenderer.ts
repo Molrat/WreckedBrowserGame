@@ -41,6 +41,7 @@ export class StartMenuRenderer implements IScreenRenderer {
                 fillColor: tileColor,
                 borderColor: null,
                 borderWidth: null,
+                depth: 0,
             });
 
             const label = st === 'notJoined' ? 'Press X to join' : st === 'joined' ? 'Press Triangle to be ready' : 'Ready!';

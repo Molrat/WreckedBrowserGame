@@ -25,6 +25,7 @@ export class PlayerFactory {
       fillColor: color,
       borderColor: '#000000',
       borderWidth: 2,
+      depth: 2,  // players above platforms
       // Controllable
       controllerId,
       currentGamepad: {
@@ -129,6 +130,10 @@ export class PlayerFactory {
       forceFR: { x: 0, y: 0 },
       forceRL: { x: 0, y: 0 },
       forceRR: { x: 0, y: 0 },
+      // Scorable
+      score: 0,
+      roundScores: [],
+      placement: 0,
     };
   }
 }

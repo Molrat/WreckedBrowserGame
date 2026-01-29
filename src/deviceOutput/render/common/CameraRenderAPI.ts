@@ -71,6 +71,12 @@ export class CameraRenderAPI implements ICameraRenderAPI {
     TextDrawer.draw(this.ctx, text, this.toPixelVector(position), color, font);
   }
 
+  drawWorldText(text: string, position: Vector2, sizeMeters: number, color?: string): void {
+    const pixelSize = Math.round(sizeMeters * this.scale());
+    const font = `bold ${pixelSize}px Arial`;
+    TextDrawer.draw(this.ctx, text, this.toPixelVector(position), color, font);
+  }
+
   drawLine(point1: Vector2, point2: Vector2, strokeStyle?: string, lineWidth?: number): void {
     LineDrawer.strokeLine(this.ctx, this.toPixelVector(point1), this.toPixelVector(point2), strokeStyle, lineWidth);
   }

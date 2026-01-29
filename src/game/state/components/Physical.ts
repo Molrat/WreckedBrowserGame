@@ -8,4 +8,5 @@ export type Physical = Positionable & {
   fillColor: string | null;
   borderColor: string | null;
   borderWidth: number | null;
+  depth: number;  // rendering order: lower = drawn first (behind)
 };

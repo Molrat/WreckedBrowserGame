@@ -57,6 +57,7 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
                 fillColor: `rgba(34, 197, 94, ${alpha * 0.2})`,
                 borderColor: `rgba(34, 197, 94, ${alpha})`,
                 borderWidth: thickness,
+                depth: 10,
             }
         );
 

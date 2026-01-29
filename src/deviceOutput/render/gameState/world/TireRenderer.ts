@@ -45,7 +45,7 @@ export class TireRenderer implements IRenderer {
   }
 
   private createTire(position: Vector2, orientation: number, fillColor: string): IRenderable {
-    return { position, orientation, shape: TIRE_SHAPE, fillColor, borderColor: null, borderWidth: null };
+    return { position, orientation, shape: TIRE_SHAPE, fillColor, borderColor: null, borderWidth: null, depth: 3 };
   }
 
   private drawTires(d: ICameraRenderAPI, car: ICarState): void {

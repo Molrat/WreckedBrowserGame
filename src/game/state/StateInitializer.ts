@@ -10,6 +10,10 @@ export class StateInitializer {
         startMenu:{
           playerConnections: Array.from({ length: 8 }, () => ({ status: 'notJoined', controllerId: null }))
         },
+        currentRound: 1,
+        maxRounds: 5,
+        highestPlatformReached: 0,
+        nextPlatformIndex: 1,
       },
       time: { total: 0 },
       input: {

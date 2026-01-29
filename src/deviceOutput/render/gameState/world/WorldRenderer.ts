@@ -6,7 +6,7 @@ export class WorldRenderer implements IRenderer {
 
   render(state: GameState, draw: ICameraRenderAPI) {
     if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null)) return;
-    draw.setCamera(state.camera);
+    draw.beginFrame(state.camera);
     // draw world entities here via polygonDrawPhysical etc
   }
 }

@@ -60,6 +60,7 @@ export class PlayerJoinedEffectRenderer implements IEffectRenderer {
                     fillColor: `rgba(245, 158, 11, 1, ${alpha * 0.2})`,
                     borderColor: `rgba(245, 158, 11, ${alpha})`,
                     borderWidth: thickness,
+                    depth: 10,
                 }
             );
         }
