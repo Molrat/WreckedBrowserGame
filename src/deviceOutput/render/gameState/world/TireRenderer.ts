@@ -4,6 +4,7 @@ import type { ICameraRenderAPI } from "@/deviceOutput/render/common/ICameraRende
 import { isWithCarPhysics } from "@/game/queries/WithCarPhysics/isWithCarPhysics";
 import type { IRenderable } from "@/game/queries/Renderable/IRenderable";
 import type { Vector2 } from "@/math/Vector2";
+import { ICarState } from "@/game/queries/WithCarPhysics/ICarState";
 
 const TIRE_LENGTH = 0.7;
 const TIRE_WIDTH = 0.25;
@@ -37,7 +38,7 @@ export class TireRenderer implements IRenderer {
   }
 
   private colorFromSlip(sLong: number, sLat: number): string {
-    const m = Math.max(0, Math.min(1, Math.abs(sLong) / 100 + Math.abs(sLat) / 100));
+    const m = Math.max(0, Math.min(1, Math.abs(sLong) + Math.abs(sLat)));
     const r = Math.round(255 * m);
     const g = Math.round(255 * (1 - m));
     return `rgb(${r},${g},0)`;
@@ -47,7 +48,7 @@ export class TireRenderer implements IRenderer {
     return { position, orientation, shape: TIRE_SHAPE, fillColor, borderColor: null, borderWidth: null };
   }
 
-  private drawTires(d: ICameraRenderAPI, car: any): void {
+  private drawTires(d: ICameraRenderAPI, car: ICarState): void {
     const halfTrack = car.trackHalfWidth;
     const frontAngle = car.orientation + (car.frontWheelAngle || 0);
     const rearAngle = car.orientation;
@@ -58,9 +59,9 @@ export class TireRenderer implements IRenderer {
     const RL = this.wheelCenter(car, -car.lengthToRearAxle, +halfTrack);
     const RR = this.wheelCenter(car, -car.lengthToRearAxle, -halfTrack);
 
-    d.drawPolygon(this.createTire(FL, frontAngle, this.colorFromSlip(car.slipLongFL, car.slipLatFL)));
-    d.drawPolygon(this.createTire(FR, frontAngle, this.colorFromSlip(car.slipLongFR, car.slipLatFR)));
-    d.drawPolygon(this.createTire(RL, rearAngle, this.colorFromSlip(car.slipLongRL, car.slipLatRL)));
-    d.drawPolygon(this.createTire(RR, rearAngle, this.colorFromSlip(car.slipLongRR, car.slipLatRR)));
+    d.drawPolygon(this.createTire(FL, frontAngle, this.colorFromSlip(car.slipRatioFL, car.slipAngleFL)));
+    d.drawPolygon(this.createTire(FR, frontAngle, this.colorFromSlip(car.slipRatioFR, car.slipAngleFR)));
+    d.drawPolygon(this.createTire(RL, rearAngle, this.colorFromSlip(car.slipRatioRL, car.slipAngleRL)));
+    d.drawPolygon(this.createTire(RR, rearAngle, this.colorFromSlip(car.slipRatioRR, car.slipAngleRR)));
   }
 }

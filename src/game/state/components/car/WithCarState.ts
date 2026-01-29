@@ -14,14 +14,14 @@ export type WithCarState = Positionable & WithCarProperties & withCarControls & 
   omegaRL: number;
   omegaRR: number;
   // Slip (for debugging/visualization)
-  slipLongFL: number;
-  slipLongFR: number;
-  slipLongRL: number;
-  slipLongRR: number;
-  slipLatFL: number;
-  slipLatFR: number;
-  slipLatRL: number;
-  slipLatRR: number;
+  slipRatioFL: number;
+  slipRatioFR: number;
+  slipRatioRL: number;
+  slipRatioRR: number;
+  slipAngleFL: number;
+  slipAngleFR: number;
+  slipAngleRL: number;
+  slipAngleRR: number;
   // Per-wheel resultant ground forces in world space (N)
   forceFL: Vector2;
   forceFR: Vector2;

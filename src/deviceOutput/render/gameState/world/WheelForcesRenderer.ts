@@ -37,7 +37,7 @@ export class WheelForcesRenderer implements IRenderer {
     const FR = this.wheelPos(car, car.lengthToFrontAxle, -halfTrack);
     const RL = this.wheelPos(car, -car.lengthToRearAxle, +halfTrack);
     const RR = this.wheelPos(car, -car.lengthToRearAxle, -halfTrack);
-    const scale = 1/2000; // N->m scaling for visualization
+    const scale = 1/1000; // N->m scaling for visualization
     const arrows: Array<{pos:Vector2,force:Vector2}> = [
       { pos: FL, force: car.forceFL },
       { pos: FR, force: car.forceFR },
@@ -45,7 +45,7 @@ export class WheelForcesRenderer implements IRenderer {
       { pos: RR, force: car.forceRR },
     ];
     for (const arrow of arrows){
-      const pos2 = { x: arrow.pos.x + arrow.force.x * scale, y: arrow.pos.y + arrow.force.y * scale };
+      const pos2 = { x: arrow.pos.x + arrow.force.x * scale, y: arrow.pos.y +  arrow.force.y * scale };
       d.drawArrow(arrow.pos, pos2, '#ff3b30', 2);
     }
   }

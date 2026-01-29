@@ -40,7 +40,7 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
     const perWheelForceWorld: Vector2[] = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
     const perWheelSlipLongitudinal = [0, 0, 0, 0];
     const perWheelSlipLateral = [0, 0, 0, 0];
-    const wheelInertia = Math.max(1e-3, 0.02 * car.mass * car.wheelRadius * car.wheelRadius);
+    const wheelInertia = 0.7 * 10 * car.wheelRadius * car.wheelRadius;
 
     for (let i = 0; i < 4; i++) {
       // 1. Contact velocity (world space)
@@ -54,27 +54,81 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       const forwardSpeed = dotProduct(contactVelocityWorld, forwardVector);
       const sideSpeed = dotProduct(contactVelocityWorld, sideVector);
 
-      // 3. Compute slip
-      const wheelSurfaceSpeed = wheels[i].angularSpeed * car.wheelRadius;
-      // Slip is how much faster the road is moving relative to wheel surface
-      // Positive slip = wheel spinning faster than ground = acceleration
-      const longitudinalSlip = forwardSpeed - wheelSurfaceSpeed;
-      const lateralSlip = sideSpeed;
-      perWheelSlipLongitudinal[i] = longitudinalSlip;
-      perWheelSlipLateral[i] = lateralSlip;
+      // 3. Compute normalized slip values
+      const wheelSurfaceSpeed =
+        wheels[i].angularSpeed * car.wheelRadius;
+      // Longitudinal slip ratio: dimensionless, ranges from -1 (locked) to +∞ (spinning)
 
-      // 4. Raw tire forces from slip (force opposes slip)
-      const longitudinalStiffness = car.tireStiffLong * gripFactors[i];
-      const lateralStiffness = car.tireStiffLat * gripFactors[i];
-      let longitudinalForceRaw = -longitudinalSlip * longitudinalStiffness;
-      let lateralForceRaw = -lateralSlip * lateralStiffness;
+      const slipRatio =
+        (wheelSurfaceSpeed - forwardSpeed) /
+        Math.max(Math.abs(forwardSpeed), Math.abs(wheelSurfaceSpeed), 0.5);
+      
+      // Lateral slip angle: radians, speed-independent measure of sideways slip
+      // slipAngle = atan2(sideSpeed, |forwardSpeed|)
+      const refSpeedLat = Math.max(Math.abs(forwardSpeed), 2);
+      const slipAngle = Math.atan2(sideSpeed, refSpeedLat);
 
-      // 5. Enforce friction circle
-      const maxFrictionForce = car.tireMu * normalForces[i];
-      const rawMagnitude = Math.hypot(longitudinalForceRaw, lateralForceRaw);
-      const scaleFactor = rawMagnitude > maxFrictionForce ? (maxFrictionForce / (rawMagnitude + 1e-6)) : 1;
-      const longitudinalForce = longitudinalForceRaw * scaleFactor;
-      const lateralForce = lateralForceRaw * scaleFactor;
+      // 4. Nonlinear tire force model with normalized S-curves
+      // Parameters for slip curve shape
+      const tireGripBuildUp = car.tireGripBuildUp * gripFactors[i];  // longitudinal curve steepness
+      const tireGripDropOff = car.tireGripDropOff;                    // longitudinal falloff factor
+      const tireGripBuildUpLat = tireGripBuildUp * car.tireGripBuildUpLatScalar;  // lateral curve steepness
+      const tireGripDropOffLat = tireGripDropOff * car.tireGripDropOffLatScalar;  // lateral falloff factor
+      const maxGripLatScalar = car.maxGripLatScalar;  // lateral grip multiplier (>1 = more cornering than traction grip)
+
+      // S-curve shape function: rises then falls with normalized slip input
+      // S_raw(s) = (1 - exp(-k*s)) * exp(-alpha*k*s)
+      const shapeFunction = (slip: number, stiffness: number, alpha: number): number => {
+        const s = Math.abs(slip);
+        return (1 - Math.exp(-stiffness * s)) * Math.exp(-alpha * stiffness * s);
+      };
+
+      // Precompute normalized peak (analytical maximum of shape function)
+      // Peak occurs at s* = ln(1 + 1/alpha) / (stiffness * (1 + alpha))
+      const computeShapeMax = (stiffness: number, alpha: number): number => {
+        const sPeak = Math.log(1 + 1 / alpha) / (stiffness);
+        return shapeFunction(sPeak, stiffness, alpha);
+      };
+      const sxMax = computeShapeMax(tireGripBuildUp, tireGripDropOff);
+      const syMax = computeShapeMax(tireGripBuildUpLat, tireGripDropOffLat);
+
+      // Normalized shape values (0 to 1) using absolute and clamped slip ratio and slip angle
+      const slipRatioAbs= Math.min(Math.abs(slipRatio), 1);
+      const slipAngleAbs = Math.min(Math.abs(slipAngle), 1);
+      // Store for debugging/visualization
+      perWheelSlipLongitudinal[i] = slipRatioAbs;
+      perWheelSlipLateral[i] = slipAngleAbs;
+      
+      const sxNorm = shapeFunction(slipRatioAbs, tireGripBuildUp, tireGripDropOff) / sxMax;
+      const syNorm = shapeFunction(slipAngleAbs, tireGripBuildUpLat, tireGripDropOffLat) / syMax;
+
+      // Raw forces from normalized slip curves
+      // Force = mu * normalForce * normalizedShape (with betaLat boost for lateral)
+      const mu = car.tireMu;
+      const Nf = normalForces[i];
+      const fxPeak = mu * Nf;                         // max longitudinal force
+      const fyPeak = mu * Nf * maxGripLatScalar;      // max lateral force (with grip boost)
+      
+      // Apply sign based on slip direction (force opposes slip)
+      // Positive slipRatio = wheel spinning faster than ground = force pushes car forward
+      // Positive slipAngle = car sliding left = force pushes car right
+      const longitudinalForceRaw = Math.sign(slipRatio) * fxPeak * sxNorm;
+      const lateralForceRaw = -Math.sign(slipAngle) * fyPeak * syNorm;
+
+      // 5. Friction ellipse: combined forces must lie within ellipse
+      // Ellipse equation: (Fx/fxPeak)^2 + (Fy/fyPeak)^2 <= 1
+      let longitudinalForce = longitudinalForceRaw;
+      let lateralForce = lateralForceRaw;
+
+      const ellipseRadius = Math.sqrt(
+        (longitudinalForceRaw / fxPeak) ** 2 + 
+        (lateralForceRaw / fyPeak) ** 2
+      );
+      if (ellipseRadius > 1) {
+        // Scale both forces equally to bring onto ellipse boundary
+        longitudinalForce = longitudinalForceRaw / ellipseRadius;
+        lateralForce = lateralForceRaw / ellipseRadius;
+      }
 
       // 6. Apply forces to the car
       const forceWorld = add(scale(forwardVector, longitudinalForce), scale(sideVector, lateralForce));
@@ -88,7 +142,8 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       const wheelBrakeTorque = brakeTorquePerWheel + (i >= 2 ? handbrakeExtraRearTorque : 0);
       // Rolling resistance torque (always opposes wheel rotation)
       const rollingResistanceTorque = -Math.sign(wheels[i].angularSpeed) * car.rollingResistance * car.wheelRadius * 0.25;
-      const netWheelTorque = engineTorquePerWheel - wheelBrakeTorque + tireReactionTorque + rollingResistanceTorque;
+      const viscousTorque = -1.0 * wheels[i].angularSpeed;
+      const netWheelTorque = engineTorquePerWheel - wheelBrakeTorque + tireReactionTorque + rollingResistanceTorque + viscousTorque;
       wheels[i].angularSpeed += (netWheelTorque / wheelInertia) * dt;
       
       // Prevent wheel from reversing due to braking/resistance when nearly stopped
@@ -96,6 +151,24 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
         wheels[i].angularSpeed = 0;
       }
     }
+
+    // Apply air drag: F = -Cd * v² * direction
+    // Drag increases when drifting (larger frontal area when sideways)
+    const speed = Math.hypot(car.velocity.x, car.velocity.y);
+    let effectiveDragCoeff = car.airDragCoefficient;
+    if (speed > 0.1) {
+      const carForward = direction(car.orientation);
+      const velocityDir: Vector2 = { x: car.velocity.x / speed, y: car.velocity.y / speed };
+      const alignmentCos = Math.abs(dotProduct(carForward, velocityDir)); // 1 = straight, 0 = fully sideways
+      // Sideways drag is ~2.5x frontal drag (car is wider than long from drag perspective)
+      const sidewaysDragMultiplier = 2.5;
+      effectiveDragCoeff = car.airDragCoefficient * (alignmentCos + sidewaysDragMultiplier * (1 - alignmentCos));
+    }
+    const dragMagnitude = effectiveDragCoeff * speed * speed;
+    const dragForce: Vector2 = speed > 0.01 
+      ? scale(car.velocity, -dragMagnitude / speed)
+      : { x: 0, y: 0 };
+    totalForceWorld = add(totalForceWorld, dragForce);
 
     const linearAcceleration = scale(totalForceWorld, 1 / Math.max(1e-3, car.mass));
     const newVelocity = add(car.velocity, scale(linearAcceleration, dt));
@@ -112,8 +185,8 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       angularVelocity: newAngularVelocity,
       frontWheelAngle: frontSteeringAngle,
       omegaFL: wheels[0].angularSpeed, omegaFR: wheels[1].angularSpeed, omegaRL: wheels[2].angularSpeed, omegaRR: wheels[3].angularSpeed,
-      slipLongFL: perWheelSlipLongitudinal[0], slipLongFR: perWheelSlipLongitudinal[1], slipLongRL: perWheelSlipLongitudinal[2], slipLongRR: perWheelSlipLongitudinal[3],
-      slipLatFL:  perWheelSlipLateral[0],     slipLatFR:  perWheelSlipLateral[1],     slipLatRL:  perWheelSlipLateral[2],     slipLatRR:  perWheelSlipLateral[3],
+      slipRatioFL: perWheelSlipLongitudinal[0], slipRatioFR: perWheelSlipLongitudinal[1], slipRatioRL: perWheelSlipLongitudinal[2], slipRatioRR: perWheelSlipLongitudinal[3],
+      slipAngleFL:  perWheelSlipLateral[0],     slipAngleFR:  perWheelSlipLateral[1],     slipAngleRL:  perWheelSlipLateral[2],     slipAngleRR:  perWheelSlipLateral[3],
       forceFL: perWheelForceWorld[0],
       forceFR: perWheelForceWorld[1],
       forceRL: perWheelForceWorld[2],

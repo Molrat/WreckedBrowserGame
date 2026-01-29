@@ -89,13 +89,16 @@ export class PlayerFactory {
       steeringSpeedReductionK: 0.01,
 
       engineForce: 16000,          // N (AWD)
-      brakeForce: 12000,          // N
+      brakeForce: 16000,          // N
 
-      tireGripFront: 1.12,
-      tireGripRear: 0.92,
-      tireMu: 1.0,
-      tireStiffLong: 20000,
-      tireStiffLat: 25000,
+      tireGripFront: 1,
+      tireGripRear: 1,
+      tireMu: 1,
+      tireGripBuildUp: 1,          // longitudinal stiffness (how fast grip builds with slip)
+      tireGripDropOff: 1,            // longitudinal falloff (fraction, higher = more drop after peak)
+      tireGripBuildUpLatScalar: 1.0,  // lateral stiffness = buildUp * this
+      tireGripDropOffLatScalar: 1.0,   // lateral dropOff = dropOff * this
+      maxGripLatScalar: 1.4,           // lateral peak grip multiplier (>1 = more cornering than traction grip)
       driftGripMultiplier: 0.7,
 
       rollingResistance: 800,     // N
@@ -114,14 +117,14 @@ export class PlayerFactory {
       omegaFR: 0,
       omegaRL: 0,
       omegaRR: 0,
-      slipLongFL: 0,
-      slipLongFR: 0,
-      slipLongRL: 0,
-      slipLongRR: 0,
-      slipLatFL: 0,
-      slipLatFR: 0,
-      slipLatRL: 0,
-      slipLatRR: 0,
+      slipRatioFL: 0,
+      slipRatioFR: 0,
+      slipRatioRL: 0,
+      slipRatioRR: 0,
+      slipAngleFL: 0,
+      slipAngleFR: 0,
+      slipAngleRL: 0,
+      slipAngleRR: 0,
       forceFL: { x: 0, y: 0 },
       forceFR: { x: 0, y: 0 },
       forceRL: { x: 0, y: 0 },
