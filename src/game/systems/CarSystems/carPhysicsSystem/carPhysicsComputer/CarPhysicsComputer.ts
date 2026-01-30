@@ -98,7 +98,7 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       // Store for debugging/visualization
       perWheelSlipLongitudinal[i] = slipRatioAbs;
       perWheelSlipLateral[i] = slipAngleAbs;
-      
+
       const sxNorm = shapeFunction(slipRatioAbs, tireGripBuildUp, tireGripDropOff) / sxMax;
       const syNorm = shapeFunction(slipAngleAbs, tireGripBuildUpLat, tireGripDropOffLat) / syMax;
 
@@ -170,7 +170,7 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
       : { x: 0, y: 0 };
     totalForceWorld = add(totalForceWorld, dragForce);
 
-    const linearAcceleration = scale(totalForceWorld, 1 / Math.max(1e-3, car.mass));
+    const linearAcceleration = scale(totalForceWorld, 1 / car.mass);
     const newVelocity = add(car.velocity, scale(linearAcceleration, dt));
     const yawInertia = car.mass * safeWheelbase * safeWheelbase / 12;
     const newAngularVelocity = car.angularVelocity + (totalYawMoment / Math.max(1e-3, yawInertia)) * dt;

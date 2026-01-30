@@ -4,9 +4,10 @@ import type { EventBus } from '@/game/events/EventBus';
 import { isPlayer } from '@/game/queries/Player/isPlayer';
 import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { PlatformFactory } from '@/game/state/entities/Factories/PlatformFactory';
+import { computeNextPosition } from './PlatformPositioner';
+import type { IPlatform } from '@/game/queries/Platform/IPlatform';
 
 const PLATFORM_SIZE = PlatformFactory.getPlatformSize();
-const GAP_SIZE = 2;
 const PROGRESSION_THRESHOLD = 10;
 
 export class PlatformProgressionSystem implements ISystem {
@@ -38,10 +39,13 @@ export class PlatformProgressionSystem implements ISystem {
           const idx = state.entities.findIndex(e => isPlatform(e) && e.platformIndex === platformToRemove);
           if (idx !== -1) state.entities.splice(idx, 1);
 
-          const lastPlatform = platforms[platforms.length - 1];
-          if (lastPlatform) {
-            const newPlatform = this.createNextPlatform(lastPlatform, state.ui.nextPlatformIndex);
-            lastPlatform.nextPlatformId = newPlatform.id;
+          const updatedPlatforms = state.entities.filter(isPlatform);
+          const frontPlatform = this.getHighestIndexPlatform(updatedPlatforms);
+          if (frontPlatform) {
+            const positions = updatedPlatforms.map(p => p.position);
+            const newPos = computeNextPosition(frontPlatform.position, positions);
+            const newPlatform = PlatformFactory.create(state.ui.nextPlatformIndex, newPos);
+            frontPlatform.nextPlatformId = newPlatform.id;
             state.entities.push(newPlatform);
             state.ui.nextPlatformIndex++;
           }
@@ -49,6 +53,10 @@ export class PlatformProgressionSystem implements ISystem {
       }
       state.ui.highestPlatformReached = highestReached;
     }
+  }
+
+  private getHighestIndexPlatform(platforms: IPlatform[]): IPlatform | undefined {
+    return platforms.reduce((max, p) => (p.platformIndex > (max?.platformIndex ?? -1) ? p : max), platforms[0]);
   }
 
   private isOnPlatform(playerPos: { x: number; y: number }, platformPos: { x: number; y: number }): boolean {
@@ -59,22 +67,5 @@ export class PlatformProgressionSystem implements ISystem {
       playerPos.y >= platformPos.y - halfSize &&
       playerPos.y <= platformPos.y + halfSize
     );
-  }
-
-  private createNextPlatform(lastPlatform: { position: { x: number; y: number }; platformIndex: number }, newIndex: number) {
-    // Choose random direction for next platform
-    const directions = [
-      { x: 1, y: 0 },
-      { x: 0, y: 1 },
-      { x: -1, y: 0 },
-      { x: 0, y: -1 },
-    ];
-    const dir = directions[Math.floor(Math.random() * directions.length)];
-    const offset = PLATFORM_SIZE + GAP_SIZE;
-    
-    return PlatformFactory.create(newIndex, {
-      x: lastPlatform.position.x + dir.x * offset,
-      y: lastPlatform.position.y + dir.y * offset,
-    });
   }
 }

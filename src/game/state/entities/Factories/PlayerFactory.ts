@@ -78,9 +78,9 @@ export class PlayerFactory {
       },
       // car properties
       mass: 1000,                 // kg
-      centerOfMassOffset: 0.0,    // m (0 = CoM centered)
-      lengthToFrontAxle: 1.25,    // m
-      lengthToRearAxle: 1.25,     // m
+      centerOfMassOffset: 0.5,    // m (0 = CoM centered, positive = meters forward from center)
+      lengthToFrontAxle: 1.25,    // m from center
+      lengthToRearAxle: 1.25,     // m from center
       trackHalfWidth: 0.75,       // m
       wheelRadius: 0.3,           // m
 
