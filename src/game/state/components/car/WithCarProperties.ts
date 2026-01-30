@@ -1,7 +1,6 @@
 export type WithCarProperties = {
   mass: number;
 
-  centerOfMassOffset: number;
   lengthToFrontAxle: number;
   lengthToRearAxle: number;
   trackHalfWidth: number; // m
@@ -21,9 +20,8 @@ export type WithCarProperties = {
   tireGripDropOffLatScalar: number;  // lateral dropOff = dropOff * this
   maxGripLatScalar: number;          // lateral peak grip multiplier (>1 = more cornering than traction grip)
 
-  tireGripFront: number;
-  tireGripRear: number;
-  driftGripMultiplier: number;
+  tireGripFrontScalar: number;
+  tireGripRearScalar: number;
 
   rollingResistance: number;
   airDragCoefficient: number;

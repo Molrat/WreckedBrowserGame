@@ -78,7 +78,6 @@ export class PlayerFactory {
       },
       // car properties
       mass: 1000,                 // kg
-      centerOfMassOffset: 0.5,    // m (0 = CoM centered, positive = meters forward from center)
       lengthToFrontAxle: 1.25,    // m from center
       lengthToRearAxle: 1.25,     // m from center
       trackHalfWidth: 0.75,       // m
@@ -92,15 +91,14 @@ export class PlayerFactory {
       engineForce: 16000,          // N (AWD)
       brakeForce: 16000,          // N
 
-      tireGripFront: 1,
-      tireGripRear: 1,
+      tireGripFrontScalar: 1,
+      tireGripRearScalar: 1,
       tireMu: 1,
-      tireGripBuildUp: 1,          // longitudinal stiffness (how fast grip builds with slip)
-      tireGripDropOff: 1,            // longitudinal falloff (fraction, higher = more drop after peak)
-      tireGripBuildUpLatScalar: 1.0,  // lateral stiffness = buildUp * this
+      tireGripBuildUp: 3,          // longitudinal stiffness (how fast grip builds with slip)
+      tireGripDropOff: 1.2,            // longitudinal falloff (fraction, higher = more drop after peak)
+      tireGripBuildUpLatScalar: 1.2,  // lateral stiffness = buildUp * this
       tireGripDropOffLatScalar: 1.0,   // lateral dropOff = dropOff * this
-      maxGripLatScalar: 1.4,           // lateral peak grip multiplier (>1 = more cornering than traction grip)
-      driftGripMultiplier: 0.7,
+      maxGripLatScalar: 1.0,           // lateral peak grip multiplier (>1 = more cornering than traction grip)
 
       rollingResistance: 800,     // N
       airDragCoefficient: 5.0,     // used with v² - gives ~200 km/h top speed
