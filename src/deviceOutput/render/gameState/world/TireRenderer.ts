@@ -37,15 +37,8 @@ export class TireRenderer implements IRenderer {
     };
   }
 
-  private colorFromSlip(sLong: number, sLat: number): string {
-    const m = Math.max(0, Math.min(1, Math.abs(sLong) + Math.abs(sLat)));
-    const r = Math.round(255 * m);
-    const g = Math.round(255 * (1 - m));
-    return `rgb(${r},${g},0)`;
-  }
-
-  private createTire(position: Vector2, orientation: number, fillColor: string): IRenderable {
-    return { position, orientation, shape: TIRE_SHAPE, fillColor, borderColor: null, borderWidth: null, depth: 3 };
+  private createTire(position: Vector2, orientation: number): IRenderable {
+    return { position, orientation, shape: TIRE_SHAPE, fillColor: '#222', borderColor: null, borderWidth: null, depth: 3 };
   }
 
   private drawTires(d: ICameraRenderAPI, car: ICarState): void {
@@ -59,9 +52,9 @@ export class TireRenderer implements IRenderer {
     const RL = this.wheelCenter(car, -car.lengthToRearAxle, +halfTrack);
     const RR = this.wheelCenter(car, -car.lengthToRearAxle, -halfTrack);
 
-    d.drawPolygon(this.createTire(FL, frontAngle, this.colorFromSlip(car.slipRatioFL, car.slipAngleFL)));
-    d.drawPolygon(this.createTire(FR, frontAngle, this.colorFromSlip(car.slipRatioFR, car.slipAngleFR)));
-    d.drawPolygon(this.createTire(RL, rearAngle, this.colorFromSlip(car.slipRatioRL, car.slipAngleRL)));
-    d.drawPolygon(this.createTire(RR, rearAngle, this.colorFromSlip(car.slipRatioRR, car.slipAngleRR)));
+    d.drawPolygon(this.createTire(FL, frontAngle));
+    d.drawPolygon(this.createTire(FR, frontAngle));
+    d.drawPolygon(this.createTire(RL, rearAngle));
+    d.drawPolygon(this.createTire(RR, rearAngle));
   }
 }

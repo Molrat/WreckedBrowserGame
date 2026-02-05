@@ -14,15 +14,8 @@ export type WithCarProperties = {
   engineForce: number;
   brakeForce: number;
   tireMu: number;                    // friction coefficient
-  tireGripBuildUp: number;           // longitudinal stiffness (how fast grip builds with slip)
-  tireGripDropOff: number;           // longitudinal falloff (fraction, higher = more drop after peak)
-  tireGripBuildUpLatScalar: number;  // lateral stiffness = buildUp * this
-  tireGripDropOffLatScalar: number;  // lateral dropOff = dropOff * this
-  maxGripLatScalar: number;          // lateral peak grip multiplier (>1 = more cornering than traction grip)
-
-  tireGripFrontScalar: number;
-  tireGripRearScalar: number;
-
+  tireStiffness: number;
+  
   rollingResistance: number;
   airDragCoefficient: number;
 }

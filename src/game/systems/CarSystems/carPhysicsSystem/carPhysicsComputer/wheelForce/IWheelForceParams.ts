@@ -1,21 +1,13 @@
 import { Vector2 } from "@/math/Vector2";
 
+// Parameters for computing ground force in wheel's local frame
+// +x = lateral (right), +y = longitudinal (forward)
 export interface IWheelForceParams {
-  contactVelocityWorld: Vector2;
-  carOrientation: number;
-  steeringAngle: number;
-  wheelAngularSpeed: number;
-  wheelRadius: number;
-  wheelInertia: number;
-  normalForce: number;
-  mu: number;
-  engineTorque: number;
-  brakeTorque: number;
-  rollingResistance: number;
-  tireGripBuildUp: number;
-  tireGripDropOff: number;
-  tireGripBuildUpLatScalar: number;
-  tireGripDropOffLatScalar: number;
-  maxGripLatScalar: number;
-  dt: number;
+  velocityInWheelFrame: Vector2;  // contact point velocity in wheel frame
+  wheelAngularSpeed: number;       // rad/s
+  wheelRadius: number;             // m
+  normalForce: number;             // N
+  mu: number;                      // friction coefficient
+  longitudalStiffness: number;
+  lateralStiffness: number;
 }

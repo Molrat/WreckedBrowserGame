@@ -1,5 +1,5 @@
 import { Vector2, scale } from "@/math/Vector2";
-import { direction, dotProduct } from "../vectorHelpers";
+import { direction, dotProduct } from "@/math/Vector2";
 
 /**
  * Computes air drag force with orientation-dependent coefficient.

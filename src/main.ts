@@ -40,6 +40,7 @@ import { HandbrakeControl } from '@/game/systems/CarSystems/carControlSystem/dri
 import { BrakeControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/brakeControl/BrakeControl';
 import { CarPhysicsSystem } from './game/systems/CarSystems/carPhysicsSystem/CarPhysicsSystem';
 import { CarPhysicsComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/CarPhysicsComputer';
+import { SimpleLocalWheelForceComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/SimpleLocalWheelForceComputer';
 import { PlatformProgressionSystem } from './game/systems/platformSystems/PlatformProgressionSystem';
 import { OffPlatformDamageSystem } from './game/systems/platformSystems/OffPlatformDamageSystem';
 import { PlayerDeathSystem } from './game/systems/roundSystems/PlayerDeathSystem';
@@ -102,7 +103,7 @@ const systems = [
     new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
-    new CarPhysicsSystem(new CarPhysicsComputer),
+    new CarPhysicsSystem(new CarPhysicsComputer(new SimpleLocalWheelForceComputer())),
     new MovementSystem(),
     new PlatformProgressionSystem(),
     new OffPlatformDamageSystem(),
