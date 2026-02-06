@@ -35,3 +35,18 @@ export const perpendicular = (v: Vector2): Vector2 => ({
 
 export const dotProduct = (a: Vector2, b: Vector2): number =>
   a.x * b.x + a.y * b.y;
+
+export function subtract(a: Vector2, b: Vector2): Vector2 {
+  return { x: a.x - b.x, y: a.y - b.y };
+}
+
+export function distance(a: Vector2, b: Vector2): number {
+  return length(subtract(a, b));
+}
+
+export function moveTowards(from: Vector2, to: Vector2, distance: number): Vector2 {
+  const diff = subtract(to, from);
+  const dist = length(diff);
+  if (dist <= distance) return { x: to.x, y: to.y };
+  return add(from, scale(diff, distance / dist));
+}

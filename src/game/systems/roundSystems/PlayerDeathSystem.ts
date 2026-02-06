@@ -45,6 +45,10 @@ export class PlayerDeathSystem implements ISystem {
         if (entity.health > 0) entity.placement = 1;
       }
 
+      // Move dead players back to entities before scoring
+      state.entities.push(...state.deadEntities);
+      state.deadEntities.length = 0;
+
       this.assignRoundScores(state, players.length);
       
       const nextRound = state.ui.currentRound + 1;

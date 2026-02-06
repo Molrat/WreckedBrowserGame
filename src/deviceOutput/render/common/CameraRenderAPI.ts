@@ -9,21 +9,30 @@ import { Vector2 } from "@/math/Vector2";
 
 export class CameraRenderAPI implements ICameraRenderAPI {
   private camera: Camera;
+  private goalCamera: Camera;
+  private lastFrameTime: number = 0;
+  private readonly lerpSpeed = 2; // per second — reaches ~99% in ~1s
+
   constructor(private ctx: CanvasRenderingContext2D) {
     this.camera = { position: { x: 0, y: 0 }, width: ctx.canvas.width, height: ctx.canvas.height };
-  }
-  private setCamera(cam: Camera): void { this.camera = cam; }
-
-  private setCameraToMenuMode(): void {
-    this.camera = {
-      position: { x: 0, y: 0 },
-      width: this.ctx.canvas.width,
-      height: this.ctx.canvas.height,
-    }
+    this.goalCamera = { ...this.camera, position: { ...this.camera.position } };
   }
 
-  beginFrame(cam : Camera): void {
-    this.setCamera(cam);
+  beginFrame(cam: Camera): void {
+    this.goalCamera = cam;
+    this.smoothUpdateCamera();
+  }
+
+  private smoothUpdateCamera(): void {
+    const now = performance.now();
+    const dt = this.lastFrameTime === 0 ? 0.016 : Math.min(0.1, (now - this.lastFrameTime) / 1000);
+    this.lastFrameTime = now;
+
+    const t = 1 - Math.exp(-this.lerpSpeed * dt);
+    this.camera.position.x += (this.goalCamera.position.x - this.camera.position.x) * t;
+    this.camera.position.y += (this.goalCamera.position.y - this.camera.position.y) * t;
+    this.camera.width += (this.goalCamera.width - this.camera.width) * t;
+    this.camera.height += (this.goalCamera.height - this.camera.height) * t;
   }
 
   private scale(): number {
