@@ -49,6 +49,8 @@ import { InbetweenLevelsMenuSystem } from './game/systems/menuSystems/InbetweenL
 import { EndOfGameMenuSystem } from './game/systems/menuSystems/EndOfGameMenuSystem';
 import { InbetweenLevelsMenuRenderer } from './deviceOutput/render/gameState/ui/InbetweenLevelsMenuRenderer';
 import { EndOfGameMenuRenderer } from './deviceOutput/render/gameState/ui/EndOfGameMenuRenderer';
+import { PacejkaWheelForceComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/PacejkaWheelForceComputer';
+import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL } from '@/game/config/carPhysicsConstants';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -94,6 +96,8 @@ const carControlSystem = new CarControlSystem(
 );
 
 // GAMESTATE UPDATE SYSTEMS: systems update gamestate in series and emit events
+const pacejkaModel = new PacejkaWheelForceComputer(PACEJKA_LONGITUDINAL, PACEJKA_LATERAL);
+const simpleModel = new SimpleLocalWheelForceComputer();
 const systems = [
     new ControllerSystemInStartMenu(),
     new InbetweenLevelsMenuSystem(),
@@ -103,7 +107,7 @@ const systems = [
     new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
-    new CarPhysicsSystem(new CarPhysicsComputer(new SimpleLocalWheelForceComputer())),
+    new CarPhysicsSystem(new CarPhysicsComputer(pacejkaModel)),
     new MovementSystem(),
     new PlatformProgressionSystem(),
     new OffPlatformDamageSystem(),

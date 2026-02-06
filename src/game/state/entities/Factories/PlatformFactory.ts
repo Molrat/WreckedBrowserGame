@@ -1,7 +1,7 @@
+import { PLATFORM_SIZE } from '@/game/config/constants';
 import type { Platform } from '@/game/state/entities/Platform';
 import { nextId } from '@/utils/id';
 
-const PLATFORM_SIZE = 10; // meters
 
 export class PlatformFactory {
   static create(platformIndex: number, position: { x: number; y: number }): Platform {

@@ -13,11 +13,10 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
   compute(car: ICarState, dt: number): ICarState {
     const gravity = 9.81;
     const wheelbase = car.lengthToFrontAxle + car.lengthToRearAxle;
-    const safeWheelbase = Math.max(1e-3, wheelbase);
 
     // Normal forces per wheel
-    const frontNormal = car.mass * gravity * (car.lengthToRearAxle / safeWheelbase) / 2;
-    const rearNormal = car.mass * gravity * (car.lengthToFrontAxle / safeWheelbase) / 2;
+    const frontNormal = car.mass * gravity * (car.lengthToRearAxle / wheelbase) / 2;
+    const rearNormal = car.mass * gravity * (car.lengthToFrontAxle / wheelbase) / 2;
     const normalForces = [frontNormal, frontNormal, rearNormal, rearNormal];
 
     // Wheel definitions: localPos (+x forward, +y left), steer, omega
@@ -65,11 +64,6 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
         longitudalStiffness: car.tireStiffness,
         lateralStiffness: car.tireStiffness,
       });
-      // localForce = {
-      //   x: Math.sign(localForce.x) * maxTireForce.x,
-      //   y: Math.sign(localForce.y) * maxTireForce.y,
-      // }
-      // isStatic = true;
       // Update wheel omega
       let newOmega: number;
       const brakeTorque = brakeTorquePerWheel + (i >= 2 ? handbrakeRear : 0);
@@ -100,7 +94,7 @@ export class CarPhysicsComputer implements ICarPhysicsComputer {
     // Update car velocity and angular velocity
     const accel = scale(totalForce, 1 / car.mass);
     const newVelocity = add(car.velocity, scale(accel, dt));
-    const yawInertia = car.mass * safeWheelbase * safeWheelbase / 12;
+    const yawInertia = car.mass * (wheelbase * wheelbase + 4 * car.trackHalfWidth * car.trackHalfWidth) / 12;
     const newAngularVelocity = car.angularVelocity + (totalYawMoment / Math.max(1e-3, yawInertia)) * dt;
 
     return {

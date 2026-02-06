@@ -1,5 +1,6 @@
 import type { Player } from '@/game/state/entities/Player';
 import { nextId } from '@/utils/id';
+import { CAR_PHYSICS } from '@/game/config/carPhysicsConstants';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
@@ -88,13 +89,13 @@ export class PlayerFactory {
       steeringResponse: 5,
       steeringSpeedReductionK: 0.01,
 
-      engineForce: 6000,          // N (AWD)
-      brakeForce: 10000,          // N
-      tireStiffness: 200000,             // N/m
-      tireMu: 1.5,
+      engineForce: CAR_PHYSICS.engineForce,
+      brakeForce: CAR_PHYSICS.brakeForce,
+      tireStiffness: CAR_PHYSICS.tireStiffness,
+      tireMu: CAR_PHYSICS.tireMu,
 
-      rollingResistance: 800,     // N
-      airDragCoefficient: 5.0,     // used with v² - gives ~200 km/h top speed
+      rollingResistance: CAR_PHYSICS.rollingResistance,
+      airDragCoefficient: CAR_PHYSICS.airDragCoefficient,
 
       // car controller state:
       throttle: 0,

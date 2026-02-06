@@ -3,6 +3,7 @@ export const WORLD = {
   height: 600,
   friction: 0.98,
 };
+export const PLATFORM_SIZE = 40; // meters
 
 export const HANDBRAKE_INTENT = {
   deadZone: 0.01,          // 0..1
