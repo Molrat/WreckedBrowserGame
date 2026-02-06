@@ -9,19 +9,26 @@ export class InbetweenLevelsMenuSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== 'inbetweenLevels') return;
 
-    const players = state.entities.filter(isPlayer);
+    // Include dead players for ready check
+    const alivePlayers = state.entities.filter(isPlayer);
+    const deadPlayers = state.deadEntities.filter(isPlayer);
+    const allPlayers = [...alivePlayers, ...deadPlayers];
 
     // Toggle ready state when triangle is pressed
-    for (const player of players) {
+    for (const player of allPlayers) {
       const justPressedTriangle = player.currentGamepad.triangle && !player.previousGamepad.triangle;
       if (justPressedTriangle) {
         player.readyForNextRound = !player.readyForNextRound;
       }
     }
 
-    const allPlayersReady = players.length > 0 && players.every(p => p.readyForNextRound);
+    const allPlayersReady = allPlayers.length > 0 && allPlayers.every(p => p.readyForNextRound);
 
     if (!allPlayersReady) return;
+
+    // Move dead players back to entities
+    state.entities.push(...state.deadEntities);
+    state.deadEntities.length = 0;
 
     const newPlatforms = generateInitialPlatforms();
     const firstPlatform = newPlatforms[0];

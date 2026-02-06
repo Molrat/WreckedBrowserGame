@@ -6,7 +6,7 @@ import { isPlayer } from '@/game/queries/Player/isPlayer';
 const PLACEMENT_POINTS = [6, 3, 1, 0];
 
 export class PlayerDeathSystem implements ISystem {
-  update(state: GameState, _eventBus: EventBus, _dt: number): void {
+  update(state: GameState, eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
 
     const players = state.entities.filter(isPlayer);
@@ -18,10 +18,21 @@ export class PlayerDeathSystem implements ISystem {
     const currentPlacement = players.filter(p => p.placement > 0).length;
     let nextPlacement = players.length - currentPlacement;
 
-    for (const entity of state.entities) {
+    for (let i = state.entities.length - 1; i >= 0; i--) {
+      const entity = state.entities[i];
       if (!isPlayer(entity)) continue;
       if (entity.health > 0 || entity.placement > 0) continue;
       entity.placement = nextPlacement;
+      eventBus.emit({
+        type: 'PlayerDied',
+        playerId: entity.id,
+        placement: nextPlacement,
+        position: { x: entity.position.x, y: entity.position.y },
+        color: entity.fillColor ?? '#ffffff',
+      });
+      // Move to deadEntities
+      state.entities.splice(i, 1);
+      state.deadEntities.push(entity);
       nextPlacement--;
     }
 

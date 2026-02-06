@@ -4,6 +4,7 @@ export class StateInitializer {
   static createInitialGameState(): GameState {
     return {
       entities: [],
+      deadEntities: [],
       ui: {
         openMenu: 'start',
         previousMenuBeforeDisconnect: null,

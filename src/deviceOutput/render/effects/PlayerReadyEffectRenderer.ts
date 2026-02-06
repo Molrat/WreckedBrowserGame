@@ -7,7 +7,10 @@ import { Vector2 } from "@/math/Vector2";
 export class PlayerReadyEffectRenderer implements IEffectRenderer {
   private effectsState: EffectsState = {};
 
-  render(events: GameEvent[], draw: IScreenRenderAPI) {
+  constructor(private draw: IScreenRenderAPI) {}
+
+  render(events: GameEvent[]) {
+    const draw = this.draw;
     const now = performance.now();
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerReady') {

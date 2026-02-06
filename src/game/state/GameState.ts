@@ -6,6 +6,7 @@ import type { Camera } from '@/game/state/components/camera/Camera';
 export type GameState = {
   input: InputState;
   entities: Identifiable[];
+  deadEntities: Identifiable[];
   ui: UIState;
   time: { total: number };
   camera: Camera;

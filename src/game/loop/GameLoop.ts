@@ -72,7 +72,7 @@ export class GameLoop {
       sp.play(events);
     }
     for (const effect of this.effectRenderers) {
-      effect.render(events, this.screenDraw);
+      effect.render(events);
     }
   }
 }

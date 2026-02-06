@@ -3,6 +3,7 @@ import { MovementSystem } from '@/game/systems/MovementSystem';
 import { DisconnectCheckSystem } from '@/game/systems/gamePadSystems/DisconnectCheckSystem';
 import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/PlayerJoinedEffectRenderer';
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
+import { PlayerDeathEffectRenderer } from '@/deviceOutput/render/effects/deathExplosion/PlayerDeathEffectRenderer';
 import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
 import { RandomTrackRenderer } from '@/deviceOutput/render/gameState/world/RandomTrackRenderer';
 import { WheelForcesRenderer } from '@/deviceOutput/render/gameState/world/WheelForcesRenderer';
@@ -127,7 +128,7 @@ const gameStateRenderers = [
     new RandomTrackRenderer(),
     new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2)
     new TireRenderer(),         // tires on top (depth 3)
-    new WheelForcesRenderer(),
+    //new WheelForcesRenderer(),
 ];
 
 // Screen renderers render in pixel coordinates (no camera projection)
@@ -141,8 +142,9 @@ const screenRenderers = [
 
 // Effect renderers only take events from the bus as input, such as "player joined"
 const effectRenderers = [
-    new PlayerJoinedEffectRenderer(),
-    new PlayerReadyEffectRenderer(),
+    new PlayerJoinedEffectRenderer(screenRenderAPI),
+    new PlayerReadyEffectRenderer(screenRenderAPI),
+    new PlayerDeathEffectRenderer(cameraRenderAPI),
 ];
 
 // Sound players only take events from the bus as input

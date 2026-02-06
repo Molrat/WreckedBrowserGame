@@ -12,7 +12,9 @@ export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
     draw.clear();
     draw.fillBackground('#111');
 
-    const players = gameState.entities.filter(isPlayer);
+    const alivePlayers = gameState.entities.filter(isPlayer);
+    const deadPlayers = gameState.deadEntities.filter(isPlayer);
+    const players = [...alivePlayers, ...deadPlayers];
     const round = gameState.ui.currentRound;
 
     // Title
