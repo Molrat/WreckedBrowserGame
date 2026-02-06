@@ -1,4 +1,5 @@
 import { PacejkaCoefficients } from "../systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/PacejkaCoefficients";
+import { CollisionConfig } from "../systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer";
 
 export const CAR_PHYSICS = {
   engineForce: 9000,           // N (AWD)
@@ -7,6 +8,11 @@ export const CAR_PHYSICS = {
   tireMu: 1.5,                 // friction coefficient
   rollingResistance: 800,      // N
   airDragCoefficient: 3.0,     // used with v² - gives ~200 km/h top speed
+};
+
+export const COLLISION_CONFIG: CollisionConfig = {
+  restitution: 0.3,           // 0 = inelastic, 1 = elastic (0.3 = some energy loss)
+  damagePerMps: 0.1,          // damage per m/s relative velocity
 };
 
 export const PACEJKA_LONGITUDINAL: PacejkaCoefficients = {

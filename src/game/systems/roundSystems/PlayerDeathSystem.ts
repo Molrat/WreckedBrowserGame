@@ -25,9 +25,9 @@ export class PlayerDeathSystem implements ISystem {
       nextPlacement--;
     }
 
-    const newAlivePlayers = alivePlayers.length - deadPlayers.length;
+    const remainingAlivePlayers = players.filter(p => p.health > 0 && p.placement === 0).length;
     
-    if (newAlivePlayers <= 1) {
+    if (remainingAlivePlayers <= 1) {
       for (const entity of state.entities) {
         if (!isPlayer(entity)) continue;
         if (entity.placement > 0) continue;

@@ -62,7 +62,7 @@ export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
     // Ready status
     const readyY = height - 100;
     players.forEach((player, index) => {
-      const isReady = player.currentGamepad.triangle;
+      const isReady = player.readyForNextRound;
       const x = 100 + index * 120;
       const color = isReady ? '#16a34a' : '#374151';
       const label = isReady ? 'Ready!' : 'Press △';
@@ -72,8 +72,8 @@ export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
     });
 
     draw.drawText(
-      'Press △ to continue to next round',
-      { x: width / 2 - 180, y: height - 40 },
+      'Press △ to toggle ready',
+      { x: width / 2 - 120, y: height - 40 },
       '#888',
       '18px Arial, sans-serif'
     );

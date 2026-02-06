@@ -50,7 +50,9 @@ import { EndOfGameMenuSystem } from './game/systems/menuSystems/EndOfGameMenuSys
 import { InbetweenLevelsMenuRenderer } from './deviceOutput/render/gameState/ui/InbetweenLevelsMenuRenderer';
 import { EndOfGameMenuRenderer } from './deviceOutput/render/gameState/ui/EndOfGameMenuRenderer';
 import { PacejkaWheelForceComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/PacejkaWheelForceComputer';
-import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL } from '@/game/config/carPhysicsConstants';
+import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL, COLLISION_CONFIG } from '@/game/config/carPhysicsConstants';
+import { SimpleCarCollisionComputer } from './game/systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer';
+import { CarCollisionSystem } from './game/systems/CarSystems/carCollisionSystem/CarCollisionSystem';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -98,6 +100,7 @@ const carControlSystem = new CarControlSystem(
 // GAMESTATE UPDATE SYSTEMS: systems update gamestate in series and emit events
 const pacejkaModel = new PacejkaWheelForceComputer(PACEJKA_LONGITUDINAL, PACEJKA_LATERAL);
 const simpleModel = new SimpleLocalWheelForceComputer();
+const carCollisionComputer = new SimpleCarCollisionComputer(COLLISION_CONFIG);
 const systems = [
     new ControllerSystemInStartMenu(),
     new InbetweenLevelsMenuSystem(),
@@ -108,6 +111,7 @@ const systems = [
     new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
     new CarPhysicsSystem(new CarPhysicsComputer(pacejkaModel)),
+    new CarCollisionSystem(carCollisionComputer),
     new MovementSystem(),
     new PlatformProgressionSystem(),
     new OffPlatformDamageSystem(),
