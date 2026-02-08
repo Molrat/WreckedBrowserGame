@@ -4,5 +4,13 @@ import type { Identifiable } from '@/game/state/components/Identifiable';
 import type { Scorable } from '@/game/state/components/Scorable';
 import { Controllable } from '@/game/state/components/Controllable';
 import { WithCarState } from '@/game/state/components/car/WithCarState';
+import { Movable } from '../components/Movable';
 
-export type Player = Identifiable & WithCarState & Damageable & Physical & Controllable & Scorable;
+export type Player = 
+  Identifiable 
+  & Physical 
+  & Movable 
+  & Controllable 
+  & WithCarState 
+  & Damageable 
+  & Scorable;

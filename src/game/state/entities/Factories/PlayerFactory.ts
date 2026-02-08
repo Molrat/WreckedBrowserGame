@@ -12,6 +12,11 @@ export class PlayerFactory {
       position: { x: 400, y: 300 },
       orientation: 0,
       velocity: { x: 0, y: 0 },
+      // Movable physics
+      mass: 1000,                 // kg
+      momentOfInertia: 708,       // kg·m² (box approximation)
+      forces: [],
+      impulses: [],
       // Damageable
       health: 100,
       maxHealth: 100,
@@ -77,7 +82,6 @@ export class PlayerFactory {
         home: false,
       },
       // car properties
-      mass: 1000,                 // kg
       lengthToFrontAxle: 1.25,    // m from center
       lengthToRearAxle: 1.25,     // m from center
       trackHalfWidth: 0.75,       // m

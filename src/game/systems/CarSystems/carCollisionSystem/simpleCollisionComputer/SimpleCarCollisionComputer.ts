@@ -1,4 +1,4 @@
-import { Vector2, dotProduct, scale, add, perpendicular, length } from "@/math/Vector2";
+import { Vector2, dotProduct, scale, add, perpendicular, length, subtract, rotate } from "@/math/Vector2";
 import { ICarCollisionComputer } from "../ICarCollisionComputer";
 import { CollisionResult } from "../CollisionResult";
 import { ICollidableCar } from "@/game/queries/CollidableCar/ICollidableCar";
@@ -8,6 +8,7 @@ import { transformPolygonToWorld } from "@/math/collision/transformPolygon";
 
 export interface CollisionConfig {
   restitution: number;      // 0 = inelastic, 1 = elastic
+  friction: number;          // tangential friction at contact (0-1)
   damagePerMps: number;     // damage per m/s relative velocity
 };
 
@@ -20,55 +21,47 @@ export class SimpleCarCollisionComputer implements ICarCollisionComputer {
     return detectPolygonCollision(polygonA, polygonB);
   }
 
-  resolveCollision(carA: ICollidableCar, carB: ICollidableCar, m: CollisionManifold): CollisionResult {
-    const rA = { x: m.contactPoint.x - carA.position.x, y: m.contactPoint.y - carA.position.y };
-    const rB = { x: m.contactPoint.x - carB.position.x, y: m.contactPoint.y - carB.position.y };
+  resolveCollision(carA: ICollidableCar, carB: ICollidableCar, m: CollisionManifold): CollisionResult | null {
+    const rA = subtract(m.contactPoint, carA.position);
+    const rB = subtract(m.contactPoint, carB.position);
 
     const vA = add(carA.velocity, scale(perpendicular(rA), carA.angularVelocity));
     const vB = add(carB.velocity, scale(perpendicular(rB), carB.angularVelocity));
-    const relVel = { x: vA.x - vB.x, y: vA.y - vB.y };
+    const relVel = subtract(vA, vB);
     const velAlongNormal = dotProduct(relVel, m.normal);
 
-    if (velAlongNormal > 0) {
-      return this.noCollisionResult(carA, carB);
-    }
+    if (velAlongNormal > 0) return null;
 
-    const IA = this.momentOfInertia(carA);
-    const IB = this.momentOfInertia(carB);
+    const IA = carA.momentOfInertia;
+    const IB = carB.momentOfInertia;
+
+    // Normal impulse
     const rAxN = rA.x * m.normal.y - rA.y * m.normal.x;
     const rBxN = rB.x * m.normal.y - rB.y * m.normal.x;
+    const invMassN = 1 / carA.mass + 1 / carB.mass + (rAxN * rAxN) / IA + (rBxN * rBxN) / IB;
+    const jN = -(1 + this.config.restitution) * velAlongNormal / invMassN;
 
-    const invMassSum = 1 / carA.mass + 1 / carB.mass + (rAxN * rAxN) / IA + (rBxN * rBxN) / IB;
-    const j = -(1 + this.config.restitution) * velAlongNormal / invMassSum;
-    const impulse = scale(m.normal, j);
+    // Tangential (friction) impulse
+    const tangent: Vector2 = { x: -m.normal.y, y: m.normal.x };
+    const velAlongTangent = dotProduct(relVel, tangent);
+    const rAxT = rA.x * tangent.y - rA.y * tangent.x;
+    const rBxT = rB.x * tangent.y - rB.y * tangent.x;
+    const invMassT = 1 / carA.mass + 1 / carB.mass + (rAxT * rAxT) / IA + (rBxT * rBxT) / IB;
+    let jT = -velAlongTangent / invMassT;
+    const maxFriction = this.config.friction * Math.abs(jN);
+    jT = Math.max(-maxFriction, Math.min(maxFriction, jT));
 
-    const relSpeed = length(relVel);
-    const damage = relSpeed * this.config.damagePerMps;
+    const totalImpulse = add(scale(m.normal, jN), scale(tangent, jT));
+    const localA = rotate(rA, -carA.orientation);
+    const localB = rotate(rB, -carB.orientation);
 
     return {
-      carAVelocity: add(carA.velocity, scale(impulse, 1 / carA.mass)),
-      carBVelocity: add(carB.velocity, scale(impulse, -1 / carB.mass)),
-      carAAngularVelocity: carA.angularVelocity + (rA.x * impulse.y - rA.y * impulse.x) / IA,
-      carBAngularVelocity: carB.angularVelocity - (rB.x * impulse.y - rB.y * impulse.x) / IB,
-      carADamage: damage,
-      carBDamage: damage,
-    };
-  }
-
-  private momentOfInertia(car: ICollidableCar): number {
-    const l = car.lengthToFrontAxle + car.lengthToRearAxle;
-    const w = car.trackHalfWidth * 2;
-    return (car.mass * (l * l + w * w)) / 12;
-  }
-
-  private noCollisionResult(carA: ICollidableCar, carB: ICollidableCar): CollisionResult {
-    return {
-      carAVelocity: carA.velocity,
-      carBVelocity: carB.velocity,
-      carAAngularVelocity: carA.angularVelocity,
-      carBAngularVelocity: carB.angularVelocity,
-      carADamage: 0,
-      carBDamage: 0,
+      impulseOnA: totalImpulse,
+      impulseOnB: scale(totalImpulse, -1),
+      contactPointLocalA: localA,
+      contactPointLocalB: localB,
+      carADamage: length(relVel) * this.config.damagePerMps,
+      carBDamage: length(relVel) * this.config.damagePerMps,
     };
   }
 }

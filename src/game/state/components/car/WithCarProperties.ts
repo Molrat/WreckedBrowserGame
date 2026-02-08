@@ -1,6 +1,4 @@
 export type WithCarProperties = {
-  mass: number;
-
   lengthToFrontAxle: number;
   lengthToRearAxle: number;
   trackHalfWidth: number; // m

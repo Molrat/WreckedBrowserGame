@@ -22,21 +22,26 @@ export class CarCollisionSystem implements ISystem {
     if (!manifold) return;
 
     const result = this.collisionComputer.resolveCollision(carA, carB, manifold);
-    carA.velocity = result.carAVelocity;
-    carB.velocity = result.carBVelocity;
-    carA.angularVelocity = result.carAAngularVelocity;
-    carB.angularVelocity = result.carBAngularVelocity;
-    carA.health = Math.max(0, carA.health - result.carADamage);
-    carB.health = Math.max(0, carB.health - result.carBDamage);
+    if (result) {
+      carA.impulses.push({ impulse: result.impulseOnA, localContactPoint: result.contactPointLocalA });
+      carB.impulses.push({ impulse: result.impulseOnB, localContactPoint: result.contactPointLocalB });
+      carA.health = Math.max(0, carA.health - result.carADamage);
+      carB.health = Math.max(0, carB.health - result.carBDamage);
+    }
 
     this.separateCars(carA, carB, manifold.normal, manifold.penetration);
   }
 
-  private separateCars(carA: ICollidableCar, carB: ICollidableCar, normal: { x: number; y: number }, penetration: number): void {
+  private separateCars(
+    carA: ICollidableCar, carB: ICollidableCar,
+    normal: { x: number; y: number }, penetration: number
+  ): void {
     const totalMass = carA.mass + carB.mass;
     const moveA = penetration * (carB.mass / totalMass);
     const moveB = penetration * (carA.mass / totalMass);
-    carA.position = { x: carA.position.x - normal.x * moveA, y: carA.position.y - normal.y * moveA };
-    carB.position = { x: carB.position.x + normal.x * moveB, y: carB.position.y + normal.y * moveB };
+    carA.position.x -= normal.x * moveA;
+    carA.position.y -= normal.y * moveA;
+    carB.position.x += normal.x * moveB;
+    carB.position.y += normal.y * moveB;
   }
 }

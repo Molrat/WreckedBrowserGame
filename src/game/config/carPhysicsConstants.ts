@@ -12,6 +12,7 @@ export const CAR_PHYSICS = {
 
 export const COLLISION_CONFIG: CollisionConfig = {
   restitution: 0.3,           // 0 = inelastic, 1 = elastic (0.3 = some energy loss)
+  friction: 0.6,              // tangential friction at contact point (produces spin)
   damagePerMps: 0.1,          // damage per m/s relative velocity
 };
 
