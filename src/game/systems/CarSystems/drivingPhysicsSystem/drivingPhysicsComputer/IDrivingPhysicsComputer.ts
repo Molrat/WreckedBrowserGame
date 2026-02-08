@@ -1,5 +1,5 @@
 import { ICarState } from "@/game/queries/WithCarPhysics/ICarState";
 
-export interface ICarPhysicsComputer{
+export interface IDrivingPhysicsComputer{
   compute : (car: ICarState, deltaT: number) => Partial<ICarState>;
 }

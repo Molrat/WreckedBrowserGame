@@ -1,11 +1,11 @@
 import { EventBus } from "@/game/events/EventBus";
 import { isWithCarPhysics } from "@/game/queries/WithCarPhysics/isWithCarPhysics";
-import { ICarPhysicsComputer } from "./carPhysicsComputer/ICarPhysicsComputer";
+import { IDrivingPhysicsComputer } from "./drivingPhysicsComputer/IDrivingPhysicsComputer";
 import { ISystem } from "@/game/systems/ISystem";
 import type { GameState } from "@/game/state/GameState";
 
-export class CarPhysicsSystem implements ISystem{
-  constructor(private physics: ICarPhysicsComputer){}
+export class DrivingPhysicsSystem implements ISystem{
+  constructor(private physics: IDrivingPhysicsComputer){}
 
   update(state: GameState, eventBus: EventBus, dt: number)
   {

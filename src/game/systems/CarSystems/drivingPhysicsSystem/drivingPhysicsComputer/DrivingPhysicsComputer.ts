@@ -1,6 +1,6 @@
 import { ICarState } from "@/game/queries/WithCarPhysics/ICarState";
 import { Vector2, add, scale, rotate } from "@/math/Vector2";
-import { ICarPhysicsComputer } from "./ICarPhysicsComputer";
+import { IDrivingPhysicsComputer } from "./IDrivingPhysicsComputer";
 import { perpendicular, length } from "@/math/Vector2";
 import { ILocalWheelForceComputer } from "./wheelForce/ILocalWheelForceComputer";
 import { updateWheelOmega } from "./wheelForce/updateWheelOmega";
@@ -8,7 +8,7 @@ import { wheelForceToWorld } from "./wheelForce/wheelForceToWorld";
 import { computeAirDrag } from "./airDrag/computeAirDrag";
 import type { AppliedForce } from "@/game/state/components/physics/AppliedForce";
 
-export class CarPhysicsComputer implements ICarPhysicsComputer {
+export class DrivingPhysicsComputer implements IDrivingPhysicsComputer {
   constructor(private readonly wheelForceComputer: ILocalWheelForceComputer) {}
 
   compute(car: ICarState, dt: number): Partial<ICarState> {

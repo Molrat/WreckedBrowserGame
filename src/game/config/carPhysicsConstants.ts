@@ -1,4 +1,4 @@
-import { PacejkaCoefficients } from "../systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/PacejkaCoefficients";
+import { PacejkaCoefficients } from "../systems/CarSystems/drivingPhysicsSystem/drivingPhysicsComputer/wheelForce/PacejkaCoefficients";
 import { CollisionConfig } from "../systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer";
 
 export const CAR_PHYSICS = {

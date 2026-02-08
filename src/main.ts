@@ -39,9 +39,9 @@ import { SteeringControl } from '@/game/systems/CarSystems/carControlSystem/driv
 import { ThrottleControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/throttleControl/ThrottleControl';
 import { HandbrakeControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/handbrakeControl/HandBrakeControl';
 import { BrakeControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/brakeControl/BrakeControl';
-import { CarPhysicsSystem } from './game/systems/CarSystems/carPhysicsSystem/CarPhysicsSystem';
-import { CarPhysicsComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/CarPhysicsComputer';
-import { SimpleLocalWheelForceComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/SimpleLocalWheelForceComputer';
+import { DrivingPhysicsSystem } from './game/systems/CarSystems/drivingPhysicsSystem/DrivingPhysicsSystem';
+import { DrivingPhysicsComputer } from './game/systems/CarSystems/drivingPhysicsSystem/drivingPhysicsComputer/DrivingPhysicsComputer';
+import { SimpleLocalWheelForceComputer } from './game/systems/CarSystems/drivingPhysicsSystem/drivingPhysicsComputer/wheelForce/SimpleLocalWheelForceComputer';
 import { PlatformProgressionSystem } from './game/systems/platformSystems/PlatformProgressionSystem';
 import { OffPlatformDamageSystem } from './game/systems/platformSystems/OffPlatformDamageSystem';
 import { PlayerDeathSystem } from './game/systems/roundSystems/PlayerDeathSystem';
@@ -50,7 +50,7 @@ import { InbetweenLevelsMenuSystem } from './game/systems/menuSystems/InbetweenL
 import { EndOfGameMenuSystem } from './game/systems/menuSystems/EndOfGameMenuSystem';
 import { InbetweenLevelsMenuRenderer } from './deviceOutput/render/gameState/ui/InbetweenLevelsMenuRenderer';
 import { EndOfGameMenuRenderer } from './deviceOutput/render/gameState/ui/EndOfGameMenuRenderer';
-import { PacejkaWheelForceComputer } from './game/systems/CarSystems/carPhysicsSystem/carPhysicsComputer/wheelForce/PacejkaWheelForceComputer';
+import { PacejkaWheelForceComputer } from './game/systems/CarSystems/drivingPhysicsSystem/drivingPhysicsComputer/wheelForce/PacejkaWheelForceComputer';
 import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL, COLLISION_CONFIG } from '@/game/config/carPhysicsConstants';
 import { SimpleCarCollisionComputer } from './game/systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer';
 import { CarCollisionSystem } from './game/systems/CarSystems/carCollisionSystem/CarCollisionSystem';
@@ -111,7 +111,7 @@ const systems = [
     new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
     carControlSystem,
-    new CarPhysicsSystem(new CarPhysicsComputer(pacejkaModel)),
+    new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
     new MovementSystem(),
     new PlatformProgressionSystem(),
