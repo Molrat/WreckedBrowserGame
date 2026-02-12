@@ -3,8 +3,8 @@ import { GameState } from "@/game/state/GameState";
 import { EventBus } from "@/game/events/EventBus";
 import { isPlayer } from "@/game/queries/Player/isPlayer";
 import { IPlayer } from "@/game/queries/Player/IPlayer";
-import { isArmedWeapon } from "@/game/queries/ArmedWeapon/isArmedWeapon";
-import { IArmedWeapon } from "@/game/queries/ArmedWeapon/IArmedWeapon";
+import { isWeapon } from "@/game/queries/Weapon/isWeapon";
+import { IWeapon } from "@/game/queries/Weapon/IWeapon";
 import { Identifiable } from "@/game/state/components/Identifiable";
 import { IProjectileFactory } from "./IProjectileFactory";
 import { rotate, add } from "@/math/Vector2";
@@ -15,7 +15,7 @@ export class AmmoBasedFireSystem implements ISystem {
   update(state: GameState, eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
     const players = state.entities.filter(isPlayer);
-    const weapons = state.entities.filter(isArmedWeapon);
+    const weapons = state.entities.filter(isWeapon);
 
     for (const player of players) {
       if (!this.justPressedFire(player)) continue;
@@ -30,9 +30,9 @@ export class AmmoBasedFireSystem implements ISystem {
   }
 
   private findMountedWeapon(
-    weapons: (Identifiable & IArmedWeapon)[],
+    weapons: (Identifiable & IWeapon)[],
     playerId: string
-  ): (Identifiable & IArmedWeapon) | undefined {
+  ): (Identifiable & IWeapon) | undefined {
     return weapons.find(
       w => w.mountedOnPlayerId === playerId && w.currentAmmo > 0
     );
@@ -42,7 +42,7 @@ export class AmmoBasedFireSystem implements ISystem {
     state: GameState,
     eventBus: EventBus,
     player: IPlayer,
-    weapon: Identifiable & IArmedWeapon
+    weapon: Identifiable & IWeapon
   ): void {
     const origin = add(
       player.position,

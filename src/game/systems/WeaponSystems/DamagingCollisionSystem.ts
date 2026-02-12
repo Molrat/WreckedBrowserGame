@@ -26,22 +26,22 @@ export class DamagingCollisionSystem implements ISystem {
   }
 
   private checkCollisions(
-    dmg: Identifiable & IDamagingPhysical,
+    damaging: Identifiable & IDamagingPhysical,
     targets: (Identifiable & IDamageableMovable)[],
     toRemove: string[]
   ): void {
-    const dmgPoly = transformPolygonToWorld(dmg.shape, dmg.position, dmg.orientation);
+    const dmgPoly = transformPolygonToWorld(damaging.shape, damaging.position, damaging.orientation);
     for (const target of targets) {
-      if (dmg.ownerPlayerId === target.id) continue;
-      if (dmg.id === target.id) continue;
-      if (toRemove.includes(dmg.id)) return;
+      if (damaging.ownerPlayerId === target.id) continue;
+      if (damaging.id === target.id) continue;
+      if (toRemove.includes(damaging.id)) return;
       const targetPoly = transformPolygonToWorld(
         target.shape, target.position, target.orientation
       );
       const manifold = detectPolygonCollision(dmgPoly, targetPoly);
       if (!manifold) continue;
-      this.applyDamageAndImpulse(dmg, target, manifold);
-      if (dmg.destroyOnHit) toRemove.push(dmg.id);
+      this.applyDamageAndImpulse(damaging, target, manifold);
+      if (damaging.destroyOnHit) toRemove.push(damaging.id);
     }
   }
 

@@ -25,20 +25,40 @@ export class WeaponSpawnSystem implements ISystem {
     const platforms = state.entities.filter(isPlatform);
     if (platforms.length === 0) return;
 
-    this.spawnOnRandomPlatform(state, platforms);
+      this.spawnOnPatternedPlatforms(state, platforms);
     this.timeSinceLastSpawn = 0;
   }
 
-  private spawnOnRandomPlatform(
-    state: GameState,
-    platforms: { position: { x: number; y: number } }[]
-  ): void {
-    const platform = platforms[Math.floor(Math.random() * platforms.length)];
-    const offset = { x: (Math.random() - 0.5) * 10, y: (Math.random() - 0.5) * 10 };
-    const pos = {
-      x: platform.position.x + offset.x,
-      y: platform.position.y + offset.y,
-    };
-    state.entities.push(createLaserCannon(pos));
-  }
+    private spawnOnPatternedPlatforms(
+      state: GameState,
+      platforms: { position: { x: number; y: number } }[]
+    ): void {
+      if (platforms.length < 4) return;
+      const spacing = 12;
+      const totalLength = spacing * 3; // 4 weapons, 3 gaps
+      const offset = -totalLength / 2 + spacing / 2; // Center between 2nd and 3rd
+      for (let i = 3; i < platforms.length; i += 4) {
+        const platform = platforms[i];
+        const prev = platforms[i - 1];
+        const dx = Math.abs(platform.position.x - prev.position.x);
+        const dy = Math.abs(platform.position.y - prev.position.y);
+        // Alignment: true = horizontal, false = vertical
+        const horizontal = dy > dx;
+        for (let j = 0; j < 4; j++) {
+          let pos;
+          if (horizontal) {
+            pos = {
+              x: platform.position.x + offset + j * spacing,
+              y: platform.position.y
+            };
+          } else {
+            pos = {
+              x: platform.position.x,
+              y: platform.position.y + offset + j * spacing
+            };
+          }
+          state.entities.push(createLaserCannon(pos));
+        }
+      }
+    }
 }

@@ -1,9 +1,9 @@
 import { Identifiable } from "@/game/state/components/Identifiable";
-import { IArmedWeapon } from "./IArmedWeapon";
+import { IWeapon } from "./IWeapon";
 
-export function isArmedWeapon(
+export function isWeapon(
   e: Identifiable
-): e is Identifiable & IArmedWeapon {
+): e is Identifiable & IWeapon {
   return (
     'mountedOnPlayerId' in e &&
     'relativePosition' in e &&
