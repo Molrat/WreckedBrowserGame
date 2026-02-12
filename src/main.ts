@@ -59,7 +59,7 @@ import { WeaponPickupSystem } from './game/systems/WeaponSystems/WeaponPickupSys
 import { WeaponMountSyncSystem } from './game/systems/WeaponSystems/WeaponMountSyncSystem';
 import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireSystem';
 import { ProjectileFactory } from './game/systems/WeaponSystems/ProjectileFactory';
-import { ProjectileLifetimeSystem } from './game/systems/WeaponSystems/ProjectileLifetimeSystem';
+import { LifeSpanSystem } from './game/systems/LifeSpanSystem';
 import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
 
@@ -126,7 +126,7 @@ const systems = [
     new WeaponPickupSystem(),
     new WeaponMountSyncSystem(),
     new AmmoBasedFireSystem(new ProjectileFactory()),
-    new ProjectileLifetimeSystem(),
+    new LifeSpanSystem(),
     new DamagingCollisionSystem(),
     new PlatformProgressionSystem(),
     new OffPlatformDamageSystem(),

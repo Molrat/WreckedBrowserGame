@@ -1,13 +1,13 @@
 import { ISystem } from "@/game/systems/ISystem";
 import { GameState } from "@/game/state/GameState";
 import { EventBus } from "@/game/events/EventBus";
-import { isProjectileEntity } from "@/game/queries/ProjectileEntity/isProjectileEntity";
-import { IProjectileEntity } from "@/game/queries/ProjectileEntity/IProjectileEntity";
+import { isWithLifeSpan } from "@/game/queries/WithLifeSpan/isWithLifeSpan";
+import { ILifeSpanParams } from "@/game/queries/WithLifeSpan/ILifeSpanParams";
 
-export class ProjectileLifetimeSystem implements ISystem {
+export class LifeSpanSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, dt: number): void {
     if (state.ui.openMenu !== null) return;
-    const projectiles = state.entities.filter(isProjectileEntity);
+    const projectiles = state.entities.filter(isWithLifeSpan);
     const toRemove: string[] = [];
 
     for (const proj of projectiles) {
@@ -24,7 +24,7 @@ export class ProjectileLifetimeSystem implements ISystem {
     }
   }
 
-  private updateAlpha(proj: IProjectileEntity): void {
+  private updateAlpha(proj: ILifeSpanParams): void {
     const alpha = Math.max(0, proj.lifetime / proj.maxLifetime);
     if (proj.fillColor && proj.fillColor.startsWith('rgba')) {
       proj.fillColor = proj.fillColor.replace(/[\d.]+\)$/, `${alpha})`);
