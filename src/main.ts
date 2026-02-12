@@ -54,6 +54,14 @@ import { PacejkaWheelForceComputer } from './game/systems/CarSystems/drivingPhys
 import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL, COLLISION_CONFIG } from '@/game/config/carPhysicsConstants';
 import { SimpleCarCollisionComputer } from './game/systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer';
 import { CarCollisionSystem } from './game/systems/CarSystems/carCollisionSystem/CarCollisionSystem';
+import { WeaponSpawnSystem } from './game/systems/WeaponSystems/WeaponSpawnSystem';
+import { WeaponPickupSystem } from './game/systems/WeaponSystems/WeaponPickupSystem';
+import { WeaponMountSyncSystem } from './game/systems/WeaponSystems/WeaponMountSyncSystem';
+import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireSystem';
+import { ProjectileFactory } from './game/systems/WeaponSystems/ProjectileFactory';
+import { ProjectileLifetimeSystem } from './game/systems/WeaponSystems/ProjectileLifetimeSystem';
+import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
+import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -114,6 +122,12 @@ const systems = [
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
     new MovementSystem(),
+    new WeaponSpawnSystem(),
+    new WeaponPickupSystem(),
+    new WeaponMountSyncSystem(),
+    new AmmoBasedFireSystem(new ProjectileFactory()),
+    new ProjectileLifetimeSystem(),
+    new DamagingCollisionSystem(),
     new PlatformProgressionSystem(),
     new OffPlatformDamageSystem(),
     new PlayerDeathSystem(),
@@ -145,6 +159,7 @@ const effectRenderers = [
     new PlayerJoinedEffectRenderer(screenRenderAPI),
     new PlayerReadyEffectRenderer(screenRenderAPI),
     new PlayerDeathEffectRenderer(cameraRenderAPI),
+    new WeaponFireEffectRenderer(cameraRenderAPI),
 ];
 
 // Sound players only take events from the bus as input
