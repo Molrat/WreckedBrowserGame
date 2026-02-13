@@ -10,6 +10,7 @@ export function isWeapon(
     'currentAmmo' in e &&
     'projectileType' in e &&
     'shape' in e &&
-    'position' in e
+    'position' in e &&
+    'spawnPlatformIndex' in e
   );
 }

@@ -1,7 +1,4 @@
-import { Vector2 } from "@/math/Vector2";
-
-export const WEAPON_SPAWN_INTERVAL = 1;
-export const MAX_WEAPONS_ON_GROUND = 15;
+import { scale, Vector2 } from "@/math/Vector2";
 
 export const LASER_CANNON_SHAPE: Vector2[] = [
   { x: -0.5, y: -0.3 },
@@ -9,7 +6,7 @@ export const LASER_CANNON_SHAPE: Vector2[] = [
   { x: 0.7, y: 0 },
   { x: 0.5, y: 0.2 },
   { x: -0.5, y: 0.3 },
-];
+].map(v => scale(v, 2)); // Scale up for better visibility
 
 export const LASER_CANNON_MOUNT_OFFSET: Vector2 = { x: 0, y: 0 };
 export const LASER_CANNON_FILL = '#556677';

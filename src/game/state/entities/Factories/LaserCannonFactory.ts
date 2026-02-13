@@ -9,7 +9,10 @@ import {
   LASER_CANNON_DEPTH,
 } from "@/game/config/weaponConstants";
 
-export function createLaserCannon(position: Vector2): WeaponWithAmmo {
+export function createLaserCannon(
+  position: Vector2,
+  spawnPlatformIndex: number
+): WeaponWithAmmo {
   return {
     id: nextId(),
     position: { x: position.x, y: position.y },
@@ -25,5 +28,12 @@ export function createLaserCannon(position: Vector2): WeaponWithAmmo {
     currentAmmo: 1,
     maxAmmo: 1,
     projectileType: 'laserBeam',
+    spawnPlatformIndex,
+    velocity: { x: 0, y: 0 },
+    angularVelocity: 1,
+    mass: 10,
+    momentOfInertia: 10,
+    forces: [],
+    impulses: [],
   };
 }

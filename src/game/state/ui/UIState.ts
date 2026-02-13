@@ -10,5 +10,6 @@ export type UIState = {
   currentRound: number;     // 1-5
   maxRounds: number;        // 5
   highestPlatformReached: number;  // Track platform progression
+  highestPlatformWithSpawnedWeapon: number; // Track highest platform that has had a weapon spawned on it
   nextPlatformIndex: number;       // Next platform to create
 };

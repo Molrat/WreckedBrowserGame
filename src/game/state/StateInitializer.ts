@@ -14,6 +14,7 @@ export class StateInitializer {
         currentRound: 1,
         maxRounds: 5,
         highestPlatformReached: 0,
+        highestPlatformWithSpawnedWeapon: 0,
         nextPlatformIndex: 1,
       },
       time: { total: 0 },

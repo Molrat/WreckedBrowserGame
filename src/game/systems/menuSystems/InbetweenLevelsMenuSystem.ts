@@ -9,7 +9,6 @@ import { isWeapon } from '@/game/queries/Weapon/isWeapon';
 export class InbetweenLevelsMenuSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== 'inbetweenLevels') return;
-
     const players = state.entities.filter(isPlayer);
 
     // Toggle ready state when triangle is pressed
@@ -56,6 +55,8 @@ export class InbetweenLevelsMenuSystem implements ISystem {
     state.ui.openMenu = null;
     state.ui.currentRound++;
     state.ui.highestPlatformReached = 1;
+    state.ui.highestPlatformWithSpawnedWeapon = 0;
     state.ui.nextPlatformIndex = 21;
+    state.camera.position = { x: 0, y: 0 };
   }
 }

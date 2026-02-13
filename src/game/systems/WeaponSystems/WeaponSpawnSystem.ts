@@ -1,64 +1,46 @@
 import { ISystem } from "@/game/systems/ISystem";
 import { GameState } from "@/game/state/GameState";
 import { EventBus } from "@/game/events/EventBus";
-import { isMountablePhysical } from "@/game/queries/MountablePhysical/isMountablePhysical";
 import { isPlatform } from "@/game/queries/Platform/isPlatform";
-import { createLaserCannon } from "@/game/state/entities/Factories/LaserCannonFactory";
-import {
-  WEAPON_SPAWN_INTERVAL,
-  MAX_WEAPONS_ON_GROUND,
-} from "@/game/config/weaponConstants";
+import { IPlatform } from "@/game/queries/Platform/IPlatform";
+import { isWeapon } from "@/game/queries/Weapon/isWeapon";
+import { getWeaponRowDirection } from "./getWeaponRowDirection";
+import { spawnWeaponRow } from "./spawnWeaponRow";
 
 export class WeaponSpawnSystem implements ISystem {
-  private timeSinceLastSpawn = 0;
-
-  update(state: GameState, _eventBus: EventBus, dt: number): void {
+  
+  update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
-    
-    this.timeSinceLastSpawn += dt;
-    if (this.timeSinceLastSpawn < WEAPON_SPAWN_INTERVAL) return;
-
-    const weapons = state.entities.filter(isMountablePhysical);
-    const groundWeapons = weapons.filter(w => w.mountedOnPlayerId === null);
-    if (groundWeapons.length >= MAX_WEAPONS_ON_GROUND) return;
 
     const platforms = state.entities.filter(isPlatform);
-    if (platforms.length === 0) return;
-
-      this.spawnOnPatternedPlatforms(state, platforms);
-    this.timeSinceLastSpawn = 0;
+    this.spawnNewWeapons(state, platforms);
+    this.destroyOrphanedWeapons(state, platforms);
   }
 
-    private spawnOnPatternedPlatforms(
-      state: GameState,
-      platforms: { position: { x: number; y: number } }[]
-    ): void {
-      if (platforms.length < 4) return;
-      const spacing = 12;
-      const totalLength = spacing * 3; // 4 weapons, 3 gaps
-      const offset = -totalLength / 2 + spacing / 2; // Center between 2nd and 3rd
-      for (let i = 3; i < platforms.length; i += 4) {
-        const platform = platforms[i];
-        const prev = platforms[i - 1];
-        const dx = Math.abs(platform.position.x - prev.position.x);
-        const dy = Math.abs(platform.position.y - prev.position.y);
-        // Alignment: true = horizontal, false = vertical
-        const horizontal = dy > dx;
-        for (let j = 0; j < 4; j++) {
-          let pos;
-          if (horizontal) {
-            pos = {
-              x: platform.position.x + offset + j * spacing,
-              y: platform.position.y
-            };
-          } else {
-            pos = {
-              x: platform.position.x,
-              y: platform.position.y + offset + j * spacing
-            };
-          }
-          state.entities.push(createLaserCannon(pos));
-        }
-      }
+  private spawnNewWeapons(state: GameState, platforms: IPlatform[]): void {
+    const highestSpawnedIndex = state.ui.highestPlatformWithSpawnedWeapon || 0;
+    const candidates = platforms
+      .filter(p => p.platformIndex > highestSpawnedIndex && p.platformIndex % 4 === 0)
+      .sort((a, b) => a.platformIndex - b.platformIndex);
+
+    for (const trigger of candidates) {
+      const idx = trigger.platformIndex;
+      const prev = platforms.find(p => p.platformIndex === idx - 1);
+      const next = platforms.find(p => p.platformIndex === idx + 1);
+      if (!prev || !next) continue;
+
+      const dir = getWeaponRowDirection(prev.position, trigger.position, next.position);
+      spawnWeaponRow(state, trigger.position, dir, idx);
+      state.ui.highestPlatformWithSpawnedWeapon = idx;
     }
+  }
+
+  private destroyOrphanedWeapons(state: GameState, platforms: IPlatform[]): void {
+    const platformIndices = new Set(platforms.map(p => p.platformIndex));
+    state.entities = state.entities.filter(e => {
+      if (!isWeapon(e)) return true;
+      if (e.mountedOnPlayerId !== null) return true;
+      return platformIndices.has(e.spawnPlatformIndex);
+    });
+  }
 }
