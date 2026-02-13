@@ -1,9 +1,8 @@
 import type { Vector2 } from '@/math/Vector2';
-import { PlatformFactory } from '@/game/state/entities/Factories/PlatformFactory';
+import { PLATFORM_SIZE } from '@/game/config/constants';
 
-const PLATFORM_SIZE = PlatformFactory.getPlatformSize();
 const MIN_ADJACENCY = PLATFORM_SIZE / 2;
-const MAX_ATTEMPTS = 20;
+const MAX_ATTEMPTS = 100;
 
 type Direction = 'right' | 'left' | 'up' | 'down';
 

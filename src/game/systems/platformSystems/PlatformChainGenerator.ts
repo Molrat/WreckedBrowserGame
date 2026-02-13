@@ -1,8 +1,7 @@
 import type { Platform } from '@/game/state/entities/Platform';
 import { PlatformFactory } from '@/game/state/entities/Factories/PlatformFactory';
 import { computeNextPosition } from './PlatformPositioner';
-
-const PLATFORM_COUNT = 20;
+import { NR_OF_PLATFORMS } from '@/game/config/constants';
 
 export function generatePlatformChain(startIndex: number, count: number): Platform[] {
   const platforms: Platform[] = [];
@@ -29,5 +28,5 @@ export function generatePlatformChain(startIndex: number, count: number): Platfo
 }
 
 export function generateInitialPlatforms(): Platform[] {
-  return generatePlatformChain(1, PLATFORM_COUNT);
+  return generatePlatformChain(1, NR_OF_PLATFORMS);
 }

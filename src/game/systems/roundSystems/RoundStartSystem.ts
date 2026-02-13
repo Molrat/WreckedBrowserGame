@@ -31,8 +31,6 @@ export class RoundStartSystem implements ISystem {
       }
 
       state.entities.push(...newPlatforms);
-      state.ui.highestPlatformReached = 1;
-      state.ui.nextPlatformIndex = 21;
     }
   }
 }

@@ -24,8 +24,4 @@ export class PlatformFactory {
       depth: 0,  // platforms at bottom
     };
   }
-
-  static getPlatformSize(): number {
-    return PLATFORM_SIZE;
-  }
 }

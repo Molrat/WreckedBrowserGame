@@ -4,6 +4,8 @@ export const WORLD = {
   friction: 0.98,
 };
 export const PLATFORM_SIZE = 40; // meters
+export const NR_OF_PLATFORMS = 9;
+export const NR_OF_PLATFORMS_IN_FRONT_OF_PLAYER = 4;
 
 export const HANDBRAKE_INTENT = {
   deadZone: 0.01,          // 0..1

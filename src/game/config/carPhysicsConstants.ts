@@ -13,7 +13,7 @@ export const CAR_PHYSICS = {
   engineForce: 9000,           // N (AWD)
   brakeForce: 10000,           // N
   tireStiffness: 200000,       // 
-  tireMu: 1.5,                 // friction coefficient
+  tireMu: 3,                 // friction coefficient
   airDragCoefficient: 3.0,     // used with v² - gives ~200 km/h top speed
 };
 

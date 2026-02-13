@@ -54,9 +54,7 @@ export class InbetweenLevelsMenuSystem implements ISystem {
     state.entities.push(...newPlatforms);
     state.ui.openMenu = null;
     state.ui.currentRound++;
-    state.ui.highestPlatformReached = 1;
     state.ui.highestPlatformWithSpawnedWeapon = 0;
-    state.ui.nextPlatformIndex = 21;
     state.camera.position = { x: 0, y: 0 };
   }
 }

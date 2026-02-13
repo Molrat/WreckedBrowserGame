@@ -6,59 +6,58 @@ import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { PlatformFactory } from '@/game/state/entities/Factories/PlatformFactory';
 import { computeNextPosition } from './PlatformPositioner';
 import type { IPlatform } from '@/game/queries/Platform/IPlatform';
-
-const PLATFORM_SIZE = PlatformFactory.getPlatformSize();
-const PROGRESSION_THRESHOLD = 10;
+import { NR_OF_PLATFORMS_IN_FRONT_OF_PLAYER, PLATFORM_SIZE } from '@/game/config/constants';
 
 export class PlatformProgressionSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
-    
+
     const platforms = state.entities.filter(isPlatform);
     if (platforms.length === 0) return;
 
-    this.updatePlatformColors(platforms);
+    const highestReached = this.findHighestReached(state, platforms);
+    const platformsAhead = platforms.filter(p => p.platformIndex > highestReached).length;
 
-    const players = state.entities.filter(isPlayer);
-    let highestReached = state.ui.highestPlatformReached;
-
-    for (const player of players) {
-      if (player.health <= 0) continue;
-      for (const platform of platforms) {
-        if (this.isOnPlatform(player.position, platform.position)) {
-          if (platform.platformIndex > highestReached) {
-            highestReached = platform.platformIndex;
-          }
-        }
-      }
+    if (platformsAhead < NR_OF_PLATFORMS_IN_FRONT_OF_PLAYER) {
+      this.removeLowestPlatform(state, platforms);
+      this.addNextPlatform(state, platforms);
     }
 
-    if (highestReached > state.ui.highestPlatformReached) {
-      const oldHighest = state.ui.highestPlatformReached;
-      for (let i = oldHighest + 1; i <= highestReached; i++) {
-        if (i >= PROGRESSION_THRESHOLD) {
-          const platformToRemove = i - PROGRESSION_THRESHOLD + 1;
-          const idx = state.entities.findIndex(e => isPlatform(e) && e.platformIndex === platformToRemove);
-          if (idx !== -1) state.entities.splice(idx, 1);
-
-          const updatedPlatforms = state.entities.filter(isPlatform);
-          const frontPlatform = this.getHighestIndexPlatform(updatedPlatforms);
-          if (frontPlatform) {
-            const positions = updatedPlatforms.map(p => p.position);
-            const newPos = computeNextPosition(frontPlatform.position, positions);
-            const newPlatform = PlatformFactory.create(state.ui.nextPlatformIndex, newPos);
-            frontPlatform.nextPlatformId = newPlatform.id;
-            state.entities.push(newPlatform);
-            state.ui.nextPlatformIndex++;
-          }
-        }
-      }
-      state.ui.highestPlatformReached = highestReached;
-    }
+    this.updatePlatformColors(state.entities.filter(isPlatform));
   }
 
-  private getHighestIndexPlatform(platforms: IPlatform[]): IPlatform | undefined {
-    return platforms.reduce((max, p) => (p.platformIndex > (max?.platformIndex ?? -1) ? p : max), platforms[0]);
+  private findHighestReached(state: GameState, platforms: IPlatform[]): number {
+    let highest = 0;
+    for (const player of state.entities.filter(isPlayer)) {
+      if (player.health <= 0) continue;
+      for (const p of platforms) {
+        if (p.platformIndex > highest && this.isOnPlatform(player.position, p.position)) {
+          highest = p.platformIndex;
+        }
+      }
+    }
+    return highest;
+  }
+
+  private removeLowestPlatform(state: GameState, platforms: IPlatform[]): void {
+    let lowest = platforms[0];
+    for (const p of platforms) {
+      if (p.platformIndex < lowest.platformIndex) lowest = p;
+    }
+    const idx = state.entities.findIndex(e => 'id' in e && e.id === lowest.id);
+    if (idx !== -1) state.entities.splice(idx, 1);
+  }
+
+  private addNextPlatform(state: GameState, platforms: IPlatform[]): void {
+    let front = platforms[0];
+    for (const p of platforms) {
+      if (p.platformIndex > front.platformIndex) front = p;
+    }
+    const positions = platforms.map(p => p.position);
+    const newPos = computeNextPosition(front.position, positions);
+    const newPlatform = PlatformFactory.create(front.platformIndex + 1, newPos);
+    front.nextPlatformId = newPlatform.id;
+    state.entities.push(newPlatform);
   }
 
   private updatePlatformColors(platforms: IPlatform[]): void {
@@ -82,7 +81,10 @@ export class PlatformProgressionSystem implements ISystem {
     }
   }
 
-  private isOnPlatform(playerPos: { x: number; y: number }, platformPos: { x: number; y: number }): boolean {
+  private isOnPlatform(
+    playerPos: { x: number; y: number },
+    platformPos: { x: number; y: number }
+  ): boolean {
     const halfSize = PLATFORM_SIZE / 2;
     return (
       playerPos.x >= platformPos.x - halfSize &&
