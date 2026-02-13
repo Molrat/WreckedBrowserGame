@@ -3,7 +3,7 @@ import { GameState } from "@/game/state/GameState";
 import { EventBus } from "@/game/events/EventBus";
 import { isMountablePhysical } from "@/game/queries/MountablePhysical/isMountablePhysical";
 import { isPlatform } from "@/game/queries/Platform/isPlatform";
-import { createLaserCannon } from "@/game/state/entities/weapons/laserCannon/LaserCannonFactory";
+import { createLaserCannon } from "@/game/state/entities/Factories/LaserCannonFactory";
 import {
   WEAPON_SPAWN_INTERVAL,
   MAX_WEAPONS_ON_GROUND,

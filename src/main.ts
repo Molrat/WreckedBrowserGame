@@ -5,8 +5,6 @@ import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/Player
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
 import { PlayerDeathEffectRenderer } from '@/deviceOutput/render/effects/deathExplosion/PlayerDeathEffectRenderer';
 import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
-import { RandomTrackRenderer } from '@/deviceOutput/render/gameState/world/RandomTrackRenderer';
-import { WheelForcesRenderer } from '@/deviceOutput/render/gameState/world/WheelForcesRenderer';
 import { TireRenderer } from '@/deviceOutput/render/gameState/world/TireRenderer';
 import { DepthSortedRenderer } from '@/deviceOutput/render/gameState/world/DepthSortedRenderer';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
@@ -117,7 +115,7 @@ const systems = [
     new AssignButtonsToPlayerSystem(),
     new DisconnectCheckSystem(),
     new RoundStartSystem(),
-    new CameraSystem(CAMERA_CONSTANTS.cameraMarginMeters),
+    new CameraSystem(CAMERA_CONSTANTS),
     carControlSystem,
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
@@ -139,7 +137,6 @@ const systems = [
 // DepthSortedRenderer handles both polygons and text, sorted by depth
 const gameStateRenderers = [
     new ControllerTestBackgroundRenderer(),
-    new RandomTrackRenderer(),
     new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2)
     new TireRenderer(),         // tires on top (depth 3)
     //new WheelForcesRenderer(),

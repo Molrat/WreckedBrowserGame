@@ -17,6 +17,8 @@ export class PlatformProgressionSystem implements ISystem {
     const platforms = state.entities.filter(isPlatform);
     if (platforms.length === 0) return;
 
+    this.updatePlatformColors(platforms);
+
     const players = state.entities.filter(isPlayer);
     let highestReached = state.ui.highestPlatformReached;
 
@@ -57,6 +59,27 @@ export class PlatformProgressionSystem implements ISystem {
 
   private getHighestIndexPlatform(platforms: IPlatform[]): IPlatform | undefined {
     return platforms.reduce((max, p) => (p.platformIndex > (max?.platformIndex ?? -1) ? p : max), platforms[0]);
+  }
+
+  private updatePlatformColors(platforms: IPlatform[]): void {
+    if (platforms.length === 0) return;
+    const indices = platforms.map(p => p.platformIndex);
+    const minIndex = Math.min(...indices);
+    const maxIndex = Math.max(...indices);
+    const range = maxIndex - minIndex;
+
+    for (const platform of platforms) {
+      const age = range > 0 ? (maxIndex - platform.platformIndex) / range : 0;
+      const r = Math.round(220 + (74 - 220) * (1 - age));
+      const g = Math.round(80 + (85 - 80) * (1 - age));
+      const b = Math.round(80 + (104 - 80) * (1 - age));
+      platform.fillColor = `rgb(${r}, ${g}, ${b})`;
+
+      const br = Math.round(180 + (45 - 180) * (1 - age));
+      const bg = Math.round(50 + (55 - 50) * (1 - age));
+      const bb = Math.round(50 + (72 - 50) * (1 - age));
+      platform.borderColor = `rgb(${br}, ${bg}, ${bb})`;
+    }
   }
 
   private isOnPlatform(playerPos: { x: number; y: number }, platformPos: { x: number; y: number }): boolean {

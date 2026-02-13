@@ -2,35 +2,98 @@ import { EventBus } from '@/game/events/EventBus';
 import { ISystem } from '@/game/systems/ISystem';
 import type { GameState } from '@/game/state/GameState';
 import { isControllablePositionable } from '@/game/queries/ControllablePositionable/isControllablePositionable';
+import type { IControllablePositionable } from '@/game/queries/ControllablePositionable/IControllablePositionable';
+import type { ICameraConfig } from '@/deviceOutput/render/ICameraConfig';
+import type { Vector2 } from '@/math/Vector2';
+import { scale, normalize, direction, length, rotate, add, subtract } from '@/math/Vector2';
+import { computeBoundingBox } from '@/math/boundingBox';
+import { smoothDamp } from '@/math/smoothDamp';
+import { nextId } from '@/utils/id';
+import type { Identifiable } from '@/game/state/components/Identifiable';
+import type { Physical } from '@/game/state/components/Physical';
+
+type CameraDebugEntity = Identifiable & Physical & { isCameraDebug: true };
 
 export class CameraSystem implements ISystem {
-  constructor(private marginMeters: number) {}
-  update(state: GameState, _eventBus: EventBus, _dt: number): void {
+  constructor(private readonly config: ICameraConfig) {}
+
+  update(state: GameState, _eventBus: EventBus, dt: number): void {
     const targets = state.entities.filter(isControllablePositionable);
     if (targets.length === 0) return;
 
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (const t of targets) {
-      const { x, y } = t.position;
-      if (x < minX) minX = x; if (x > maxX) maxX = x;
-      if (y < minY) minY = y; if (y > maxY) maxY = y;
+    const perTargetPoints = this.computeMarginPointsPerTarget(targets);
+    const allPoints = perTargetPoints.flat();
+    const box = computeBoundingBox(allPoints, state.aspectRatio);
+    const cam = state.camera;
+    const st = this.config.smoothTime;
+
+    const xResult = smoothDamp(cam.position.x, box.centerX, cam.velocity.x, st, dt);
+    const yResult = smoothDamp(cam.position.y, box.centerY, cam.velocity.y, st, dt);
+    const wResult = smoothDamp(cam.width, box.width, cam.widthVelocity, st, dt);
+    const hResult = smoothDamp(cam.height, box.height, cam.heightVelocity, st, dt);
+
+    cam.position.x = xResult.value;
+    cam.position.y = yResult.value;
+    cam.velocity.x = xResult.velocity;
+    cam.velocity.y = yResult.velocity;
+    cam.width = wResult.value;
+    cam.height = hResult.value;
+    cam.widthVelocity = wResult.velocity;
+    cam.heightVelocity = hResult.velocity;
+
+    this.updateDebugEntities(state, targets, perTargetPoints);
+  }
+
+  private computeMarginPointsPerTarget(targets: IControllablePositionable[]): Vector2[][] {
+    const m = this.config.marginMeters;
+    const rearFrac = this.config.rearMarginFraction;
+    const sideFrac = this.config.sideMarginFraction;
+
+    return targets.map(t => {
+      const speed = length(t.velocity);
+      const useVelocity = speed >= 2;
+      const dir = useVelocity ? normalize(t.velocity) : direction(t.orientation);
+      const side = rotate(dir, Math.PI / 2);
+      const a  = 10;
+      const b = 30;
+      const min = 0.6
+      const slope = (min / (b - a));
+      const y_zero = - a * slope;
+      const clampedSpeed = Math.max(a, Math.min(b, speed));
+      const speedFactor = min + slope * clampedSpeed + y_zero;
+      return [
+        add(t.position, scale(dir, m * speedFactor)),                  // front
+        add(t.position, scale(side, m * sideFrac * speedFactor)),       // left
+        add(t.position, scale(dir, -m * rearFrac * speedFactor)),       // rear
+        add(t.position, scale(side, -m * sideFrac * speedFactor)),      // right
+      ];
+    });
+  }
+
+  private updateDebugEntities(
+    state: GameState,
+    targets: IControllablePositionable[],
+    perTargetPoints: Vector2[][],
+  ): void {
+    state.entities = state.entities.filter(
+      e => !('isCameraDebug' in e && (e as CameraDebugEntity).isCameraDebug),
+    );
+    for (let i = 0; i < targets.length; i++) {
+      const pts = perTargetPoints[i];
+      const center = targets[i].position;
+      const shape = pts.map(p => subtract(p, center));
+      const entity: CameraDebugEntity = {
+        id: nextId(),
+        isCameraDebug: true,
+        position: { x: center.x, y: center.y },
+        orientation: 0,
+        shape,
+        fillColor: null,
+        borderColor: 'rgba(255, 255, 0, 0.6)',
+        borderWidth: 2,
+        depth: 10,
+      };
+      state.entities.push(entity);
     }
-    const m = this.marginMeters;
-    minX -= m; maxX += m; minY -= m; maxY += m;
-
-    let width = maxX - minX;
-    let height = maxY - minY;
-    const ar = state.aspectRatio || 1;
-    const boxAR = width / (height || 1);
-
-    if (boxAR < ar) {
-      width = height * ar;
-    } else {
-      height = width / ar;
-    }
-
-    const cx = (minX + maxX) / 2;
-    const cy = (minY + maxY) / 2;
-    state.camera = { position: { x: cx, y: cy }, width, height };
   }
 }

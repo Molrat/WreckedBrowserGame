@@ -22,12 +22,6 @@ export class PlatformFactory {
       borderColor: '#2d3748',
       borderWidth: 2,
       depth: 0,  // platforms at bottom
-      // Textable
-      text: `${platformIndex}`,
-      textOffset: { x: 0, y: 0 },
-      textSize: 3,
-      textColor: '#ffffff',
-      textDepth: 1,  // platform text above platforms
     };
   }
 

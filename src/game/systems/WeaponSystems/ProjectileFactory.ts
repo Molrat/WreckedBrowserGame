@@ -2,7 +2,7 @@ import { IProjectileFactory } from "./IProjectileFactory";
 import { Projectile } from "@/game/state/entities/Projectile";
 import { ProjectileType } from "@/game/state/components/ProjectileType";
 import { Vector2 } from "@/math/Vector2";
-import { createLaserBeam } from "@/game/state/entities/weapons/laserCannon/LaserBeamFactory";
+import { createLaserBeam } from "@/game/state/entities/Factories/LaserBeamFactory";
 
 export class ProjectileFactory implements IProjectileFactory {
   create(
