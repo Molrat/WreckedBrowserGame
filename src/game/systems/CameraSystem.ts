@@ -54,20 +54,33 @@ export class CameraSystem implements ISystem {
       const useVelocity = speed >= 2;
       const dir = useVelocity ? normalize(t.velocity) : direction(t.orientation);
       const side = rotate(dir, Math.PI / 2);
-      const a  = 10;
-      const b = 30;
-      const min = 0.6
-      const slope = (min / (b - a));
-      const y_zero = - a * slope;
-      const clampedSpeed = Math.max(a, Math.min(b, speed));
-      const speedFactor = min + slope * clampedSpeed + y_zero;
+
+      const speedFactor = this.speedFactor(speed);
+      const startFactor = 0.4;
+      const scaledFrontFrac = this.scaleComputer(startFactor, 1, speedFactor);
+      const scaledSideFrac = this.scaleComputer(startFactor, sideFrac, speedFactor);
+      const scaledRearFrac = this.scaleComputer(startFactor, rearFrac, speedFactor);
       return [
-        add(t.position, scale(dir, m * speedFactor)),                  // front
-        add(t.position, scale(side, m * sideFrac * speedFactor)),       // left
-        add(t.position, scale(dir, -m * rearFrac * speedFactor)),       // rear
-        add(t.position, scale(side, -m * sideFrac * speedFactor)),      // right
+        add(t.position, scale(dir, m * scaledFrontFrac)),        // front
+        add(t.position, scale(side, m * scaledSideFrac)),       // left
+        add(t.position, scale(dir, -m * scaledRearFrac)),       // rear
+        add(t.position, scale(side, -m * scaledSideFrac)),      // right
       ];
     });
+  }
+
+  private speedFactor(speed: number): number {
+      const a  = 5;
+      const b = 30;
+      const slope = 1 / (b - a);
+      const y_zero = - a * slope;
+      const clampedSpeed = Math.max(a, Math.min(b, speed));
+      return y_zero + slope * clampedSpeed;
+  }
+
+  private scaleComputer(startVal: number, endVal: number, speedFactor: number): number {
+    const slope = endVal - startVal;
+    return startVal + slope * speedFactor;
   }
 
   private updateDebugEntities(
