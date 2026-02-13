@@ -12,8 +12,7 @@ export type WithCarProperties = {
   engineForce: number;
   brakeForce: number;
   tireMu: number;                    // friction coefficient
-  tireStiffness: number;
+  tireStiffness: number;             // not used with pacejka model (we use A B and C coefficients from constants)
   
-  rollingResistance: number;
   airDragCoefficient: number;
 }

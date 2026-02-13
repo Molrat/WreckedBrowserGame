@@ -2,11 +2,18 @@ import { PacejkaCoefficients } from "../systems/CarSystems/drivingPhysicsSystem/
 import { CollisionConfig } from "../systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer";
 
 export const CAR_PHYSICS = {
+  mass: 1000,
+  momentOfInertiaRelativeToMass: 2,       // kg·m² (box approximation)
+  lengthToFrontAxle: 1.25,    // m from center
+  lengthToRearAxle: 1.25,     // m from center
+  trackHalfWidth: 0.75,       // m (half of the distance between left and right wheels)
+  wheelRadius: 0.3,           // m
+  maxSteeringAngle: Math.PI / 6, // rad (30°)
+
   engineForce: 9000,           // N (AWD)
   brakeForce: 10000,           // N
-  tireStiffness: 200000,       // N/m
+  tireStiffness: 200000,       // 
   tireMu: 1.5,                 // friction coefficient
-  rollingResistance: 800,      // N
   airDragCoefficient: 3.0,     // used with v² - gives ~200 km/h top speed
 };
 

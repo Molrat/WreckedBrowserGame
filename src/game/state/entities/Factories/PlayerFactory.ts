@@ -13,8 +13,8 @@ export class PlayerFactory {
       orientation: 0,
       velocity: { x: 0, y: 0 },
       // Movable physics
-      mass: 1000,                 // kg
-      momentOfInertia: 708,       // kg·m² (box approximation)
+      mass: CAR_PHYSICS.mass,                 // kg
+      momentOfInertia: CAR_PHYSICS.momentOfInertiaRelativeToMass * CAR_PHYSICS.mass,       // kg·m² (box approximation)
       forces: [],
       impulses: [],
       // Damageable
@@ -82,12 +82,12 @@ export class PlayerFactory {
         home: false,
       },
       // car properties
-      lengthToFrontAxle: 1.25,    // m from center
-      lengthToRearAxle: 1.25,     // m from center
-      trackHalfWidth: 0.75,       // m
-      wheelRadius: 0.3,           // m
+      lengthToFrontAxle: CAR_PHYSICS.lengthToFrontAxle,    // m from center
+      lengthToRearAxle: CAR_PHYSICS.lengthToRearAxle,     // m from center
+      trackHalfWidth: CAR_PHYSICS.trackHalfWidth,       // m (half of the distance between left and right wheels)
+      wheelRadius: CAR_PHYSICS.wheelRadius,           // m
 
-      maxSteeringAngle: Math.PI / 6, // rad (30°)
+      maxSteeringAngle: CAR_PHYSICS.maxSteeringAngle, // rad (30°)
       maxSteeringWheelAngle: Math.PI * 3, // 540°
       steeringResponse: 5,
       steeringSpeedReductionK: 0.01,
@@ -97,7 +97,6 @@ export class PlayerFactory {
       tireStiffness: CAR_PHYSICS.tireStiffness,
       tireMu: CAR_PHYSICS.tireMu,
 
-      rollingResistance: CAR_PHYSICS.rollingResistance,
       airDragCoefficient: CAR_PHYSICS.airDragCoefficient,
 
       // car controller state:
