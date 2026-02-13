@@ -70,15 +70,17 @@ export class CameraSystem implements ISystem {
   }
 
   private speedFactor(speed: number): number {
-      const a  = 5;
-      const b = 30;
+    // remains 0 for speed < a, grows to 1 in between a and b, remains 1 for speed > b
+      const a  = 5; // m/s
+      const b = 30; // m/s
       const slope = 1 / (b - a);
       const y_zero = - a * slope;
       const clampedSpeed = Math.max(a, Math.min(b, speed));
-      return y_zero + slope * clampedSpeed;
+      return y_zero + slope * clampedSpeed; 
   }
 
   private scaleComputer(startVal: number, endVal: number, speedFactor: number): number {
+    // returns startVal for speedFactor=0, endVal for speedFactor=1
     const slope = endVal - startVal;
     return startVal + slope * speedFactor;
   }
