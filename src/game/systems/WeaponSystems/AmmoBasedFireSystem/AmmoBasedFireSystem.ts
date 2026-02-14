@@ -71,7 +71,7 @@ export class AmmoBasedFireSystem implements ISystem {
     if (weapon.currentAmmo < 1) {
       state.entities = state.entities.filter(e => e.id !== weapon.id);
       eventBus.emit({
-      type: 'WeaponFired',
+      type: 'OutOfAmmo',
       position: { x: origin.x, y: origin.y },
       color: player.fillColor ?? '#ff8800',
     });

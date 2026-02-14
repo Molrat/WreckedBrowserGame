@@ -20,6 +20,7 @@ export function createLaserBeam(
   playerVelocity: Vector2
 ): Projectile {
   const halfW = LASER_BEAM_WIDTH / 2;
+  const halfL = LASER_BEAM_LENGTH / 2;
   const laserBeamVelocity = add(playerVelocity, scale(direction(orientation), LASER_BEAM_SPEED));
   
   return {
@@ -35,10 +36,10 @@ export function createLaserBeam(
     forces: [],
     impulses: [],
     shape: [
-      { x: 0, y: -halfW },
-      { x: LASER_BEAM_LENGTH, y: -halfW },
-      { x: LASER_BEAM_LENGTH, y: halfW },
-      { x: 0, y: halfW },
+      { x: -halfL, y: -halfW },
+      { x: halfL, y: -halfW },
+      { x: halfL, y: halfW },
+      { x: -halfL, y: halfW },
     ],
     fillColor: LASER_BEAM_FILL,
     borderColor: LASER_BEAM_BORDER,

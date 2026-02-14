@@ -4,4 +4,5 @@ export type GameEvent =
 	| { type: 'StartMenuPlayerJoined'; slot: number }
 	| { type: 'StartMenuPlayerReady'; slot: number }
 	| { type: 'PlayerDied'; playerId: string; placement: number; position: Vector2; color: string }
-	| { type: 'WeaponFired'; position: Vector2; color: string };
+	| { type: 'OutOfAmmo'; position: Vector2; color: string }
+	| { type: 'HitByProjectile'; position: Vector2; color: string; damage: number };

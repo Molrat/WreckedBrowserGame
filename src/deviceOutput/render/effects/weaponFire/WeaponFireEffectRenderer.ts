@@ -17,13 +17,22 @@ export class WeaponFireEffectRenderer implements IEffectRenderer {
 
   private ingestEvents(events: GameEvent[], now: number): void {
     for (const ev of events) {
-      if (ev.type === 'WeaponFired') {
+      if (ev.type === 'OutOfAmmo') {
         this.effects.push({
           position: ev.position,
           color: ev.color,
           startTime: now,
           duration: 800,
           particles: createExplosionParticles(12),
+        });
+      }
+      if (ev.type === 'HitByProjectile') {
+        this.effects.push({
+          position: ev.position,
+          color: ev.color,
+          startTime: now,
+          duration: Math.max(300, ev.damage * 100),
+          particles: createExplosionParticles(Math.max(10, Math.min(40, 4 *ev.damage))),
         });
       }
     }

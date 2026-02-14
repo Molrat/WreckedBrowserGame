@@ -18,7 +18,7 @@ export class DamagingCollisionSystem implements ISystem {
     const toRemove: string[] = [];
 
     for (const dmg of damagers) {
-      this.checkCollisions(dmg, targets, toRemove);
+      this.checkCollisions(_eventBus,dmg, targets, toRemove);
     }
     if (toRemove.length > 0) {
       state.entities = state.entities.filter(e => !toRemove.includes(e.id));
@@ -26,6 +26,7 @@ export class DamagingCollisionSystem implements ISystem {
   }
 
   private checkCollisions(
+    eventBus: EventBus,
     damaging: Identifiable & IDamagingPhysical,
     targets: (Identifiable & IDamageableMovable)[],
     toRemove: string[]
@@ -40,12 +41,13 @@ export class DamagingCollisionSystem implements ISystem {
       );
       const manifold = detectPolygonCollision(dmgPoly, targetPoly);
       if (!manifold) continue;
-      this.applyDamageAndImpulse(damaging, target, manifold);
+      this.applyDamageAndImpulse(eventBus, damaging, target, manifold);
       if (damaging.destroyOnHit) toRemove.push(damaging.id);
     }
   }
 
   private applyDamageAndImpulse(
+    eventBus: EventBus,
     dmg: IDamagingPhysical,
     target: IDamageableMovable,
     manifold: { contactPoint: { x: number; y: number } }
@@ -58,5 +60,11 @@ export class DamagingCollisionSystem implements ISystem {
       -target.orientation
     );
     target.impulses.push({ impulse, localContactPoint: contactLocal });
+    eventBus.emit({
+      type: 'HitByProjectile',
+      position: manifold.contactPoint,
+      color: dmg.borderColor ?? target.borderColor ?? '#ff0000',
+      damage: dmg.damage
+    });
   }
 }
