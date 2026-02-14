@@ -1,8 +1,8 @@
 import { GameState } from "@/game/state/GameState";
 import { Vector2 } from "@/math/Vector2";
 import { WeaponWithAmmo } from "@/game/state/entities/WeaponWithAmmo";
-import { createLaserCannon } from "@/game/state/entities/Factories/LaserCannonFactory";
-import { createMachineGun } from "@/game/state/entities/Factories/MachineGunFactory";
+import { createLaserCannon } from "@/game/state/entities/Factories/WeaponFactories/LaserCannonFactory";
+import { createMachineGun } from "@/game/state/entities/Factories/WeaponFactories/MachineGunFactory";
 
 type WeaponCreator = (pos: Vector2, spawnPlatformIndex: number) => WeaponWithAmmo;
 const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun];

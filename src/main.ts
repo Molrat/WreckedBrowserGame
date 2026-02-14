@@ -52,11 +52,11 @@ import { PacejkaWheelForceComputer } from './game/systems/CarSystems/drivingPhys
 import { PACEJKA_LONGITUDINAL, PACEJKA_LATERAL, COLLISION_CONFIG } from '@/game/config/carPhysicsConstants';
 import { SimpleCarCollisionComputer } from './game/systems/CarSystems/carCollisionSystem/simpleCollisionComputer/SimpleCarCollisionComputer';
 import { CarCollisionSystem } from './game/systems/CarSystems/carCollisionSystem/CarCollisionSystem';
-import { WeaponSpawnSystem } from './game/systems/WeaponSystems/WeaponSpawnSystem';
+import { WeaponSpawnSystem } from './game/systems/WeaponSystems/WeaponSpawnSystem/WeaponSpawnSystem';
 import { WeaponPickupSystem } from './game/systems/WeaponSystems/WeaponPickupSystem';
 import { WeaponMountSyncSystem } from './game/systems/WeaponSystems/WeaponMountSyncSystem';
-import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireSystem';
-import { ProjectileFactory } from './game/systems/WeaponSystems/ProjectileFactory';
+import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireSystem/AmmoBasedFireSystem';
+import { ProjectileFactory } from './game/state/entities/Factories/ProjectileFactories/ProjectileFactory';
 import { LifeSpanSystem } from './game/systems/LifeSpanSystem';
 import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';

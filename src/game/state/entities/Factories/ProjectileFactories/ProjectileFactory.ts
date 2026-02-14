@@ -1,4 +1,4 @@
-import { IProjectileFactory } from "../../state/entities/Factories/ProjectileFactories/IProjectileFactory";
+import { IProjectileFactory } from "./IProjectileFactory";
 import { Projectile } from "@/game/state/entities/Projectile";
 import { ProjectileType } from "@/game/state/components/ProjectileType";
 import { Vector2 } from "@/math/Vector2";

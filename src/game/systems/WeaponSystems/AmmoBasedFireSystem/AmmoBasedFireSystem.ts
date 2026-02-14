@@ -6,7 +6,7 @@ import { IPlayer } from "@/game/queries/Player/IPlayer";
 import { isWeapon } from "@/game/queries/Weapon/isWeapon";
 import { IWeapon } from "@/game/queries/Weapon/IWeapon";
 import { Identifiable } from "@/game/state/components/Identifiable";
-import { IProjectileFactory } from "./IProjectileFactory";
+import { IProjectileFactory } from "../../../state/entities/Factories/ProjectileFactories/IProjectileFactory";
 import { rotate, add } from "@/math/Vector2";
 import { canFireSingleShot } from "./canFireSingleShot";
 import { canFireAutomatic } from "./canFireAutomatic";
