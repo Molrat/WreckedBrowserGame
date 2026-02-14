@@ -20,7 +20,7 @@ export function createMachineGunBullet(
   playerVelocity: Vector2
 ): Projectile {
   const halfW = BULLET_WIDTH / 2;
-  const bulletVel = add(playerVelocity, scale(direction(orientation), -BULLET_SPEED));
+  const bulletVel = add(playerVelocity, scale(direction(orientation), BULLET_SPEED));
   return {
     id: nextId(),
     health: 1,

@@ -24,8 +24,8 @@ export class PlayerFactory {
       shape: [
           { x: -1.7, y: -0.8 },  // rear-left
           { x: -1.7, y: 0.8 },   // rear-right
-          { x: 1.3, y: 0.9 },    // front-right fender
-          { x: 1.3, y: -0.9 },   // front-left fender
+          { x: 1.3, y: 0.8 },    // front-right fender
+          { x: 1.3, y: -0.8 },   // front-left fender
         ],
       fillColor: color,
       borderColor: '#000000',

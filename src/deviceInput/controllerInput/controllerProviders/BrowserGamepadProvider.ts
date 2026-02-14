@@ -17,11 +17,11 @@ export class BrowserGamepadProvider implements IGamepadProvider {
       id: pad.index.toString(),
       leftStick: {
         x: pad.axes?.[0] ?? 0,
-        y: pad.axes?.[1] ?? 0,
+        y: -(pad.axes?.[1] ?? 0),
       },
       rightStick: {
         x: pad.axes?.[2] ?? 0,
-        y: pad.axes?.[3] ?? 0,
+        y: -(pad.axes?.[3] ?? 0),
       },
       leftTrigger: pad.buttons?.[6]?.value ?? 0,
       rightTrigger: pad.buttons?.[7]?.value ?? 0,

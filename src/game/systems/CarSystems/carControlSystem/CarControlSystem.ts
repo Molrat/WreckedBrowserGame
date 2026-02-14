@@ -13,7 +13,7 @@ export class CarControlSystem implements ISystem {
         for (const car of drivableEntities) {
           const driveIntent = this.driveIntentComputer.compute(car);
           const carControlState = this.carControlComputer.compute(car, driveIntent, deltaTime);
-          const frontWheelAngle = carControlState.steeringWheelAngle / car.maxSteeringWheelAngle * car.maxSteeringAngle;
+          const frontWheelAngle = -(carControlState.steeringWheelAngle / car.maxSteeringWheelAngle * car.maxSteeringAngle);
           car.frontWheelAngle = frontWheelAngle;
           Object.assign(car, carControlState);
         }

@@ -42,8 +42,8 @@ export class WebHIDGamepadProvider implements IGamepadProvider {
 
     return {
       id,
-      leftStick: { x: lx, y: ly },
-      rightStick: { x: rx, y: ry },
+      leftStick: { x: lx, y: -ly },
+      rightStick: { x: rx, y: -ry },
       leftTrigger: lt,
       rightTrigger: rt,
       triangle: !!(b0 & 0x08),

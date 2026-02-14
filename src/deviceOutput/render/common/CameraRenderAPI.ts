@@ -24,12 +24,12 @@ export class CameraRenderAPI implements ICameraRenderAPI {
   }
 
   private camLeft(): number { return this.camera ? this.camera.position.x - this.camera.width / 2 : 0; }
-  private camTop(): number { return this.camera ? this.camera.position.y - this.camera.height / 2 : 0; }
+  private camBottom(): number { return this.camera ? this.camera.position.y - this.camera.height / 2 : 0; }
   private toPixelVector(vector: Vector2): Vector2 {
     const s = this.scale()
     return {
       x: (vector.x - this.camLeft()) * s,
-      y: (vector.y - this.camTop()) * s
+      y: this.ctx.canvas.height - (vector.y - this.camBottom()) * s
     }
   }
 
@@ -83,11 +83,11 @@ export class CameraRenderAPI implements ICameraRenderAPI {
     const s = this.scale();
     const stepPixels = stepMeters * s;
     const camLeft = this.camLeft();
-    const camTop = this.camTop();
+    const camBottom = this.camBottom();
     
     // Calculate offset so grid lines align with world coordinates
     const offsetX = ((-camLeft % stepMeters) + stepMeters) % stepMeters * s;
-    const offsetY = ((-camTop % stepMeters) + stepMeters) % stepMeters * s;
+    const offsetY = ((-camBottom % stepMeters) + stepMeters) % stepMeters * s;
     
     LineDrawer.drawGridWithOffset(this.ctx, stepPixels, offsetX, offsetY, strokeStyle, lineWidth);
   }
