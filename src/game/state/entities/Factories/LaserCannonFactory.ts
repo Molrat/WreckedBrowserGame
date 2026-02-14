@@ -27,6 +27,8 @@ export function createLaserCannon(
     relativeOrientation: 0,
     currentAmmo: 1,
     maxAmmo: 1,
+    fireRate: null,
+    fireCooldown: 0,
     projectileType: 'laserBeam',
     spawnPlatformIndex,
     velocity: { x: 0, y: 0 },

@@ -44,7 +44,7 @@ export function createLaserBeam(
     damage: LASER_BEAM_DAMAGE,
     ownerPlayerId,
     impulseMagnitude: LASER_BEAM_IMPULSE,
-    destroyOnHit: false,
+    destroyOnHit: true,
     lifetime: LASER_BEAM_LIFETIME,
     maxLifetime: LASER_BEAM_LIFETIME,
     fades: true,

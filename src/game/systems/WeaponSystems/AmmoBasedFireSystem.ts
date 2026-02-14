@@ -8,25 +8,37 @@ import { IWeapon } from "@/game/queries/Weapon/IWeapon";
 import { Identifiable } from "@/game/state/components/Identifiable";
 import { IProjectileFactory } from "./IProjectileFactory";
 import { rotate, add } from "@/math/Vector2";
+import { canFireSingleShot } from "./canFireSingleShot";
+import { canFireAutomatic } from "./canFireAutomatic";
 
 export class AmmoBasedFireSystem implements ISystem {
   constructor(private projectileFactory: IProjectileFactory) {}
 
-  update(state: GameState, eventBus: EventBus, _dt: number): void {
+  update(state: GameState, eventBus: EventBus, dt: number): void {
     if (state.ui.openMenu !== null) return;
     const players = state.entities.filter(isPlayer);
     const weapons = state.entities.filter(isWeapon);
 
+    this.tickCooldowns(weapons, dt);
+
     for (const player of players) {
-      if (!this.justPressedFire(player)) continue;
       const weapon = this.findMountedWeapon(weapons, player.id);
       if (!weapon) continue;
+      if (!this.shouldFire(player, weapon)) continue;
       this.fireWeapon(state, eventBus, player, weapon);
     }
   }
 
-  private justPressedFire(player: IPlayer): boolean {
-    return player.currentGamepad.cross && !player.previousGamepad.cross;
+  private tickCooldowns(weapons: (Identifiable & IWeapon)[], dt: number): void {
+    for (const w of weapons) {
+      if (w.fireCooldown > 0) w.fireCooldown = Math.max(0, w.fireCooldown - dt);
+    }
+  }
+
+  private shouldFire(player: IPlayer, weapon: Identifiable & IWeapon): boolean {
+    if (weapon.fireCooldown > 0) return false;
+    if (weapon.fireRate === null) return canFireSingleShot(player);
+    return canFireAutomatic(player);
   }
 
   private findMountedWeapon(
@@ -53,13 +65,17 @@ export class AmmoBasedFireSystem implements ISystem {
     );
     state.entities.push(projectile);
     weapon.currentAmmo -= 1;
+    if (weapon.fireRate !== null) {
+      weapon.fireCooldown = 1 / weapon.fireRate;
+    }
     if (weapon.currentAmmo < 1) {
       state.entities = state.entities.filter(e => e.id !== weapon.id);
-    }
-    eventBus.emit({
+      eventBus.emit({
       type: 'WeaponFired',
       position: { x: origin.x, y: origin.y },
       color: player.fillColor ?? '#ff8800',
     });
+    }
+    
   }
 }

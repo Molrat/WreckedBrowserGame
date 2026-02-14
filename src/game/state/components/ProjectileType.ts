@@ -1,1 +1,1 @@
-export type ProjectileType = 'laserBeam';
+export type ProjectileType = 'laserBeam' | 'machineGunBullet';

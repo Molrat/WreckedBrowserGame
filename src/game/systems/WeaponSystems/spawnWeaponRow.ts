@@ -1,6 +1,11 @@
 import { GameState } from "@/game/state/GameState";
 import { Vector2 } from "@/math/Vector2";
+import { WeaponWithAmmo } from "@/game/state/entities/WeaponWithAmmo";
 import { createLaserCannon } from "@/game/state/entities/Factories/LaserCannonFactory";
+import { createMachineGun } from "@/game/state/entities/Factories/MachineGunFactory";
+
+type WeaponCreator = (pos: Vector2, spawnPlatformIndex: number) => WeaponWithAmmo;
+const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun];
 
 const WEAPON_COUNT = 4;
 const WEAPON_SPACING = 6;
@@ -20,6 +25,7 @@ export function spawnWeaponRow(
       x: center.x + direction.x * t,
       y: center.y + direction.y * t,
     };
-    state.entities.push(createLaserCannon(pos, spawnPlatformIndex));
+    const create = WEAPON_CREATORS[Math.floor(Math.random() * WEAPON_CREATORS.length)];
+    state.entities.push(create(pos, spawnPlatformIndex));
   }
 }
