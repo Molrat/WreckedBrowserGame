@@ -3,9 +3,10 @@ import { Vector2 } from "@/math/Vector2";
 import { WeaponWithAmmo } from "@/game/state/entities/WeaponWithAmmo";
 import { createLaserCannon } from "@/game/state/entities/Factories/WeaponFactories/LaserCannonFactory";
 import { createMachineGun } from "@/game/state/entities/Factories/WeaponFactories/MachineGunFactory";
+import { createMineDropper } from "@/game/state/entities/Factories/WeaponFactories/MineDropperFactory";
 
 type WeaponCreator = (pos: Vector2, spawnPlatformIndex: number) => WeaponWithAmmo;
-const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun];
+const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun, createMineDropper];
 
 const WEAPON_COUNT = 4;
 const WEAPON_SPACING = 6;

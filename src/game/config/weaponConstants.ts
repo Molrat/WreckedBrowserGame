@@ -42,9 +42,50 @@ export const MACHINE_GUN_FIRE_RATE = 10; // shots per second
 export const BULLET_LENGTH = 0.4;
 export const BULLET_WIDTH = 0.15;
 export const BULLET_SPEED = 80;    // m/s
-export const BULLET_LIFETIME = 1.5;
+export const BULLET_LIFETIME = 5;
 export const BULLET_DAMAGE = 4;
 export const BULLET_IMPULSE = 3000;
 export const BULLET_FILL = '#ffcc00';
 export const BULLET_BORDER = '#ff8800';
 export const BULLET_DEPTH = 5;
+
+const OCT_R = 1.0;
+const A = OCT_R * Math.cos(Math.PI / 8);
+const B = OCT_R * Math.sin(Math.PI / 8);
+
+// ── Mine Dropper ─────────────────────────────────────
+export const MINE_DROPPER_SHAPE: Vector2[] = [
+  { x: A, y: B },
+  { x: B, y: A },
+  { x: -B, y: A },
+  { x: -A, y: B },
+  { x: -A, y: -B },
+  { x: -B, y: -A },
+  { x: B, y: -A },
+  { x: A, y: -B },
+];
+
+export const MINE_DROPPER_MOUNT_OFFSET: Vector2 = { x: -1.5, y: 0 };
+export const MINE_DROPPER_FILL = '#884422';
+export const MINE_DROPPER_BORDER = '#ff4400';
+export const MINE_DROPPER_DEPTH = 4;
+export const MINE_DROPPER_AMMO = 3;
+
+// ── Mine Projectile ──────────────────────────────────
+
+export const MINE_SHAPE: Vector2[] = [
+  { x: A, y: B },
+  { x: B, y: A },
+  { x: -B, y: A },
+  { x: -A, y: B },
+  { x: -A, y: -B },
+  { x: -B, y: -A },
+  { x: B, y: -A },
+  { x: A, y: -B },
+];
+export const MINE_LIFETIME = 30;
+export const MINE_DAMAGE = 40;
+export const MINE_IMPULSE = 20000;
+export const MINE_FILL = '#553300';
+export const MINE_BORDER = '#ff2200';
+export const MINE_DEPTH = 1;

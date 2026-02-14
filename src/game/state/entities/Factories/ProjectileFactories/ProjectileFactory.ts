@@ -4,6 +4,7 @@ import { ProjectileType } from "@/game/state/components/ProjectileType";
 import { Vector2 } from "@/math/Vector2";
 import { createLaserBeam } from "@/game/state/entities/Factories/ProjectileFactories/LaserBeamFactory";
 import { createMachineGunBullet } from "@/game/state/entities/Factories/ProjectileFactories/MachineGunBulletFactory";
+import { createMine } from "./MineFactory";
 
 export class ProjectileFactory implements IProjectileFactory {
   create(
@@ -18,6 +19,8 @@ export class ProjectileFactory implements IProjectileFactory {
         return createLaserBeam(position, orientation, ownerPlayerId, playerVelocity);
       case 'machineGunBullet':
         return createMachineGunBullet(position, orientation, ownerPlayerId, playerVelocity);
+      case 'mine':
+        return createMine(position, orientation, ownerPlayerId);
     }
   }
 }
