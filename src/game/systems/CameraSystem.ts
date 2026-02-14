@@ -41,7 +41,7 @@ export class CameraSystem implements ISystem {
     cam.widthVelocity = wResult.velocity;
     cam.heightVelocity = hResult.velocity;
 
-    this.updateDebugEntities(state, targets, perTargetPoints);
+    //this.updateDebugEntities(state, targets, perTargetPoints);
   }
 
   private computeMarginPointsPerTarget(targets: IControllablePositionable[]): Vector2[][] {

@@ -1,5 +1,5 @@
 import type { Vector2 } from '@/math/Vector2';
-import { PLATFORM_SIZE } from '@/game/config/constants';
+import { PLATFORM_SIZE } from '@/game/config/platformConstants';
 
 const MIN_ADJACENCY = PLATFORM_SIZE / 2;
 const MAX_ATTEMPTS = 100;

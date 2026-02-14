@@ -5,7 +5,6 @@ import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/Player
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
 import { PlayerDeathEffectRenderer } from '@/deviceOutput/render/effects/deathExplosion/PlayerDeathEffectRenderer';
 import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
-import { TireRenderer } from '@/deviceOutput/render/gameState/world/TireRenderer';
 import { DepthSortedRenderer } from '@/deviceOutput/render/gameState/world/DepthSortedRenderer';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
@@ -22,7 +21,7 @@ import { CameraRenderAPI } from '@/deviceOutput/render/common/CameraRenderAPI';
 import { ScreenRenderAPI } from '@/deviceOutput/render/common/ScreenRenderAPI';
 import { AspectRatioInjector } from '@/deviceInput/windowInput/AspectRatioInjector';
 import { CameraSystem } from '@/game/systems/CameraSystem';
-import { CAMERA_CONSTANTS } from '@/deviceOutput/render/constants';
+import { CAMERA_CONSTANTS } from '@/deviceOutput/config/cameraConstants';
 import { ControllerSystemInStartMenu } from '@/game/systems/startMenu/ControllerSystemInStartMenu';
 import { AssignButtonsToPlayerSystem } from '@/game/systems/gamePadSystems/AssignButtonsToPlayerSystem';
 import { CarControlSystem } from '@/game/systems/CarSystems/carControlSystem/CarControlSystem';
@@ -32,7 +31,7 @@ import { HandBrakeIntent } from '@/game/systems/CarSystems/carControlSystem/driv
 import { BrakeIntent } from '@/game/systems/CarSystems/carControlSystem/driveIntentComputer/brakeIntent/BrakeIntent';
 import { ThrottleIntent } from '@/game/systems/CarSystems/carControlSystem/driveIntentComputer/throttleIntent/ThrottleIntent';
 import { SteeringIntent } from '@/game/systems/CarSystems/carControlSystem/driveIntentComputer/steeringIntent/SteeringIntent';
-import { BRAKE_CONTROL, BRAKE_INTENT, HANDBRAKE_CONTROL, HANDBRAKE_INTENT, STEERING_CONTROL, STEERING_INTENT, THROTTLE_CONTROL, THROTTLE_INTENT } from '@/game/config/constants';
+import { BRAKE_CONTROL, BRAKE_INTENT, HANDBRAKE_CONTROL, HANDBRAKE_INTENT, STEERING_CONTROL, STEERING_INTENT, THROTTLE_CONTROL, THROTTLE_INTENT } from "./game/config/carSteeringConstants";
 import { SteeringControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/steeringControl/SteeringControl';
 import { ThrottleControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/throttleControl/ThrottleControl';
 import { HandbrakeControl } from '@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/handbrakeControl/HandBrakeControl';
@@ -60,6 +59,7 @@ import { ProjectileFactory } from './game/state/entities/Factories/ProjectileFac
 import { LifeSpanSystem } from './game/systems/LifeSpanSystem';
 import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
+import { FrontWheelSteeringSystem } from './game/systems/CarSystems/FrontWheelSteeringSystem';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -117,6 +117,7 @@ const systems = [
     new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS),
     carControlSystem,
+    new FrontWheelSteeringSystem(),
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
     new MovementSystem(),
@@ -137,8 +138,7 @@ const systems = [
 // DepthSortedRenderer handles both polygons and text, sorted by depth
 const gameStateRenderers = [
     new ControllerTestBackgroundRenderer(),
-    new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2)
-    new TireRenderer(),         // tires on top (depth 3)
+    new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2) → tires (3)
     //new WheelForcesRenderer(),
 ];
 

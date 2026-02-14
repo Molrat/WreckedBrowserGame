@@ -1,4 +1,4 @@
-import { ICameraConfig } from "./ICameraConfig";
+import { ICameraConfig } from "../render/ICameraConfig";
 
 export const CAMERA_CONSTANTS: ICameraConfig = {
   marginMeters: 100,

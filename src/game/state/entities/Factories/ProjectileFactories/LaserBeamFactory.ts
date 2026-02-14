@@ -1,6 +1,6 @@
 import { nextId } from "@/utils/id";
 import { Projectile } from "@/game/state/entities/Projectile";
-import { Vector2 } from "@/math/Vector2";
+import { add, direction, scale, Vector2 } from "@/math/Vector2";
 import {
   LASER_BEAM_LENGTH,
   LASER_BEAM_WIDTH,
@@ -10,6 +10,7 @@ import {
   LASER_BEAM_FILL,
   LASER_BEAM_BORDER,
   LASER_BEAM_DEPTH,
+  LASER_BEAM_SPEED,
 } from "@/game/config/weaponConstants";
 
 export function createLaserBeam(
@@ -19,13 +20,15 @@ export function createLaserBeam(
   playerVelocity: Vector2
 ): Projectile {
   const halfW = LASER_BEAM_WIDTH / 2;
+  const laserBeamVelocity = add(playerVelocity, scale(direction(orientation), LASER_BEAM_SPEED));
+  
   return {
     id: nextId(),
     health: 100,
     maxHealth: 100,
     position: { x: position.x, y: position.y },
     orientation,
-    velocity: playerVelocity,
+    velocity: laserBeamVelocity,
     angularVelocity: 0,
     mass: 1,
     momentOfInertia: 1,

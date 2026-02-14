@@ -26,7 +26,7 @@ export class WeaponPickupSystem implements ISystem {
     weapons: (Identifiable & IMountablePhysical)[],
     playerId: string
   ): boolean {
-    return weapons.some(w => w.mountedOnPlayerId === playerId);
+    return weapons.filter(w => w.mountedOnPlayerId === playerId).length > 4;
   }
 
   private tryPickup(

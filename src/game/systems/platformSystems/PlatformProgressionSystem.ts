@@ -6,7 +6,7 @@ import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { PlatformFactory } from '@/game/state/entities/Factories/PlatformFactory';
 import { computeNextPosition } from './PlatformPositioner';
 import type { IPlatform } from '@/game/queries/Platform/IPlatform';
-import { NR_OF_PLATFORMS_IN_FRONT_OF_PLAYER, PLATFORM_SIZE } from '@/game/config/constants';
+import { NR_OF_PLATFORMS_IN_FRONT_OF_PLAYER, PLATFORM_SIZE, PLATFORM_FILL_COLOR } from '@/game/config/platformConstants';
 
 export class PlatformProgressionSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -67,17 +67,19 @@ export class PlatformProgressionSystem implements ISystem {
     const maxIndex = Math.max(...indices);
     const range = maxIndex - minIndex;
 
+    // Parse original color from constants
+    const hex = PLATFORM_FILL_COLOR.substring(1);
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
     for (const platform of platforms) {
       const age = range > 0 ? (maxIndex - platform.platformIndex) / range : 0;
-      const r = Math.round(220 + (74 - 220) * (1 - age));
-      const g = Math.round(80 + (85 - 80) * (1 - age));
-      const b = Math.round(80 + (104 - 80) * (1 - age));
-      platform.fillColor = `rgb(${r}, ${g}, ${b})`;
-
-      const br = Math.round(180 + (45 - 180) * (1 - age));
-      const bg = Math.round(50 + (55 - 50) * (1 - age));
-      const bb = Math.round(50 + (72 - 50) * (1 - age));
-      platform.borderColor = `rgb(${br}, ${bg}, ${bb})`;
+      // Darken with age: multiply by (1 - age) to go from original color to black
+      const darkenedR = Math.round(r * (1 - age * 0.8));
+      const darkenedG = Math.round(g * (1 - age * 0.8));
+      const darkenedB = Math.round(b * (1 - age * 0.8));
+      platform.fillColor = `rgb(${darkenedR}, ${darkenedG}, ${darkenedB})`;
     }
   }
 

@@ -1,12 +1,14 @@
 import type { Player } from '@/game/state/entities/Player';
+import type { Wheel } from '@/game/state/entities/Wheel';
 import { nextId } from '@/utils/id';
 import { CAR_PHYSICS } from '@/game/config/carPhysicsConstants';
+import { PLAYER_COLOR_PALETTE, CAR_SHAPE, CAR_BORDER_COLOR, CAR_BORDER_WIDTH, CAR_DEPTH, CAR_FILL_COLOR } from '@/game/config/carAppearanceConstants';
+import { createWheelsForPlayer } from '@/game/state/entities/Factories/WheelFactory';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
     const idx = Number(controllerId) || 0;
-    const palette = ['#44c7ef', '#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#14b8a6', '#f97316', '#eab308'];
-    const color = palette[idx % palette.length];
+    const color = PLAYER_COLOR_PALETTE[idx % PLAYER_COLOR_PALETTE.length];
     return {
       id: nextId(),
       position: { x: 400, y: 300 },
@@ -21,16 +23,11 @@ export class PlayerFactory {
       health: 100,
       maxHealth: 100,
       // Renderable - simple car polygon (meters, oriented forward=right, 0° = +X)
-      shape: [
-          { x: -1.7, y: -0.8 },  // rear-left
-          { x: -1.7, y: 0.8 },   // rear-right
-          { x: 1.3, y: 0.8 },    // front-right fender
-          { x: 1.3, y: -0.8 },   // front-left fender
-        ],
-      fillColor: color,
-      borderColor: '#000000',
-      borderWidth: 2,
-      depth: 2,  // players above platforms
+      shape: CAR_SHAPE.map(v => ({ ...v })),
+      fillColor: CAR_FILL_COLOR,
+      borderColor: color,
+      borderWidth: CAR_BORDER_WIDTH,
+      depth: CAR_DEPTH,  // players above platforms
       // Controllable
       controllerId,
       currentGamepad: {
@@ -122,5 +119,11 @@ export class PlayerFactory {
       placement: 0,
       readyForNextRound: false,
     };
+  }
+
+  static createWithWheels(controllerId: string): [Player, ...Wheel[]] {
+    const player = PlayerFactory.create(controllerId);
+    const wheels = createWheelsForPlayer(player.id);
+    return [player, ...wheels];
   }
 }

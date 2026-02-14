@@ -5,6 +5,7 @@ import { isPlayer } from '@/game/queries/Player/isPlayer';
 import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { generateInitialPlatforms } from '@/game/systems/platformSystems/PlatformChainGenerator';
 import { isWeapon } from '@/game/queries/Weapon/isWeapon';
+import { isDamagingPhysical } from '@/game/queries/DamagingPhysical/isDamagingPhysical';
 
 export class InbetweenLevelsMenuSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -40,16 +41,13 @@ export class InbetweenLevelsMenuSystem implements ISystem {
     }
 
     for (let i = state.entities.length - 1; i >= 0; i--) {
-      // Remove old platforms
-      if (isPlatform(state.entities[i])) {
-        state.entities.splice(i, 1);
-      }
-      // Remove weapons (Also mounted ones)
-      if (isWeapon(state.entities[i])) {
+      if (isPlatform(state.entities[i]) || 
+          isWeapon(state.entities[i]) || 
+          isDamagingPhysical(state.entities[i])
+      ) {
         state.entities.splice(i, 1);
       }
     }
-    
     
     state.entities.push(...newPlatforms);
     state.ui.openMenu = null;

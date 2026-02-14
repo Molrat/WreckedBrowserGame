@@ -44,7 +44,7 @@ export class ControllerSystemInStartMenu implements ISystem {
         if (allReady) {
             connections.forEach( pc => {
                 if (pc.status === 'ready' && pc.controllerId) {
-                state.entities.push(PlayerFactory.create(pc.controllerId));
+                state.entities.push(...PlayerFactory.createWithWheels(pc.controllerId));
                 }
             });
             state.ui.openMenu = null;
