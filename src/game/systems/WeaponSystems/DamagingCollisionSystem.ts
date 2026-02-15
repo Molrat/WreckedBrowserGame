@@ -8,7 +8,7 @@ import { IDamageableMovable } from "@/game/queries/DamageableMovable/IDamageable
 import { Identifiable } from "@/game/state/components/Identifiable";
 import { detectPolygonCollision } from "@/math/collision/detectPolygonCollision";
 import { transformPolygonToWorld } from "@/math/collision/transformPolygon";
-import { direction, scale, rotate, subtract, length, normalize } from "@/math/Vector2";
+import { angleToUnitVector, scale, rotate, subtract, length, normalize } from "@/math/Vector2";
 
 export class DamagingCollisionSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -53,7 +53,7 @@ export class DamagingCollisionSystem implements ISystem {
     manifold: { contactPoint: { x: number; y: number } }
   ): void {
     target.health = Math.max(0, target.health - dmg.damage);
-    const impulseDir = length(dmg.velocity) > 0.3 ? direction(dmg.orientation) : normalize(subtract(target.position, dmg.position));
+    const impulseDir = length(dmg.velocity) > 0.3 ? angleToUnitVector(dmg.orientation) : normalize(subtract(target.position, dmg.position));
     const impulse = scale(impulseDir, dmg.impulseMagnitude);
     const contactLocal = rotate(
       subtract(manifold.contactPoint, target.position),

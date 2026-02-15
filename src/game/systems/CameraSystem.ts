@@ -5,7 +5,7 @@ import { isControllablePositionable } from '@/game/queries/ControllablePositiona
 import type { IControllablePositionable } from '@/game/queries/ControllablePositionable/IControllablePositionable';
 import type { ICameraConfig } from '@/deviceOutput/render/ICameraConfig';
 import type { Vector2 } from '@/math/Vector2';
-import { scale, normalize, direction, length, rotate, add, subtract } from '@/math/Vector2';
+import { scale, normalize, angleToUnitVector, length, rotate, add, subtract } from '@/math/Vector2';
 import { computeBoundingBox } from '@/math/boundingBox';
 import { smoothDamp } from '@/math/smoothDamp';
 import { nextId } from '@/utils/id';
@@ -52,7 +52,7 @@ export class CameraSystem implements ISystem {
     return targets.map(t => {
       const speed = length(t.velocity);
       const useVelocity = speed >= 2;
-      const dir = useVelocity ? normalize(t.velocity) : direction(t.orientation);
+      const dir = useVelocity ? normalize(t.velocity) : angleToUnitVector(t.orientation);
       const side = rotate(dir, Math.PI / 2);
 
       const speedFactor = this.speedFactor(speed);

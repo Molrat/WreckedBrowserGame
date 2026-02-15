@@ -6,3 +6,7 @@ import { Damageable } from '../components/Damageable';
 import { WithLifeSpan } from '../components/WithLifeSpan';
 
 export type Projectile = Identifiable & Physical & Movable & Damaging & Damageable & WithLifeSpan;
+
+export type HeatSeaking = {
+  isHeatSeeking: true;
+}

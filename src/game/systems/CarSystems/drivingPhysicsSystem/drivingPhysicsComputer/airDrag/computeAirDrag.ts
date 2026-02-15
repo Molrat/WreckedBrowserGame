@@ -1,5 +1,5 @@
 import { Vector2, scale } from "@/math/Vector2";
-import { direction, dotProduct } from "@/math/Vector2";
+import { angleToUnitVector, dotProduct } from "@/math/Vector2";
 
 /**
  * Computes air drag force with orientation-dependent coefficient.
@@ -15,7 +15,7 @@ export function computeAirDrag(
 
   let effectiveDrag = baseDragCoeff;
   if (speed > 0.1) {
-    const carForward = direction(orientation);
+    const carForward = angleToUnitVector(orientation);
     const velocityDir: Vector2 = { x: velocity.x / speed, y: velocity.y / speed };
     const alignmentCos = Math.abs(dotProduct(carForward, velocityDir));
     const sidewaysDragMultiplier = 2.5;

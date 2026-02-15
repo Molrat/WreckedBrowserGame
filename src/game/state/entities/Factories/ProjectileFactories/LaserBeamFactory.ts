@@ -1,6 +1,6 @@
 import { nextId } from "@/utils/id";
 import { Projectile } from "@/game/state/entities/Projectile";
-import { add, direction, scale, Vector2 } from "@/math/Vector2";
+import { add, angleToUnitVector, scale, Vector2 } from "@/math/Vector2";
 import {
   LASER_BEAM_LENGTH,
   LASER_BEAM_WIDTH,
@@ -21,7 +21,7 @@ export function createLaserBeam(
 ): Projectile {
   const halfW = LASER_BEAM_WIDTH / 2;
   const halfL = LASER_BEAM_LENGTH / 2;
-  const laserBeamVelocity = add(playerVelocity, scale(direction(orientation), LASER_BEAM_SPEED));
+  const laserBeamVelocity = add(playerVelocity, scale(angleToUnitVector(orientation), LASER_BEAM_SPEED));
   
   return {
     id: nextId(),

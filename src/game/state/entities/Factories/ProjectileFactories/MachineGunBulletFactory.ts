@@ -1,6 +1,6 @@
 import { nextId } from "@/utils/id";
 import { Projectile } from "@/game/state/entities/Projectile";
-import { Vector2, direction, scale, add } from "@/math/Vector2";
+import { Vector2, angleToUnitVector, scale, add } from "@/math/Vector2";
 import {
   BULLET_LENGTH,
   BULLET_WIDTH,
@@ -20,7 +20,7 @@ export function createMachineGunBullet(
   playerVelocity: Vector2
 ): Projectile {
   const halfW = BULLET_WIDTH / 2;
-  const bulletVel = add(playerVelocity, scale(direction(orientation), BULLET_SPEED));
+  const bulletVel = add(playerVelocity, scale(angleToUnitVector(orientation), BULLET_SPEED));
   return {
     id: nextId(),
     health: 1,

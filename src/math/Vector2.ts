@@ -23,10 +23,12 @@ export function normalize(v: Vector2): Vector2 {
   return len === 0 ? { x: 0, y: 0 } : scale(v, 1 / len);
 }
 
-export const direction = (angle: number): Vector2 => ({
+export const angleToUnitVector = (angle: number): Vector2 => ({
   x: Math.cos(angle),
   y: Math.sin(angle),
 });
+
+export const velocityToAngle = (velocity: Vector2): number => Math.atan2(velocity.y, velocity.x);
 
 export const perpendicular = (v: Vector2): Vector2 => ({
   x: -v.y,

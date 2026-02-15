@@ -90,3 +90,33 @@ export const MINE_IMPULSE = 20000;
 export const MINE_FILL = '#1a0a2a';
 export const MINE_BORDER = '#ff00ff';
 export const MINE_DEPTH = 1;
+
+// ── Missile Launcher ─────────────────────────────────
+export const MISSILE_LAUNCHER_SHAPE: Vector2[] = [
+  { x: -0.6, y: -0.35 },
+  { x: 0.4, y: -0.25 },
+  { x: 0.7, y: 0 },
+  { x: 0.4, y: 0.25 },
+  { x: -0.6, y: 0.35 },
+].map(v => scale(v, 2));
+
+export const MISSILE_LAUNCHER_MOUNT_OFFSET: Vector2 = { x: 0, y: 0 };
+export const MISSILE_LAUNCHER_FILL = '#2a0a0a';
+export const MISSILE_LAUNCHER_BORDER = '#ff4400';
+export const MISSILE_LAUNCHER_DEPTH = 4;
+export const MISSILE_LAUNCHER_AMMO = 3;
+
+// ── Missile Projectile ───────────────────────────────
+export const MISSILE_LENGTH = 1.2;
+export const MISSILE_WIDTH = 0.3;
+export const MISSILE_SPEED = 1;
+export const MISSILE_LIFETIME = 8;
+export const MISSILE_DAMAGE = 30;
+export const MISSILE_IMPULSE = 15000;
+export const MISSILE_FILL = '#ff2200';
+export const MISSILE_BORDER = '#ff8800';
+export const MISSILE_DEPTH = 5;
+export const MISSILE_HOMING_FORCE = 300;
+export const MISSILE_THRUST_FORCE = 200;
+export const MISSILE_HOMING_RANGE = 80;
+export const MISSILE_HOMING_FOV = Math.PI * 0.75; // 135° cone

@@ -58,6 +58,7 @@ import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireS
 import { ProjectileFactory } from './game/state/entities/Factories/ProjectileFactories/ProjectileFactory';
 import { LifeSpanSystem } from './game/systems/LifeSpanSystem';
 import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
+import { HomingMissileSystem } from './game/systems/WeaponSystems/HomingMissileSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
 import { FrontWheelSteeringSystem } from './game/systems/CarSystems/FrontWheelSteeringSystem';
 
@@ -125,6 +126,7 @@ const systems = [
     new WeaponPickupSystem(),
     new WeaponMountSyncSystem(),
     new AmmoBasedFireSystem(new ProjectileFactory()),
+    new HomingMissileSystem(),
     new LifeSpanSystem(),
     new DamagingCollisionSystem(),
     new PlatformProgressionSystem(),
