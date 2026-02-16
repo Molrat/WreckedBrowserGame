@@ -1,5 +1,9 @@
 import { scale, Vector2 } from "@/math/Vector2";
 
+// ── General ─────────────────────────────────────
+export const SPIN_ON_HIT_MULTIPLIER = 3; // Increase this for more dramatic spins when hit by a projectile
+
+// ── Laser Cannon ─────────────────────────────────────
 export const LASER_CANNON_SHAPE: Vector2[] = [
   { x: -0.5, y: -0.3 },
   { x: 0.5, y: -0.2 },
@@ -13,6 +17,7 @@ export const LASER_CANNON_FILL = '#0a2a4a';
 export const LASER_CANNON_BORDER = '#00ffff';
 export const LASER_CANNON_DEPTH = 4;
 
+// ── Laser Beam ─────────────────────────────────────
 export const LASER_BEAM_LENGTH = 50;
 export const LASER_BEAM_WIDTH = 0.2;
 export const LASER_BEAM_SPEED = 300; // m/s
@@ -107,8 +112,8 @@ export const MISSILE_LAUNCHER_DEPTH = 4;
 export const MISSILE_LAUNCHER_AMMO = 3;
 
 // ── Missile Projectile ───────────────────────────────
-export const MISSILE_LENGTH = 1.2;
-export const MISSILE_WIDTH = 0.3;
+export const MISSILE_LENGTH = 2;
+export const MISSILE_WIDTH = 0.6;
 export const MISSILE_SPEED = 1;
 export const MISSILE_LIFETIME = 8;
 export const MISSILE_DAMAGE = 30;

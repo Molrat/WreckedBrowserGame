@@ -9,6 +9,7 @@ import { Identifiable } from "@/game/state/components/Identifiable";
 import { detectPolygonCollision } from "@/math/collision/detectPolygonCollision";
 import { transformPolygonToWorld } from "@/math/collision/transformPolygon";
 import { angleToUnitVector, scale, rotate, subtract, length, normalize } from "@/math/Vector2";
+import { SPIN_ON_HIT_MULTIPLIER } from "@/game/config/weaponConstants";
 
 export class DamagingCollisionSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -59,7 +60,8 @@ export class DamagingCollisionSystem implements ISystem {
       subtract(manifold.contactPoint, target.position),
       -target.orientation
     );
-    target.impulses.push({ impulse, localContactPoint: contactLocal });
+    const scaledContactLocal = scale(contactLocal, SPIN_ON_HIT_MULTIPLIER); // More dramatic spins!!
+    target.impulses.push({ impulse, localContactPoint: scaledContactLocal });
     eventBus.emit({
       type: 'HitByProjectile',
       position: manifold.contactPoint,

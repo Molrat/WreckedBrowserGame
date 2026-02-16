@@ -59,7 +59,7 @@ import { LifeSpanSystem } from './game/systems/LifeSpanSystem';
 import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCollisionSystem';
 import { HomingMissileSystem } from './game/systems/WeaponSystems/HomingMissileSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
-import { FrontWheelSteeringSystem } from './game/systems/CarSystems/FrontWheelSteeringSystem';
+import { FrontWheelEntitySteeringSystem } from './game/systems/CarSystems/FrontWheelEntitySteeringSystem';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -117,7 +117,7 @@ const systems = [
     new RoundStartSystem(),
     new CameraSystem(CAMERA_CONSTANTS),
     carControlSystem,
-    new FrontWheelSteeringSystem(),
+    new FrontWheelEntitySteeringSystem(),
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
     new MovementSystem(),

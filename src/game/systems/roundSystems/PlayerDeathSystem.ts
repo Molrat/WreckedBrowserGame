@@ -2,6 +2,8 @@ import type { GameState } from '@/game/state/GameState';
 import type { ISystem } from '@/game/systems/ISystem';
 import type { EventBus } from '@/game/events/EventBus';
 import { isPlayer } from '@/game/queries/Player/isPlayer';
+import { isMountable } from '@/game/queries/Mountable/isMountable';
+import { isFrontWheel as isWheel } from '@/game/queries/Mountable/isWheel';
 
 const PLACEMENT_POINTS = [6, 3, 1, 0];
 
@@ -33,6 +35,7 @@ export class PlayerDeathSystem implements ISystem {
       // Move to deadEntities
       state.entities.splice(i, 1);
       state.deadEntities.push(entity);
+      this.removeMountables(state, entity.id);
       nextPlacement--;
     }
 
@@ -63,6 +66,18 @@ export class PlayerDeathSystem implements ISystem {
       const roundPoints = PLACEMENT_POINTS[pointsIndex] ?? 0;
       entity.score += roundPoints;
       entity.roundScores.push(roundPoints);
+    }
+  }
+
+  private removeMountables(state: GameState, playerId: string): void {
+    for (let i = state.entities.length - 1; i >= 0; i--) {
+      const e = state.entities[i];
+      if (!isMountable(e)) continue;
+      if (e.mountedOnPlayerId !== playerId) continue;
+      state.entities.splice(i, 1);
+      if (isWheel(e)) {
+        state.deadEntities.push(e);
+      }
     }
   }
 }

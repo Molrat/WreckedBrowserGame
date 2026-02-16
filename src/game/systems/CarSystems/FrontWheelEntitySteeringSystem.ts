@@ -1,10 +1,10 @@
 import { ISystem } from '@/game/systems/ISystem';
 import { GameState } from '@/game/state/GameState';
 import { EventBus } from '@/game/events/EventBus';
-import { isFrontWheel } from '@/game/queries/FrontWheel/isFrontWheel';
+import { isFrontWheel } from '@/game/queries/Mountable/isFrontWheel';
 import { isWithCarPhysics } from '@/game/queries/WithCarPhysics/isWithCarPhysics';
 
-export class FrontWheelSteeringSystem implements ISystem {
+export class FrontWheelEntitySteeringSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
 
