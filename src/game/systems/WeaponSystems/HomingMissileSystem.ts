@@ -3,11 +3,13 @@ import { GameState } from '@/game/state/GameState';
 import { EventBus } from '@/game/events/EventBus';
 import { isHomingProjectile } from '@/game/queries/HomingProjectile/isHomingProjectile';
 import { isPlayer } from '@/game/queries/Player/isPlayer';
-import { subtract, normalize, scale, dotProduct, angleToUnitVector, length, perpendicular, velocityToAngle } from '@/math/Vector2';
+import { subtract, normalize, scale, dotProduct, angleToUnitVector, length, perpendicular, velocityToAngle, add } from '@/math/Vector2';
+import { estimateInterceptTime } from '@/math/estimateInterceptTime';
 import { MISSILE_HOMING_FORCE, MISSILE_HOMING_RANGE, MISSILE_HOMING_FOV, MISSILE_THRUST_FORCE } from '@/game/config/weaponConstants';
 import { IHomingProjectile } from '@/game/queries/HomingProjectile/IHomingProjectile';
 import { Identifiable } from '@/game/state/components/Identifiable';
 import { Positionable } from '@/game/state/components/Positionable';
+import { Movable } from '@/game/state/components/Movable';
 
 export class HomingMissileSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -26,11 +28,11 @@ export class HomingMissileSystem implements ISystem {
 
   private findTarget(
     missile: Identifiable & IHomingProjectile,
-    players: (Identifiable & Positionable)[]
-  ): (Identifiable & Positionable) | undefined {
+    players: (Identifiable & Positionable & Movable)[]
+  ): (Identifiable & Positionable & Movable) | undefined {
     const forward = angleToUnitVector(missile.orientation);
     let bestDist = MISSILE_HOMING_RANGE;
-    let bestTarget: (Identifiable & Positionable) | undefined;
+    let bestTarget: (Identifiable & Positionable & Movable) | undefined;
 
     for (const player of players) {
       if (player.id === missile.ownerPlayerId) continue;
@@ -56,12 +58,23 @@ export class HomingMissileSystem implements ISystem {
 
   private steerToward(
     missile: Identifiable & IHomingProjectile,
-    target: Positionable
+    target: Positionable & Movable
   ): void {
+    const toTarget = subtract(target.position, missile.position);
+    const dist = length(toTarget);
+    if (dist < 0.01) return;
+
+    const dir = normalize(toTarget);
+    const missileSpeed = length(missile.velocity);
+    const targetRecession = dotProduct(target.velocity, dir);
+    const accel = MISSILE_THRUST_FORCE / missile.mass;
+    const t = estimateInterceptTime(dist, targetRecession, missileSpeed, accel);
+
+    const predictedPos = add(target.position, scale(target.velocity, t));
+    const toPredicted = normalize(subtract(predictedPos, missile.position));
     const forward = angleToUnitVector(missile.orientation);
     const sideways = perpendicular(forward);
-    const toTarget = normalize(subtract(target.position, missile.position));
-    const lateralComponent = dotProduct(toTarget, sideways);
+    const lateralComponent = dotProduct(toPredicted, sideways);
     const steerForce = scale(sideways, lateralComponent * MISSILE_HOMING_FORCE);
     missile.forces.push({ force: steerForce, localContactPoint: { x: 0, y: 0 } });
   }
