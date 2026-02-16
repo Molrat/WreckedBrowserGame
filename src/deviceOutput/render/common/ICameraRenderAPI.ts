@@ -13,6 +13,7 @@ export interface ICameraRenderAPI {
 
   drawGrid(step: number, strokeStyle?: string, lineWidth?: number): void;
   drawLine(point1: Vector2, point2: Vector2, strokeStyle?: string, lineWidth?: number): void;
+  drawLineSequence(points: Vector2[], strokeStyle: string, lineWidth: number, usePixelCoords: boolean): void;
   drawArrow(point1: Vector2, point2: Vector2, color?: string, lineWidth?: number): void;
   drawPolygon(obj: IRenderable): void;
   drawText(text: string, position: Vector2, color?: string, font?: string): void;

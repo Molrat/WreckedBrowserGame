@@ -11,7 +11,7 @@ export class WheelForcesRenderer implements IRenderer {
   private readonly forceHistory: Map<string, WheelForces[]> = new Map();
 
   render(state: GameState, draw: ICameraRenderAPI): void {
-    if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null)) return;
+    if (!(state.ui.openMenu === null)) return;
     const d = draw;
     const cars = state.entities.filter(isWithCarPhysics);
     for (const car of cars) {

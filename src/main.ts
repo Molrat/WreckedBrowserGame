@@ -4,7 +4,7 @@ import { DisconnectCheckSystem } from '@/game/systems/gamePadSystems/DisconnectC
 import { PlayerJoinedEffectRenderer } from '@/deviceOutput/render/effects/PlayerJoinedEffectRenderer';
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerReadyEffectRenderer';
 import { PlayerDeathEffectRenderer } from '@/deviceOutput/render/effects/deathExplosion/PlayerDeathEffectRenderer';
-import { ControllerTestBackgroundRenderer } from '@/deviceOutput/render/gameState/world/ControllerTestBackgroundRenderer';
+import { WorldBackgroundRenderer } from '@/deviceOutput/render/gameState/world/WorldBackgroundRenderer';
 import { DepthSortedRenderer } from '@/deviceOutput/render/gameState/world/DepthSortedRenderer';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
@@ -16,7 +16,6 @@ import { StateInitializer } from '@/game/state/StateInitializer';
 import { SetPreviousButtonsSystem } from '@/game/systems/gamePadSystems/SetPreviousButtonsSystem';
 import { ReconnectControllerRenderer } from '@/deviceOutput/render/gameState/ui/ReconnectControllerRenderer';
 import { StartMenuRenderer } from '@/deviceOutput/render/gameState/ui/StartMenuRenderer';
-import { SpeedometerRenderer } from '@/deviceOutput/render/gameState/ui/SpeedometerRenderer';
 import { CameraRenderAPI } from '@/deviceOutput/render/common/CameraRenderAPI';
 import { ScreenRenderAPI } from '@/deviceOutput/render/common/ScreenRenderAPI';
 import { AspectRatioInjector } from '@/deviceInput/windowInput/AspectRatioInjector';
@@ -139,7 +138,7 @@ const systems = [
 // DEVICE OUTPUT: Renderers, Effects, SoundPlayers
 // DepthSortedRenderer handles both polygons and text, sorted by depth
 const gameStateRenderers = [
-    new ControllerTestBackgroundRenderer(),
+    new WorldBackgroundRenderer(),
     new DepthSortedRenderer(),  // platforms (0) → platform text (1) → players (2) → tires (3)
     //new WheelForcesRenderer(),
 ];
@@ -150,7 +149,6 @@ const screenRenderers = [
     new StartMenuRenderer(),
     new InbetweenLevelsMenuRenderer(),
     new EndOfGameMenuRenderer(),
-    new SpeedometerRenderer(),
 ];
 
 // Effect renderers only take events from the bus as input, such as "player joined"

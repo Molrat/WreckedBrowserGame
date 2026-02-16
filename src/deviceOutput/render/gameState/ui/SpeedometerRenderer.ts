@@ -7,7 +7,7 @@ import { length } from "@/math/Vector2";
 export class SpeedometerRenderer implements IScreenRenderer {
 
   render(state: GameState, draw: IScreenRenderAPI): void {
-    if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null || state.ui.openMenu === 'start')) return;
+    if (!(state.ui.openMenu === null || state.ui.openMenu === 'start')) return;
     const cars = state.entities.filter(isWithCarPhysics);
     if (cars.length === 0) return;
 

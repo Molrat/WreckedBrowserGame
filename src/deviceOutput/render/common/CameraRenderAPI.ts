@@ -79,6 +79,11 @@ export class CameraRenderAPI implements ICameraRenderAPI {
     LineDrawer.drawArrow(this.ctx, p1, p2, color, lineWidth);
   }
 
+  drawLineSequence(points: Vector2[], strokeStyle: string, lineWidth: number, usePixelCoords: boolean = false): void {
+    const pixelPoints = usePixelCoords ? points : points.map(p => this.toPixelVector(p));
+    LineDrawer.strokeLineSequence(this.ctx, pixelPoints, strokeStyle, lineWidth);
+  }
+
   drawGrid(stepMeters: number, strokeStyle?: string, lineWidth?: number): void {
     const s = this.scale();
     const stepPixels = stepMeters * s;

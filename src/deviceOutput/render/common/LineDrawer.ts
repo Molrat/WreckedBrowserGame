@@ -74,6 +74,25 @@ export class LineDrawer {
     ctx.stroke();
   }
 
+  static strokeLineSequence(
+    ctx: CanvasRenderingContext2D,
+    points: Vector2[],
+    strokeStyle: string,
+    lineWidth: number
+  ): void {
+    if (points.length < 2) return;
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+  }
+
   static strokeLine(
     ctx: CanvasRenderingContext2D,
     point1: Vector2,

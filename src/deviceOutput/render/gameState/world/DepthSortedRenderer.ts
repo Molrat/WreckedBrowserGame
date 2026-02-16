@@ -12,7 +12,7 @@ type RenderItem =
 
 export class DepthSortedRenderer implements IRenderer {
   render(state: GameState, draw: ICameraRenderAPI): void {
-    if (!(state.ui.openMenu === 'controllerTest' || state.ui.openMenu === null)) return;
+    if (!(state.ui.openMenu === null)) return;
 
     const items: RenderItem[] = [];
 
