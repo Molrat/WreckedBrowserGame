@@ -8,6 +8,7 @@ export interface IProjectileFactory {
     position: Vector2,
     orientation: number,
     ownerPlayerId: string,
-    playerVelocity: Vector2
+    playerVelocity: Vector2,
+    gameTime: number
   ): Projectile;
 }

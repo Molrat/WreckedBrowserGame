@@ -114,7 +114,7 @@ export const MISSILE_LAUNCHER_AMMO = 3;
 // ── Missile Projectile ───────────────────────────────
 export const MISSILE_LENGTH = 2;
 export const MISSILE_WIDTH = 0.6;
-export const MISSILE_SPEED = 1;
+export const MISSILE_SPEED = 0;
 export const MISSILE_LIFETIME = 8;
 export const MISSILE_DAMAGE = 30;
 export const MISSILE_IMPULSE = 15000;
@@ -125,3 +125,5 @@ export const MISSILE_HOMING_FORCE = 400;
 export const MISSILE_THRUST_FORCE = 100;
 export const MISSILE_HOMING_RANGE = 80;
 export const MISSILE_HOMING_FOV = Math.PI * 0.75; // 135° cone
+export const MISSILE_LAUNCH_IMPULSE = 50;
+export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate

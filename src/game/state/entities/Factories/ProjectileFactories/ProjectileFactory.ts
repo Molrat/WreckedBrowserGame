@@ -13,7 +13,8 @@ export class ProjectileFactory implements IProjectileFactory {
     position: Vector2,
     orientation: number,
     ownerPlayerId: string,
-    playerVelocity: Vector2
+    playerVelocity: Vector2,
+    gameTime: number
   ): Projectile {
     switch (type) {
       case 'laserBeam':
@@ -23,7 +24,7 @@ export class ProjectileFactory implements IProjectileFactory {
       case 'mine':
         return createMine(position, orientation, ownerPlayerId);
       case 'missile':
-        return createMissile(position, orientation, ownerPlayerId, playerVelocity);
+        return createMissile(position, orientation, ownerPlayerId, playerVelocity, gameTime);
     }
   }
 }

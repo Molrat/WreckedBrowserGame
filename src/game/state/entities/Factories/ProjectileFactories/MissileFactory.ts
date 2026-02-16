@@ -11,20 +11,24 @@ import {
   MISSILE_FILL,
   MISSILE_BORDER,
   MISSILE_DEPTH,
+  MISSILE_LAUNCH_IMPULSE,
 } from "@/game/config/weaponConstants";
 
 export function createMissile(
   position: Vector2,
   orientation: number,
   ownerPlayerId: string,
-  playerVelocity: Vector2
+  playerVelocity: Vector2,
+  spawnTime: number
 ): Projectile & HeatSeaking {
   const halfL = MISSILE_LENGTH / 2;
   const halfW = MISSILE_WIDTH / 2;
   const velocity = add(playerVelocity, scale(angleToUnitVector(orientation), MISSILE_SPEED));
+  const launchImpulse = scale(angleToUnitVector(orientation), MISSILE_LAUNCH_IMPULSE);
 
   return {
     isHeatSeeking: true,
+    spawnTime,
     id: nextId(),
     health: 1,
     maxHealth: 1,
@@ -35,7 +39,7 @@ export function createMissile(
     mass: 5,
     momentOfInertia: 2,
     forces: [],
-    impulses: [],
+    impulses: [{ impulse: launchImpulse, localContactPoint: { x: 0, y: 0 } }],
     shape: [
       { x: -halfL, y: -halfW },
       { x: halfL * 0.5, y: -halfW },

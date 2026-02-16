@@ -9,4 +9,5 @@ export type Projectile = Identifiable & Physical & Movable & Damaging & Damageab
 
 export type HeatSeaking = {
   isHeatSeeking: true;
+  spawnTime: number;
 }

@@ -61,7 +61,7 @@ export class AmmoBasedFireSystem implements ISystem {
       rotate(weapon.relativePosition, player.orientation)
     );
     const projectile = this.projectileFactory.create(
-      weapon.projectileType, origin, weapon.orientation, player.id, player.velocity
+      weapon.projectileType, origin, weapon.orientation, player.id, player.velocity, state.time.total
     );
     state.entities.push(projectile);
     weapon.currentAmmo -= 1;
