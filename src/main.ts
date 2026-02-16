@@ -6,7 +6,10 @@ import { PlayerReadyEffectRenderer } from '@/deviceOutput/render/effects/PlayerR
 import { PlayerDeathEffectRenderer } from '@/deviceOutput/render/effects/deathExplosion/PlayerDeathEffectRenderer';
 import { WorldBackgroundRenderer } from '@/deviceOutput/render/gameState/world/WorldBackgroundRenderer';
 import { DepthSortedRenderer } from '@/deviceOutput/render/gameState/world/DepthSortedRenderer';
+import { AudioCache } from '@/deviceOutput/soundPlayers/AudioCache';
 import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/StartMenuSoundPlayer';
+import { WeaponSoundPlayer } from '@/deviceOutput/soundPlayers/WeaponSoundPlayer';
+import { GameplaySoundPlayer } from '@/deviceOutput/soundPlayers/GameplaySoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
 import { BrowserGamepadProvider as FourPlayerGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/BrowserGamepadProvider';
 import { WebHIDGamepadProvider as EightPlayerGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/WebHIDGamepadProvider/WebHIDGamepadProvider';
@@ -160,8 +163,11 @@ const effectRenderers = [
 ];
 
 // Sound players only take events from the bus as input
+const audioCache = new AudioCache();
 const soundPlayers = [
-    new StartMenuSoundPlayer(),
+    new StartMenuSoundPlayer(audioCache),
+    new WeaponSoundPlayer(audioCache),
+    new GameplaySoundPlayer(audioCache),
 ];
 
 // Game loop triggers each frame: input injection -> gamestate update ->gamestate rendering -> effect rendering -> sound playing 

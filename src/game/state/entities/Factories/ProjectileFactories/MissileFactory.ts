@@ -55,6 +55,7 @@ export function createMissile(
     ownerPlayerId,
     impulseMagnitude: MISSILE_IMPULSE,
     destroyOnHit: true,
+    projectileType: 'missile',
     lifetime: MISSILE_LIFETIME,
     maxLifetime: MISSILE_LIFETIME,
     fades: false,

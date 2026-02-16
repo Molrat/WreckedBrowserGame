@@ -1,34 +1,25 @@
 import { ISoundPlayer } from "./ISoundPlayer";
 import { GameEvent } from "../../game/events/eventTypes/GameEvent";
-import joinUrl from "../../assets/sounds/playerJoined.mp3";
-import readyUrl from "../../assets/sounds/playerReady.mp3";
+import { AudioCache } from "./AudioCache";
 
 export class StartMenuSoundPlayer implements ISoundPlayer {
-  private joinAudio: HTMLAudioElement;
-  private readyAudio: HTMLAudioElement;
-
-  constructor() {
-    this.joinAudio = new Audio(joinUrl);
-    this.readyAudio = new Audio(readyUrl);
-    this.joinAudio.preload = 'auto';
-    this.readyAudio.preload = 'auto';
-    this.joinAudio.volume = 0.8;
-    this.readyAudio.volume = 0.8;
-  }
+  constructor(private audioCache: AudioCache) {}
 
   play(events: GameEvent[]): void {
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerJoined') {
-        this.tryPlay(this.joinAudio);
+        this.tryPlay('player_joined', 0.8);
       } else if (ev.type === 'StartMenuPlayerReady') {
-        this.tryPlay(this.readyAudio);
+        this.tryPlay('player_ready', 0.8);
       }
     }
   }
 
-  private tryPlay(audio: HTMLAudioElement) {
+  private tryPlay(key: string, volume: number): void {
+    const audio = this.audioCache.get(key);
     try {
       audio.currentTime = 0;
+      audio.volume = volume;
       void audio.play();
     } catch {
       // Ignore autoplay errors; user interaction will allow subsequent plays

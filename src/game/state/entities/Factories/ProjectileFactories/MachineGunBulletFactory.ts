@@ -47,6 +47,7 @@ export function createMachineGunBullet(
     ownerPlayerId,
     impulseMagnitude: BULLET_IMPULSE,
     destroyOnHit: true,
+    projectileType: 'machineGunBullet',
     lifetime: BULLET_LIFETIME,
     maxLifetime: BULLET_LIFETIME,
     fades: false,

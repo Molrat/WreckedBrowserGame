@@ -37,6 +37,7 @@ export function createMine(
     ownerPlayerId,
     impulseMagnitude: MINE_IMPULSE,
     destroyOnHit: true,
+    projectileType: 'mine',
     lifetime: MINE_LIFETIME,
     maxLifetime: MINE_LIFETIME,
     fades: false,

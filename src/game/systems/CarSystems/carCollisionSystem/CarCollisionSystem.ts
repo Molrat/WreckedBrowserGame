@@ -3,6 +3,7 @@ import { isCollidableCar } from "@/game/queries/CollidableCar/isCollidableCar";
 import { ICollidableCar } from "@/game/queries/CollidableCar/ICollidableCar";
 import { ICarCollisionComputer } from "./ICarCollisionComputer";
 import { ISystem } from "@/game/systems/ISystem";
+import { length } from "@/math/Vector2";
 import type { GameState } from "@/game/state/GameState";
 
 export class CarCollisionSystem implements ISystem {
@@ -12,12 +13,12 @@ export class CarCollisionSystem implements ISystem {
     const cars = state.entities.filter(isCollidableCar);
     for (let i = 0; i < cars.length; i++) {
       for (let j = i + 1; j < cars.length; j++) {
-        this.handlePair(cars[i], cars[j]);
+        this.handlePair(cars[i], cars[j], eventBus);
       }
     }
   }
 
-  private handlePair(carA: ICollidableCar, carB: ICollidableCar): void {
+  private handlePair(carA: ICollidableCar, carB: ICollidableCar, eventBus: EventBus): void {
     const manifold = this.collisionComputer.detectCollision(carA, carB);
     if (!manifold) return;
 
@@ -27,6 +28,11 @@ export class CarCollisionSystem implements ISystem {
       carB.impulses.push({ impulse: result.impulseOnB, localContactPoint: result.contactPointLocalB });
       carA.health = Math.max(0, carA.health - result.carADamage);
       carB.health = Math.max(0, carB.health - result.carBDamage);
+      eventBus.emit({
+        type: 'CarCollision',
+        position: { x: manifold.contactPoint.x, y: manifold.contactPoint.y },
+        impulseMagnitude: length(result.impulseOnA),
+      });
     }
 
     this.separateCars(carA, carB, manifold.normal, manifold.penetration);

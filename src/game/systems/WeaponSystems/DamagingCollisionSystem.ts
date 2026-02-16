@@ -64,6 +64,7 @@ export class DamagingCollisionSystem implements ISystem {
     target.impulses.push({ impulse, localContactPoint: scaledContactLocal });
     eventBus.emit({
       type: 'HitByProjectile',
+      projectileType: dmg.projectileType,
       position: manifold.contactPoint,
       color: dmg.borderColor ?? target.borderColor ?? '#ff0000',
       damage: dmg.damage

@@ -18,7 +18,7 @@ export class WeaponPickupSystem implements ISystem {
 
     for (const player of players) {
       if (this.playerHasWeapon(weapons, player.id)) continue;
-      this.tryPickup(groundWeapons, player);
+      this.tryPickup(_eventBus, groundWeapons, player);
     }
   }
 
@@ -30,6 +30,7 @@ export class WeaponPickupSystem implements ISystem {
   }
 
   private tryPickup(
+    eventBus: EventBus,
     groundWeapons: (Identifiable & IMountablePhysical)[],
     player: IPlayer
   ): void {
@@ -42,6 +43,10 @@ export class WeaponPickupSystem implements ISystem {
       );
       if (detectPolygonCollision(playerPoly, weaponPoly)) {
         weapon.mountedOnPlayerId = player.id;
+        eventBus.emit({
+          type: 'WeaponPickup',
+          position: { x: weapon.position.x, y: weapon.position.y },
+        });
         return;
       }
     }

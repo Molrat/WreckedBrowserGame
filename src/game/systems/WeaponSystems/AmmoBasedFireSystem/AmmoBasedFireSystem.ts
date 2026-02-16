@@ -64,6 +64,11 @@ export class AmmoBasedFireSystem implements ISystem {
       weapon.projectileType, origin, weapon.orientation, player.id, player.velocity, state.time.total
     );
     state.entities.push(projectile);
+    eventBus.emit({
+      type: 'ProjectileFired',
+      projectileType: weapon.projectileType,
+      position: { x: origin.x, y: origin.y },
+    });
     weapon.currentAmmo -= 1;
     if (weapon.fireRate !== null) {
       weapon.fireCooldown = 1 / weapon.fireRate;
