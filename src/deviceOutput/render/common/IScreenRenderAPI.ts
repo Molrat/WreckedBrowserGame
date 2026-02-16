@@ -14,4 +14,5 @@ export interface IScreenRenderAPI {
   drawArrow(point1: Vector2, point2: Vector2, color?: string, lineWidth?: number): void;
   drawPolygon(obj: IRenderable): void;
   drawText(text: string, position: Vector2, color?: string, font?: string): void;
+  drawCenteredText(text: string, position: Vector2, color: string, font: string): void;
 }

@@ -63,6 +63,8 @@ import { DamagingCollisionSystem } from './game/systems/WeaponSystems/DamagingCo
 import { HomingMissileSystem } from './game/systems/WeaponSystems/HomingMissileSystem';
 import { WeaponFireEffectRenderer } from './deviceOutput/render/effects/weaponFire/WeaponFireEffectRenderer';
 import { FrontWheelEntitySteeringSystem } from './game/systems/CarSystems/FrontWheelEntitySteeringSystem';
+import { CountdownSystem } from './game/systems/roundSystems/CountdownSystem';
+import { CountdownRenderer } from './deviceOutput/render/gameState/ui/CountdownRenderer';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -118,6 +120,7 @@ const systems = [
     new AssignButtonsToPlayerSystem(),
     new DisconnectCheckSystem(),
     new RoundStartSystem(),
+    new CountdownSystem(),
     new CameraSystem(CAMERA_CONSTANTS),
     carControlSystem,
     new FrontWheelEntitySteeringSystem(),
@@ -152,6 +155,7 @@ const screenRenderers = [
     new StartMenuRenderer(),
     new InbetweenLevelsMenuRenderer(),
     new EndOfGameMenuRenderer(),
+    new CountdownRenderer(),
 ];
 
 // Effect renderers only take events from the bus as input, such as "player joined"

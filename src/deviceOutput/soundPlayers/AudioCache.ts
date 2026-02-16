@@ -9,6 +9,8 @@ import collisionUrl from "@/assets/sounds/collision.flac";
 import mountUrl from "@/assets/sounds/mount.wav";
 import playerJoinedUrl from "@/assets/sounds/playerJoined.mp3";
 import playerReadyUrl from "@/assets/sounds/playerReady.mp3";
+import countDownUrl from "@/assets/sounds/count_down.wav";
+import countDownGoUrl from "@/assets/sounds/count_down_go.wav";
 
 export class AudioCache {
   private cache: Map<string, HTMLAudioElement> = new Map();
@@ -25,6 +27,8 @@ export class AudioCache {
     this.preloadSound('mount', mountUrl);
     this.preloadSound('player_joined', playerJoinedUrl);
     this.preloadSound('player_ready', playerReadyUrl);
+    this.preloadSound('count_down', countDownUrl);
+    this.preloadSound('count_down_go', countDownGoUrl);
   }
 
   private preloadSound(key: string, url: string): void {

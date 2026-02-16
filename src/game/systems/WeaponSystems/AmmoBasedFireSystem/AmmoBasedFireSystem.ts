@@ -16,6 +16,7 @@ export class AmmoBasedFireSystem implements ISystem {
 
   update(state: GameState, eventBus: EventBus, dt: number): void {
     if (state.ui.openMenu !== null) return;
+    if (state.ui.countdown !== null) return;
     const players = state.entities.filter(isPlayer);
     const weapons = state.entities.filter(isWeapon);
 

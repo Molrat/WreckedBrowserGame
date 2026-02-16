@@ -9,4 +9,5 @@ export type GameEvent =
 	| { type: 'ProjectileFired'; projectileType: ProjectileType; position: Vector2 }
 	| { type: 'HitByProjectile'; projectileType: ProjectileType; position: Vector2; color: string; damage: number }
 	| { type: 'CarCollision'; position: Vector2; impulseMagnitude: number }
-	| { type: 'WeaponPickup'; position: Vector2 };
+	| { type: 'WeaponPickup'; position: Vector2 }
+	| { type: 'CountdownTick'; step: number };

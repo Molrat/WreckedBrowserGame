@@ -9,6 +9,7 @@ export class CarControlSystem implements ISystem {
 
     constructor(private driveIntentComputer: IDriveIntentComputer, private carControlComputer: ICarControlComputer){}
     update(state: GameState, eventBus: EventBus, deltaTime: number): void {
+        if (state.ui.countdown !== null) return;
         const drivableEntities = state.entities.filter(isCarControllable);
         for (const car of drivableEntities) {
           const driveIntent = this.driveIntentComputer.compute(car);

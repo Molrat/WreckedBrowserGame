@@ -1,4 +1,5 @@
 import { StartMenuState } from "./StartMenuState";
+import { Countdown } from "./Countdown";
 
 export type MenuType = 'start' | 'pause' | 'reconnectControllerMenu' | 'inbetweenLevels' | 'endOfGame' | null;
 
@@ -10,4 +11,5 @@ export type UIState = {
   currentRound: number;     // 1-5
   maxRounds: number;        // 5
   highestPlatformWithSpawnedWeapon: number; // Track highest platform that has had a weapon spawned on it
+  countdown: Countdown | null;
 };

@@ -12,7 +12,11 @@ export class GameplaySoundPlayer implements ISoundPlayer {
       if (ev.type === 'CarCollision') {
         this.playCollision(ev.impulseMagnitude);
       } else if (ev.type === 'WeaponPickup') {
-        this.playOneShot(0.5);
+        this.playMount(0.5);
+      } else if (ev.type === 'PlayerDied') {
+        this.playExplosion(0.7);
+      } else if (ev.type === 'CountdownTick') {
+        this.playCountdown(ev.step);
       }
     }
   }
@@ -26,11 +30,27 @@ export class GameplaySoundPlayer implements ISoundPlayer {
     try { void audio.play(); } catch { /* autoplay blocked */ }
   }
 
-  private playOneShot(volume: number): void {
+  private playMount(volume: number): void {
     const audio = this.audioCache.get('mount');
     if (!audio.paused) return;
     audio.volume = volume;
     audio.currentTime = 0;
+    try { void audio.play(); } catch { /* autoplay blocked */ }
+  }
+
+  private playExplosion(volume: number): void {
+    const audio = this.audioCache.get('explosion');
+    if (!audio.paused) return;
+    audio.volume = volume;
+    audio.currentTime = 0;
+    try { void audio.play(); } catch { /* autoplay blocked */ }
+  }
+
+  private playCountdown(step: number): void {
+    const key = step > 0 ? 'count_down' : 'count_down_go';
+    const audio = this.audioCache.get(key);
+    audio.currentTime = 0;
+    audio.volume = 0.3;
     try { void audio.play(); } catch { /* autoplay blocked */ }
   }
 }

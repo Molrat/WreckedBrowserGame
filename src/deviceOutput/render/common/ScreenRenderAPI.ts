@@ -2,6 +2,7 @@ import { CanvasDrawer } from "./CanvasDrawer";
 import { LineDrawer } from "./LineDrawer";
 import { PixelPolygon, PolygonDrawer } from "./PolygonDrawer";
 import { TextDrawer } from "./TextDrawer";
+import { CenteredTextDrawer } from "./CenteredTextDrawer";
 import type { IRenderable } from "../../../game/queries/Renderable/IRenderable";
 import type { IScreenRenderAPI } from "./IScreenRenderAPI";
 import type { Vector2 } from "@/math/Vector2";
@@ -36,6 +37,10 @@ export class ScreenRenderAPI implements IScreenRenderAPI {
 
   drawText(text: string, position: Vector2, color?: string, font?: string): void {
     TextDrawer.draw(this.ctx, text, position, color, font);
+  }
+
+  drawCenteredText(text: string, position: Vector2, color: string, font: string): void {
+    CenteredTextDrawer.draw(this.ctx, text, position, color, font);
   }
 
   drawLine(point1: Vector2, point2: Vector2, strokeStyle?: string, lineWidth?: number): void {
