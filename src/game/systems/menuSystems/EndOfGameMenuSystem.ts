@@ -9,9 +9,16 @@ export class EndOfGameMenuSystem implements ISystem {
     if (state.ui.openMenu !== 'endOfGame') return;
 
     const players = state.entities.filter(isPlayer);
-    const allPlayersReady = players.every(p => 
-      p.currentGamepad.triangle && !p.previousGamepad.triangle
-    );
+
+    // Toggle ready state when triangle is pressed
+    for (const player of players) {
+      const justPressedTriangle = player.currentGamepad.triangle && !player.previousGamepad.triangle;
+      if (justPressedTriangle) {
+        player.readyForNextRound = !player.readyForNextRound;
+      }
+    }
+
+    const allPlayersReady = players.length > 0 && players.every(p => p.readyForNextRound);
 
     if (!allPlayersReady) return;
 
