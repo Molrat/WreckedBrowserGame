@@ -1,6 +1,6 @@
-import { ISoundPlayer } from "./eventBasedSounds/ISoundPlayer";
-import { GameEvent } from "../../game/events/eventTypes/GameEvent";
-import { AudioCache } from "./eventBasedSounds/AudioCache";
+import { ISoundPlayer } from "./ISoundPlayer";
+import { GameEvent } from "../../../game/events/eventTypes/GameEvent";
+import { AudioCache } from "./AudioCache";
 
 export class StartMenuSoundPlayer implements ISoundPlayer {
   constructor(private audioCache: AudioCache) {}

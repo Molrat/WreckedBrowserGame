@@ -1,15 +1,16 @@
 # experience
+[X] countdown with sound
 [ ] lighning storm outside platforms?
 [ ] sound effects
-  [ ] pick up weapon
-  [ ] weapon fired
-    [ ] drop mine
-    [ ] shoot laser
-    [ ] shoot machine gun
-    [ ] launch missile
-  [ ] projectile hit player
-    [ ] metal impact
-    [ ] explosive impact
+  [X] pick up weapon
+  [X] weapon fired
+    [X] drop mine
+    [X] shoot laser
+    [X] shoot machine gun
+    [X] launch missile
+  [X] projectile hit player
+    [X] metal impact
+    [X] explosive impact
   [ ] drifting?
   [ ] engine
   [ ] break

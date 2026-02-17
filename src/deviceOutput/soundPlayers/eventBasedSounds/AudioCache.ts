@@ -11,6 +11,9 @@ import playerJoinedUrl from "@/assets/sounds/playerJoined.mp3";
 import playerReadyUrl from "@/assets/sounds/playerReady.mp3";
 import countDownUrl from "@/assets/sounds/count_down.wav";
 import countDownGoUrl from "@/assets/sounds/count_down_go.wav";
+import targetLockUrl from "@/assets/sounds/target_lock.wav";
+import engineUrl from "@/assets/sounds/engine.wav";
+import engine2Url from "@/assets/sounds/engine_2.wav";
 
 export class AudioCache {
   private cache: Map<string, HTMLAudioElement> = new Map();
@@ -29,6 +32,9 @@ export class AudioCache {
     this.preloadSound('player_ready', playerReadyUrl);
     this.preloadSound('count_down', countDownUrl);
     this.preloadSound('count_down_go', countDownGoUrl);
+    this.preloadSound('target_lock', targetLockUrl);
+    this.preloadSound('engine', engineUrl);
+    this.preloadSound('engine_2', engine2Url);
   }
 
   private preloadSound(key: string, url: string): void {

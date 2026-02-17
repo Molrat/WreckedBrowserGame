@@ -2,12 +2,13 @@ import { EventBus } from '@/game/events/EventBus';
 import { IRenderer} from '@/deviceOutput/render/IRenderer';
 import { IScreenRenderer } from '@/deviceOutput/render/IScreenRenderer';
 import { IEffectRenderer } from '@/deviceOutput/render/effects/IEffectRenderer';
-import { ISoundPlayer } from '@/deviceOutput/soundPlayers/ISoundPlayer';
+import { ISoundPlayer } from '@/deviceOutput/soundPlayers/eventBasedSounds/ISoundPlayer';
 import { ISystem } from '@/game/systems/ISystem';
 import { IInputInjector } from '@/deviceInput/IInputInjector';
 import { GameState } from '@/game/state/GameState';
 import { ICameraRenderAPI } from '@/deviceOutput/render/common/ICameraRenderAPI';
 import { IScreenRenderAPI } from '@/deviceOutput/render/common/IScreenRenderAPI';
+import { IContinuousSoundPlayer } from '@/deviceOutput/soundPlayers/continuousSounds/IContinuousSoundPlayer';
 
 
 export class GameLoop {
@@ -23,7 +24,9 @@ export class GameLoop {
     private renderers: IRenderer[],
     private screenRenderers: IScreenRenderer[], 
     private effectRenderers: IEffectRenderer[], 
-    private soundPlayers: ISoundPlayer[]) {
+    private soundPlayers: ISoundPlayer[],
+    private stateSoundPlayers: IContinuousSoundPlayer[],
+  ) {
   }
 
   start() {
@@ -34,6 +37,7 @@ export class GameLoop {
       this.updateGameStateWithInput();
       this.updateGameState(dt);
       this.renderGameState();
+      this.manageContinuousSounds();
       this.eventHandling(); // visual effects and sounds
       requestAnimationFrame(tick);
     };
@@ -73,6 +77,12 @@ export class GameLoop {
     }
     for (const effect of this.effectRenderers) {
       effect.render(events);
+    }
+  }
+
+    private manageContinuousSounds() {
+    for (const sp of this.stateSoundPlayers) {
+      sp.play(this.gameState);
     }
   }
 }

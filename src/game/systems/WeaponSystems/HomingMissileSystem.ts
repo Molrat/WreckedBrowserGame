@@ -12,11 +12,12 @@ import { Positionable } from '@/game/state/components/Positionable';
 import { Movable } from '@/game/state/components/Movable';
 
 export class HomingMissileSystem implements ISystem {
+  private _previousTargets: Map<string, string> = new Map(); // missileId -> targetPlayerId
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
     const missiles = state.entities.filter(isHomingProjectile);
     const players = state.entities.filter(isPlayer);
-
+    let newMissileTargetPairs: Map<string, string> = new Map(); // [missileId, targetPlayerId]
     for (const missile of missiles) {
       missile.orientation = velocityToAngle(missile.velocity);
       const active = state.time.total - missile.spawnTime >= MISSILE_ACTIVATION_DELAY;
@@ -24,8 +25,13 @@ export class HomingMissileSystem implements ISystem {
       this.applyThrust(missile);
       const target = this.findTarget(missile, players);
       if (!target) continue;
+      if (this._previousTargets.get(missile.id) !== target.id) {
+        _eventBus.emit({ type: 'MissileLockOn', missileId: missile.id, targetId: target.id });
+      }
       this.steerToward(missile, target);
+      newMissileTargetPairs.set(missile.id, target.id);
     }
+    this._previousTargets = newMissileTargetPairs;
   }
 
   private findTarget(

@@ -19,6 +19,8 @@ export class WeaponSoundPlayer implements ISoundPlayer {
         this.playSound(weaponSoundKeys[ev.projectileType].fire);
       } else if (ev.type === 'HitByProjectile') {
         this.playSound(weaponSoundKeys[ev.projectileType].impact);
+      } else if (ev.type === 'MissileLockOn') {
+        this.playSound('target_lock');
       }
     }
   }

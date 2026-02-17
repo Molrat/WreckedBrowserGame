@@ -6,6 +6,7 @@ import { IDriveIntentComputer } from "@/game/systems/CarSystems/carControlSystem
 import { ICarControlComputer } from "@/game/systems/CarSystems/carControlSystem/drivIntentToCarStateComputer/ICarControlComputer";
 
 export class CarControlSystem implements ISystem {
+    private previousThrottle: Map<string, number> = new Map();
 
     constructor(private driveIntentComputer: IDriveIntentComputer, private carControlComputer: ICarControlComputer){}
     update(state: GameState, eventBus: EventBus, deltaTime: number): void {
@@ -16,6 +17,15 @@ export class CarControlSystem implements ISystem {
           const carControlState = this.carControlComputer.compute(car, driveIntent, deltaTime);
           const frontWheelAngle = -(carControlState.steeringWheelAngle / car.maxSteeringWheelAngle * car.maxSteeringAngle);
           car.frontWheelAngle = frontWheelAngle;
+          
+          const prevThrottle = this.previousThrottle.get(car.id) ?? 0;
+          const newThrottle = carControlState.throttle;
+          
+          if (prevThrottle < 0.9 && newThrottle >= 0.9) {
+            eventBus.emit({ type: 'EngineRevved', playerId: car.id });
+          }
+          
+          this.previousThrottle.set(car.id, newThrottle);
           Object.assign(car, carControlState);
         }
     }

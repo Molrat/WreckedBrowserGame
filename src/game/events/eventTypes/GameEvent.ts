@@ -10,4 +10,6 @@ export type GameEvent =
 	| { type: 'HitByProjectile'; projectileType: ProjectileType; position: Vector2; color: string; damage: number }
 	| { type: 'CarCollision'; position: Vector2; impulseMagnitude: number }
 	| { type: 'WeaponPickup'; position: Vector2 }
-	| { type: 'CountdownTick'; step: number };
+	| { type: 'CountdownTick'; step: number }
+	| { type: 'MissileLockOn'; missileId: string; targetId: string }
+	| { type: 'EngineRevved'; playerId: string };
