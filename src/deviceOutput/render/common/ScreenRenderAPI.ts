@@ -1,9 +1,11 @@
 import { CanvasDrawer } from "./CanvasDrawer";
+import { LinkDrawer } from "./LinkDrawer";
 import { LineDrawer } from "./LineDrawer";
 import { PixelPolygon, PolygonDrawer } from "./PolygonDrawer";
 import { TextDrawer } from "./TextDrawer";
 import { CenteredTextDrawer } from "./CenteredTextDrawer";
 import type { IRenderable } from "../../../game/queries/Renderable/IRenderable";
+import type { LinkRect } from "./LinkRect";
 import type { IScreenRenderAPI } from "./IScreenRenderAPI";
 import type { Vector2 } from "@/math/Vector2";
 
@@ -53,5 +55,9 @@ export class ScreenRenderAPI implements IScreenRenderAPI {
 
   drawGrid(step: number, strokeStyle?: string, lineWidth?: number): void {
     LineDrawer.drawGrid(this.ctx, step, strokeStyle, lineWidth);
+  }
+
+  drawLink(text: string, x: number, y: number, color: string, font: string): LinkRect {
+    return LinkDrawer.draw(this.ctx, text, x, y, color, font);
   }
 }

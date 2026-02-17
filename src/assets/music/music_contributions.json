@@ -1,0 +1,24 @@
+{
+  "songs" : [
+    {
+    "name": "Deus Ex Tempus",
+    "artist": "Trevor Lentz",
+    "url": "https://www.youtube.com/c/TrevorLentz"
+    },
+    {
+      "name": "Echoes of Eternity",
+      "artist": "Trevor Lentz",
+      "url": "https://www.youtube.com/c/TrevorLentz"
+    },
+    {
+      "name": "Well oiled, shiny oscillators",
+      "artist": "Viktor Kraus",
+      "url": "https://www.youtube.com/@Weltenmaler"
+    },
+    {
+      "name": "Brave Space Explorers",
+      "artist": "Viktor Kraus",
+      "url": "https://www.youtube.com/@AlexandrZhelanovsMusic"
+    }
+  ]
+}

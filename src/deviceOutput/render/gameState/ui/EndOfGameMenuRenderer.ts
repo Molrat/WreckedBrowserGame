@@ -52,7 +52,7 @@ export class EndOfGameMenuRenderer implements IScreenRenderer {
 
     sortedPlayers.forEach((player, index) => {
       const y = startY + (index + 1) * rowHeight;
-      const playerColor = player.fillColor ?? '#ffffff';
+      const playerColor = player.borderColor ?? player.fillColor ?? '#ffffff';
       const isReady = player.readyForNextRound;
 
       // Rank with medal color

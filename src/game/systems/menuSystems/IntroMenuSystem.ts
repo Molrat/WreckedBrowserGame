@@ -40,11 +40,6 @@ export class IntroMenuSystem implements ISystem {
       isButtonPressed = true;
     }
 
-    // Check if any mouse button was pressed
-    if (this.anyMousePressed) {
-      isButtonPressed = true;
-    }
-
     if (isButtonPressed) {
       state.ui.openMenu = 'start';
       this.anyKeyPressed = false;

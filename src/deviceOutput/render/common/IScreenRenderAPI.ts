@@ -1,4 +1,5 @@
 import type { IRenderable } from "../../../game/queries/Renderable/IRenderable";
+import type { LinkRect } from "./LinkRect";
 import type { Vector2 } from "../../../math/Vector2";
 
 // input is in screen pixel coordinates, no camera projection
@@ -15,4 +16,5 @@ export interface IScreenRenderAPI {
   drawPolygon(obj: IRenderable): void;
   drawText(text: string, position: Vector2, color?: string, font?: string): void;
   drawCenteredText(text: string, position: Vector2, color: string, font: string): void;
+  drawLink(text: string, x: number, y: number, color: string, font: string): LinkRect;
 }

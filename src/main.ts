@@ -70,6 +70,7 @@ import { CountdownSystem } from './game/systems/roundSystems/CountdownSystem';
 import { CountdownRenderer } from './deviceOutput/render/gameState/ui/CountdownRenderer';
 import { CarControlSoundPlayer } from './deviceOutput/soundPlayers/continuousSounds/CarControlSoundPlayer';
 import { IContinuousSoundPlayer } from './deviceOutput/soundPlayers/continuousSounds/IContinuousSoundPlayer';
+import { MusicPlayer } from './deviceOutput/soundPlayers/continuousSounds/MusicPlayer';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -183,6 +184,7 @@ const soundPlayers = [
 // Continuous sound players
 const continuousSoundPlayers: IContinuousSoundPlayer[] = [
     //new CarControlSoundPlayer(audioCache),
+    new MusicPlayer(),
 ];
 
 // Game loop triggers each frame: input injection -> gamestate update ->gamestate rendering -> effect rendering -> sound playing 
