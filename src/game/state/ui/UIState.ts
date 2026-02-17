@@ -1,7 +1,7 @@
 import { StartMenuState } from "./StartMenuState";
 import { Countdown } from "./Countdown";
 
-export type MenuType = 'start' | 'pause' | 'reconnectControllerMenu' | 'inbetweenLevels' | 'endOfGame' | null;
+export type MenuType = 'intro' | 'start' | 'pause' | 'reconnectControllerMenu' | 'inbetweenLevels' | 'endOfGame' | null;
 
 export type UIState = {
   openMenu: MenuType;

@@ -4,7 +4,7 @@ import { GameState } from "../../state/GameState";
 import { PlayerConnectionState } from "../../state/ui/StartMenuState";
 import { ISystem } from "../ISystem";
 
-export class ControllerSystemInStartMenu implements ISystem {
+export class StartMenuSystem implements ISystem {
 
     update(state: GameState, eventBus: EventBus, dt: number): void{
         if (state.ui.openMenu != 'start') 
@@ -16,6 +16,15 @@ export class ControllerSystemInStartMenu implements ISystem {
             return;
         }
 
+        // Calculate layout dimensions
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const rows = 2;
+        const cols = state.ui.startMenu.playerConnections.length / rows;
+        const pad = 20;
+        const rectW = (width - pad * (cols + 1)) / cols;
+        const rectH = (height - pad * (rows + 1) - 130) / rows;
+
         const s = state.ui.startMenu;
         const connections = s.playerConnections;
 
@@ -26,7 +35,7 @@ export class ControllerSystemInStartMenu implements ISystem {
             if (slot === -1) {
                 const previousCross = state.input.previousGamepads[index]?.cross || false;
                  if (controller.cross && !previousCross) {
-                    this.connectPlayer(connections, controller.id, eventBus);
+                    this.connectPlayer(connections, controller.id, eventBus, rectW, rectH);
                 }
             }
             // If found, check for ready
@@ -34,7 +43,7 @@ export class ControllerSystemInStartMenu implements ISystem {
                 if (connections[slot].status === 'joined') {
                     const previousTriangle = state.input.previousGamepads[index]?.triangle || false;
                     if (controller.triangle && !previousTriangle) {
-                        this.readyPlayer(connections[slot], slot, eventBus);
+                        this.readyPlayer(connections[slot], slot, eventBus, rectW, rectH);
                     }
                 }
             }
@@ -51,15 +60,26 @@ export class ControllerSystemInStartMenu implements ISystem {
         }
     }
 
-    private connectPlayer(connections: PlayerConnectionState[], controllerId: string, eventBus: EventBus){
-        const slot = connections.findIndex(pc => pc.status === 'notJoined');
-        connections[slot] = { status: 'joined', controllerId: controllerId };
-        eventBus.emit({ type: 'StartMenuPlayerJoined', slot });
+    private connectPlayer(connections: PlayerConnectionState[], controllerId: string, eventBus: EventBus, rectW: number, rectH: number){
+        const foundSlot = connections.findIndex(pc => pc.status === 'notJoined');
+        connections[foundSlot] = { status: 'joined', controllerId: controllerId };
+        const col = foundSlot % Math.ceil(connections.length / 2);
+        const row = Math.floor(foundSlot / Math.ceil(connections.length / 2));
+        const pad = 20;
+        const x = pad + col * (rectW + pad);
+        const y = 130 + pad + row * (rectH + pad);
+        eventBus.emit({ type: 'StartMenuPlayerJoined', slot: foundSlot, x, y, width: rectW, height: rectH });
     }
 
-    private readyPlayer(slot: PlayerConnectionState, slotIndex: number, eventBus: EventBus){
+    private readyPlayer(slot: PlayerConnectionState, slotIndex: number, eventBus: EventBus, rectW: number, rectH: number){
         slot.status = 'ready';
-        eventBus.emit({ type: 'StartMenuPlayerReady',  slot: slotIndex });
+        const cols = Math.ceil(4); // 8 players / 2 rows = 4 cols
+        const row = Math.floor(slotIndex / cols);
+        const col = slotIndex % cols;
+        const pad = 20;
+        const x = pad + col * (rectW + pad);
+        const y = 130 + pad + row * (rectH + pad);
+        eventBus.emit({ type: 'StartMenuPlayerReady', slot: slotIndex, x, y, width: rectW, height: rectH });
     }
 
     private checkAllReady(connections: PlayerConnectionState[]): boolean{

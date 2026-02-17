@@ -19,13 +19,14 @@ import { EventBus } from '@/game/events/EventBus';
 import { StateInitializer } from '@/game/state/StateInitializer';
 import { SetPreviousButtonsSystem } from '@/game/systems/gamePadSystems/SetPreviousButtonsSystem';
 import { ReconnectControllerRenderer } from '@/deviceOutput/render/gameState/ui/ReconnectControllerRenderer';
+import { IntroRenderer } from '@/deviceOutput/render/gameState/ui/IntroRenderer';
 import { StartMenuRenderer } from '@/deviceOutput/render/gameState/ui/StartMenuRenderer';
 import { CameraRenderAPI } from '@/deviceOutput/render/common/CameraRenderAPI';
 import { ScreenRenderAPI } from '@/deviceOutput/render/common/ScreenRenderAPI';
 import { AspectRatioInjector } from '@/deviceInput/windowInput/AspectRatioInjector';
 import { CameraSystem } from '@/game/systems/CameraSystem';
 import { CAMERA_CONSTANTS } from '@/deviceOutput/config/cameraConstants';
-import { ControllerSystemInStartMenu } from '@/game/systems/startMenu/ControllerSystemInStartMenu';
+import { StartMenuSystem } from '@/game/systems/menuSystems/StartMenuSystem';
 import { AssignButtonsToPlayerSystem } from '@/game/systems/gamePadSystems/AssignButtonsToPlayerSystem';
 import { CarControlSystem } from '@/game/systems/CarSystems/carControlSystem/CarControlSystem';
 import { DriveIntentComputer } from '@/game/systems/CarSystems/carControlSystem/driveIntentComputer/DriveIntentComputer';
@@ -46,6 +47,7 @@ import { PlatformProgressionSystem } from './game/systems/platformSystems/Platfo
 import { OffPlatformDamageSystem } from './game/systems/platformSystems/OffPlatformDamageSystem';
 import { PlayerDeathSystem } from './game/systems/roundSystems/PlayerDeathSystem';
 import { RoundStartSystem } from './game/systems/roundSystems/RoundStartSystem';
+import { IntroMenuSystem } from './game/systems/menuSystems/IntroMenuSystem';
 import { InbetweenLevelsMenuSystem } from './game/systems/menuSystems/InbetweenLevelsMenuSystem';
 import { EndOfGameMenuSystem } from './game/systems/menuSystems/EndOfGameMenuSystem';
 import { InbetweenLevelsMenuRenderer } from './deviceOutput/render/gameState/ui/InbetweenLevelsMenuRenderer';
@@ -117,7 +119,8 @@ const pacejkaModel = new PacejkaWheelForceComputer(PACEJKA_LONGITUDINAL, PACEJKA
 const simpleModel = new SimpleLocalWheelForceComputer();
 const carCollisionComputer = new SimpleCarCollisionComputer(COLLISION_CONFIG);
 const systems = [
-    new ControllerSystemInStartMenu(),
+    new IntroMenuSystem(),
+    new StartMenuSystem(),
     new InbetweenLevelsMenuSystem(),
     new EndOfGameMenuSystem(),
     new AssignButtonsToPlayerSystem(),
@@ -153,6 +156,7 @@ const gameStateRenderers = [
 
 // Screen renderers render in pixel coordinates (no camera projection)
 const screenRenderers = [
+    new IntroRenderer(),
     new ReconnectControllerRenderer(),
     new StartMenuRenderer(),
     new InbetweenLevelsMenuRenderer(),
@@ -174,7 +178,7 @@ const soundPlayers = [
     new StartMenuSoundPlayer(audioCache),
     new WeaponSoundPlayer(audioCache),
     new GameplaySoundPlayer(audioCache),
-    new CarSoundPlayer(audioCache),
+    //new CarSoundPlayer(audioCache),
 ];
 // Continuous sound players
 const continuousSoundPlayers: IContinuousSoundPlayer[] = [

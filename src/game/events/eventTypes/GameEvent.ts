@@ -2,8 +2,8 @@ import { Vector2 } from "@/math/Vector2";
 import { ProjectileType } from "@/game/state/components/ProjectileType";
 
 export type GameEvent =
-	| { type: 'StartMenuPlayerJoined'; slot: number }
-	| { type: 'StartMenuPlayerReady'; slot: number }
+	| { type: 'StartMenuPlayerJoined'; slot: number; x: number; y: number; width: number; height: number }
+	| { type: 'StartMenuPlayerReady'; slot: number; x: number; y: number; width: number; height: number }
 	| { type: 'PlayerDied'; playerId: string; placement: number; position: Vector2; color: string }
 	| { type: 'OutOfAmmo'; position: Vector2; color: string }
 	| { type: 'ProjectileFired'; projectileType: ProjectileType; position: Vector2 }

@@ -15,19 +15,12 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerReady') {
         const duration = 600; // ms
-        const e = { slot: ev.slot, startTime: now, duration };
+        const e = { slot: ev.slot, startTime: now, duration, x: ev.x, y: ev.y, width: ev.width, height: ev.height };
         (this.effectsState.readyEffects ??= []).push(e);
       }
     }
 
     const readyEffects = this.effectsState.readyEffects ?? [];
-    const cols = 4;
-    const rows = 2;
-    const pad = 20;
-    const width = draw.getWidth();
-    const height = draw.getHeight();
-    const rectW = (width - pad * (cols + 1)) / cols;
-    const rectH = (height - pad * (rows + 1)) / rows;
 
     const remaining: typeof readyEffects = [];
     for (const fx of readyEffects) {
@@ -37,25 +30,20 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
       }
       remaining.push(fx);
 
-      const col = fx.slot % cols;
-      const row = Math.floor(fx.slot / cols);
-      const x = pad + col * (rectW + pad);
-      const y = pad + row * (rectH + pad);
-
       const alpha = 1 - t;
       const thickness = 4 + Math.sin(t * Math.PI) * 4;
 
       // Stroke border with alpha
        const polygon: Vector2[] = [
             { x: 0, y: 0 },
-            { x: rectW, y: 0 },
-            { x: rectW, y: rectH },
-            { x: 0, y: rectH }
+            { x: fx.width, y: 0 },
+            { x: fx.width, y: fx.height },
+            { x: 0, y: fx.height }
         ];
         draw.drawPolygon(
             {
                 shape: polygon,
-                position: { x: x, y: y },
+                position: { x: fx.x, y: fx.y },
                 orientation: 0,
                 fillColor: `rgba(34, 197, 94, ${alpha * 0.2})`,
                 borderColor: `rgba(34, 197, 94, ${alpha})`,

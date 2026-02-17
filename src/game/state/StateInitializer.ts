@@ -6,10 +6,10 @@ export class StateInitializer {
       entities: [],
       deadEntities: [],
       ui: {
-        openMenu: 'start',
+        openMenu: 'intro',
         previousMenuBeforeDisconnect: null,
         startMenu:{
-          playerConnections: Array.from({ length: 8 }, () => ({ status: 'notJoined', controllerId: null }))
+          playerConnections: Array.from({ length: 4 }, () => ({ status: 'notJoined', controllerId: null }))
         },
         currentRound: 1,
         maxRounds: 5,
