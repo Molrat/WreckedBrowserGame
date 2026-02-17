@@ -18,10 +18,10 @@ export class IntroRenderer implements IScreenRenderer {
 
     // Draw title with neon glow effect
     const title = 'NEON-STRIKE';
-    const subtitle = 'Platform Racing';
+    const subtitle = 'CARMAGEDDON';
     
     NeonTextDrawer.drawNeonText(draw, title, titleX, titleY, '#ffffff', '#00ffff', 'bold 80px Arial, sans-serif');
-    NeonTextDrawer.drawNeonText(draw, subtitle, titleX, titleY + 90, '#ffffff', '#ff0080',  'bold 40px Arial, sans-serif');
+    NeonTextDrawer.drawNeonText(draw, subtitle, titleX, titleY + 90, '#ffffff', '#ff00ff',  'bold 40px Arial, sans-serif');
 
     // Blinking "Press any button" text
     const blinkSpeed = 2;

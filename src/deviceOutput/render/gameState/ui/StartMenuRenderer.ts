@@ -17,8 +17,8 @@ export class StartMenuRenderer implements IScreenRenderer {
         draw.fillBackground('#0a0a14');
 
         // Title
-        NeonTextDrawer.drawNeonText(draw, 'NEON-STRIKE', width / 2, 40, '#00ffff', '#ffffff', 'bold 48px Arial, sans-serif', 12.5, 7.5, 4);
-        NeonTextDrawer.drawNeonText(draw, 'Join Game', width / 2, 90, '#ff0080', '#ffffff', 'bold 32px Arial, sans-serif', 12.5, 7.5, 4);
+        NeonTextDrawer.drawNeonText(draw, 'NEON-STRIKE', width / 2, 40, '#ffffff',  '#00ffff', 'bold 48px Arial, sans-serif', 12.5, 7.5, 4);
+        NeonTextDrawer.drawNeonText(draw, 'CARMAGEDDON', width / 2, 90, '#ffffff','#ff00ff', 'bold 32px Arial, sans-serif', 12.5, 7.5, 4);
 
         const playernames = PLAYER_COLOR_PALETTE.map(c => c[1].toUpperCase());
         for (let i = 0; i < statuses.length; i++) {
@@ -26,7 +26,8 @@ export class StartMenuRenderer implements IScreenRenderer {
             const st = statuses[i];
 
             // Neon colors
-            const tileColor = st === 'ready' ? '#1cb800' : st === 'joined' ? PLAYER_COLOR_PALETTE[i][0] : '#1a0a2e';
+            const playerColor = PLAYER_COLOR_PALETTE[i][0];
+            const tileColor = st === 'ready' ? '#1cb800' : st === 'joined' ? playerColor : '#1a0a2e';
             const tileShape: Vector2[] = [
                 { x: 0, y: 0 },
                 { x: rectW, y: 0 },
@@ -43,10 +44,17 @@ export class StartMenuRenderer implements IScreenRenderer {
                 depth: 0,
             });
 
-            const label = st === 'notJoined' ? 'Press X' : st === 'joined' ? 'Press Δ' : 'READY!';
-            const textColor = st === 'ready' ? '#00ff00' : st === 'joined' ? '#00ffff' : '#666666';
-            NeonTextDrawer.drawNeonText(draw, `${playernames[i]}`, x + rectW / 2, y + rectH / 2 - 20, '#ffffff', '#ffffff', 'bold 28px Arial, sans-serif', 12.5, 7.5, 4);
-            NeonTextDrawer.drawNeonText(draw, label, x + rectW / 2, y + rectH / 2 + 20, textColor, '#ffffff', 'bold 16px Arial, sans-serif', 12.5, 7.5, 4);
+            const label = st === 'notJoined' ? 'Press X to join' : st === 'joined' ? 'Press Δ to start' : 'READY!';
+
+            if (st === 'notJoined') {
+                // Dark tile: bright neon text with glow
+                NeonTextDrawer.drawNeonText(draw, `${playernames[i]}`, x + rectW / 2, y + rectH / 2 - 20, '#ffffff', playerColor, 'bold 28px Arial, sans-serif', 10, 6, 3);
+                NeonTextDrawer.drawNeonText(draw, label, x + rectW / 2, y + rectH / 2 + 20, '#ffffff', '#ffffff', 'bold 14px Arial, sans-serif', 4, 2, 1);
+            } else {
+                // Bright tile: plain dark text
+                draw.drawCenteredText(`${playernames[i]}`, { x: x + rectW / 2, y: y + rectH / 2 - 20 }, '#111111', 'bold 28px Arial, sans-serif');
+                draw.drawCenteredText(label, { x: x + rectW / 2, y: y + rectH / 2 + 20 }, '#111111', 'bold 14px Arial, sans-serif');
+            }
         }
     }
 }
