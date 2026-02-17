@@ -20,8 +20,8 @@ export class IntroRenderer implements IScreenRenderer {
     const title = 'NEON-STRIKE';
     const subtitle = 'Platform Racing';
     
-    NeonTextDrawer.drawNeonText(draw, title, titleX, titleY, '#00ffff', 'bold 80px Arial, sans-serif');
-    NeonTextDrawer.drawNeonText(draw, subtitle, titleX, titleY + 90, '#ff0080', 'bold 40px Arial, sans-serif');
+    NeonTextDrawer.drawNeonText(draw, title, titleX, titleY, '#ffffff', '#00ffff', 'bold 80px Arial, sans-serif');
+    NeonTextDrawer.drawNeonText(draw, subtitle, titleX, titleY + 90, '#ffffff', '#ff0080',  'bold 40px Arial, sans-serif');
 
     // Blinking "Press any button" text
     const blinkSpeed = 2;
@@ -30,7 +30,7 @@ export class IntroRenderer implements IScreenRenderer {
 
     if (showText) {
       const promptY = height * 0.75;
-      NeonTextDrawer.drawNeonText(draw, 'PRESS ANY BUTTON TO CONTINUE', titleX, promptY, '#ff00ff', 'bold 24px Arial, sans-serif');
+      NeonTextDrawer.drawNeonText(draw, 'PRESS ANY BUTTON TO CONTINUE', titleX, promptY, '#ffffff', '#ff00ff', 'bold 24px Arial, sans-serif');
     }
   }
 }

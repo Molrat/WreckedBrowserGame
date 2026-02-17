@@ -2,6 +2,7 @@ import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
 import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
 import { isPlayer } from "@/game/queries/Player/isPlayer";
+import { NeonTextDrawer } from "@/deviceOutput/render/common/NeonTextDrawer";
 
 export class EndOfGameMenuRenderer implements IScreenRenderer {
   render(gameState: GameState, draw: IScreenRenderAPI): void {
@@ -10,17 +11,12 @@ export class EndOfGameMenuRenderer implements IScreenRenderer {
     const width = draw.getWidth();
     const height = draw.getHeight();
     draw.clear();
-    draw.fillBackground('#111');
+    draw.fillBackground('#0a0a14');
 
     const players = gameState.entities.filter(isPlayer);
 
     // Title
-    draw.drawText(
-      'Game Over!',
-      { x: width / 2 - 100, y: 60 },
-      '#fbbf24',
-      'bold 42px Arial, sans-serif'
-    );
+    NeonTextDrawer.drawNeonText(draw, 'GAME OVER', width / 2, 50, '#ffffff', '#ffff00', 'bold 64px Arial, sans-serif');
 
     // Sort players by score
     const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
@@ -28,66 +24,62 @@ export class EndOfGameMenuRenderer implements IScreenRenderer {
 
     // Winner announcement
     if (winner) {
-      draw.drawText(
-        `🏆 P${Number(winner.controllerId) + 1} Wins! 🏆`,
-        { x: width / 2 - 120, y: 110 },
-        winner.fillColor ?? '#fbbf24',
-        'bold 32px Arial, sans-serif'
-      );
+      const winnerLabel = winner.name ??`P${Number(winner.controllerId) + 1} WINS!`;
+      NeonTextDrawer.drawNeonText(draw, winnerLabel, width / 2, 115, '#ffffff', winner.fillColor ?? '#ffff00', 'bold 36px Arial, sans-serif');
     }
 
-    // Final scoreboard
-    const startY = 170;
-    const rowHeight = 45;
+    // Scoreboard layout
+    const colRank   = width * 0.08;
+    const colPlayer = width * 0.18;
+    const colRounds = width * 0.35;
+    const roundColW = width * 0.07;
+    const colTotal  = width * 0.73;
+    const colReady  = width * 0.87;
+    const startY = 165;
+    const rowHeight = 55;
+    const maxRounds = Math.max(...sortedPlayers.map(p => p.roundScores.length), 0);
 
     // Header
-    draw.drawText('Rank', { x: 80, y: startY }, '#888', 'bold 16px Arial');
-    draw.drawText('Player', { x: 150, y: startY }, '#888', 'bold 16px Arial');
-    draw.drawText('R1', { x: 260, y: startY }, '#888', 'bold 14px Arial');
-    draw.drawText('R2', { x: 310, y: startY }, '#888', 'bold 14px Arial');
-    draw.drawText('R3', { x: 360, y: startY }, '#888', 'bold 14px Arial');
-    draw.drawText('R4', { x: 410, y: startY }, '#888', 'bold 14px Arial');
-    draw.drawText('R5', { x: 460, y: startY }, '#888', 'bold 14px Arial');
-    draw.drawText('Total', { x: 520, y: startY }, '#888', 'bold 16px Arial');
+    NeonTextDrawer.drawNeonText(draw, 'RANK',   colRank,   startY, '#888888', '#888888', 'bold 15px Arial, sans-serif', 3, 2, 1);
+    NeonTextDrawer.drawNeonText(draw, 'PLAYER', colPlayer, startY, '#888888', '#888888', 'bold 15px Arial, sans-serif', 3, 2, 1);
+    for (let r = 0; r < maxRounds; r++) {
+      NeonTextDrawer.drawNeonText(draw, `R${r + 1}`, colRounds + r * roundColW, startY, '#888888', '#888888', 'bold 14px Arial, sans-serif', 3, 2, 1);
+    }
+    NeonTextDrawer.drawNeonText(draw, 'TOTAL', colTotal, startY, '#888888', '#888888', 'bold 15px Arial, sans-serif', 3, 2, 1);
+    NeonTextDrawer.drawNeonText(draw, 'READY', colReady, startY, '#888888', '#888888', 'bold 15px Arial, sans-serif', 3, 2, 1);
+
+    const medals = ['#ffff00', '#aaaaaa', '#cd7f32'];
 
     sortedPlayers.forEach((player, index) => {
       const y = startY + (index + 1) * rowHeight;
-      const medals = ['🥇', '🥈', '🥉', ''];
-      
-      draw.drawText(medals[index] ?? '', { x: 80, y }, '#fff', '20px Arial');
-      draw.drawText(
-        `P${Number(player.controllerId) + 1}`,
-        { x: 150, y },
-        player.fillColor ?? '#fff',
-        'bold 20px Arial'
-      );
-      
+      const playerColor = player.fillColor ?? '#ffffff';
+      const isReady = player.readyForNextRound;
+
+      // Rank with medal color
+      const rankColor = medals[index] ?? '#666688';
+      NeonTextDrawer.drawNeonText(draw, `#${index + 1}`, colRank, y, '#ffffff', rankColor, 'bold 24px Arial, sans-serif', 10, 6, 3);
+
+      // Player name in their own neon color
+      NeonTextDrawer.drawNeonText(draw, player.name ?? `P${Number(player.controllerId) + 1}`, colPlayer, y, '#ffffff', playerColor, 'bold 28px Arial, sans-serif', 12, 7, 3);
+
       // Round scores
-      for (let r = 0; r < 5; r++) {
-        const roundScore = player.roundScores[r] ?? '-';
-        draw.drawText(`${roundScore}`, { x: 260 + r * 50, y }, '#aaa', '16px Arial');
+      for (let r = 0; r < maxRounds; r++) {
+        const roundScore = player.roundScores[r];
+        const scoreText = roundScore !== undefined ? `${roundScore}` : '-';
+        NeonTextDrawer.drawNeonText(draw, scoreText, colRounds + r * roundColW, y, '#8888aa', '#8888aa', '18px Arial, sans-serif', 4, 2, 1);
       }
-      
-      draw.drawText(`${player.score}`, { x: 520, y }, '#ffffff', 'bold 22px Arial');
+
+      // Total score
+      NeonTextDrawer.drawNeonText(draw, `${player.score}`, colTotal, y, '#ffffff', '#ffffff', 'bold 28px Arial, sans-serif', 10, 6, 3);
+
+      // Ready status at end of row
+      const readyColor = isReady ? '#39ff14' : '#ff0080';
+      const readyLabel = isReady ? '✓ READY' : 'Press △';
+      NeonTextDrawer.drawNeonText(draw, readyLabel, colReady, y, '#ffffff', readyColor, 'bold 24px Arial, sans-serif',
+        isReady ? 14 : 8, isReady ? 8 : 4, isReady ? 4 : 2);
     });
 
-    // Ready status
-    const readyY = height - 100;
-    players.forEach((player, index) => {
-      const isReady = player.currentGamepad.triangle;
-      const x = 100 + index * 120;
-      const color = isReady ? '#16a34a' : '#374151';
-      const label = isReady ? 'Ready!' : 'Press △';
-      
-      draw.drawText(`P${Number(player.controllerId) + 1}`, { x, y: readyY }, player.fillColor ?? '#fff', 'bold 16px Arial');
-      draw.drawText(label, { x, y: readyY + 25 }, color, '14px Arial');
-    });
-
-    draw.drawText(
-      'Press △ to return to main menu',
-      { x: width / 2 - 160, y: height - 40 },
-      '#888',
-      '18px Arial, sans-serif'
-    );
+    // Footer hint
+    NeonTextDrawer.drawNeonText(draw, 'Press △ to toggle ready', width / 2, height - 40, '#444466', '#444466', '18px Arial, sans-serif', 4, 2, 1);
   }
 }

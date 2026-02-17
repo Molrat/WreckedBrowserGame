@@ -7,7 +7,7 @@ export class NeonTextDrawer {
      * @param text - Text to draw
      * @param x - X coordinate (center)
      * @param y - Y coordinate (center)
-     * @param color - Neon color (used for glow)
+     * @param blurColor - Neon color (used for glow)
      * @param font - CSS font string
      * @param outerBlur - Outer glow blur (default: 15)
      * @param middleBlur - Middle glow blur (default: 10)
@@ -18,7 +18,8 @@ export class NeonTextDrawer {
         text: string,
         x: number,
         y: number,
-        color: string,
+        fontColor: string,
+        blurColor: string,
         font: string,
         outerBlur: number = 15,
         middleBlur: number = 10,
@@ -33,8 +34,8 @@ export class NeonTextDrawer {
 
         // Outer glow
         ctx.shadowBlur = outerBlur;
-        ctx.shadowColor = color;
-        ctx.fillStyle = color;
+        ctx.shadowColor = blurColor;
+        ctx.fillStyle = blurColor;
         ctx.fillText(text, x, y);
 
         // Middle glow
@@ -43,7 +44,7 @@ export class NeonTextDrawer {
 
         // Inner bright core
         ctx.shadowBlur = innerBlur;
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = fontColor;
         ctx.fillText(text, x, y);
 
         ctx.restore();

@@ -2,14 +2,14 @@ import { Vector2 } from '@/math/Vector2';
 
 // Player color palette - neon style
 export const PLAYER_COLOR_PALETTE = [
-  '#00ffff',  // Neon cyan
-  '#39ff14',  // Neon lime
-  '#0080ff',  // Neon blue
-  '#ff00ff',  // Neon magenta
-  '#ff0080',  // Neon pink
-  '#00ff80',  // Neon teal
-  '#ffff00',  // Neon yellow
-  '#ff6600',  // Neon orange
+  ['#00ffff', 'cyan'],
+  ['#39ff14', 'lime'],
+  ['#0080ff', 'blue'],
+  ['#ff00ff', 'magenta'],
+  ['#ff0080', 'pink'],
+  ['#00ff80', 'teal'],
+  ['#ffff00', 'yellow'],
+  ['#ff6600', 'orange'],
 ];
 
 // Car body shape (meters, forward=+X, left=+Y in math coords)

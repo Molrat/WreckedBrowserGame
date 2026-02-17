@@ -2,15 +2,17 @@ import type { Player } from '@/game/state/entities/Player';
 import type { Wheel } from '@/game/state/entities/Wheel';
 import { nextId } from '@/utils/id';
 import { CAR_PHYSICS } from '@/game/config/carPhysicsConstants';
-import { PLAYER_COLOR_PALETTE, CAR_SHAPE, CAR_BORDER_COLOR, CAR_BORDER_WIDTH, CAR_DEPTH, CAR_FILL_COLOR } from '@/game/config/carAppearanceConstants';
+import { PLAYER_COLOR_PALETTE, CAR_SHAPE, CAR_BORDER_WIDTH, CAR_DEPTH, CAR_FILL_COLOR } from '@/game/config/carAppearanceConstants';
 import { createWheelsForPlayer } from '@/game/state/entities/Factories/WheelFactory';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
     const idx = Number(controllerId) || 0;
-    const color = PLAYER_COLOR_PALETTE[idx % PLAYER_COLOR_PALETTE.length];
+    const color = PLAYER_COLOR_PALETTE[idx % PLAYER_COLOR_PALETTE.length][0];
+    const name = PLAYER_COLOR_PALETTE[idx % PLAYER_COLOR_PALETTE.length][1];
     return {
       id: nextId(),
+      name,
       position: { x: 400, y: 300 },
       orientation: 0,
       velocity: { x: 0, y: 0 },

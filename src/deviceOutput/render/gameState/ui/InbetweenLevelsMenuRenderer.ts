@@ -2,6 +2,7 @@ import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
 import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
 import { isPlayer } from "@/game/queries/Player/isPlayer";
+import { NeonTextDrawer } from "@/deviceOutput/render/common/NeonTextDrawer";
 
 export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
   render(gameState: GameState, draw: IScreenRenderAPI): void {
@@ -10,72 +11,83 @@ export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
     const width = draw.getWidth();
     const height = draw.getHeight();
     draw.clear();
-    draw.fillBackground('#111');
+    draw.fillBackground('#0a0a14');
 
     const players = gameState.entities.filter(isPlayer);
     const round = gameState.ui.currentRound;
 
     // Title
-    draw.drawText(
-      `Round ${round} Complete!`,
-      { x: width / 2 - 150, y: 60 },
-      '#ffffff',
-      'bold 36px Arial, sans-serif'
-    );
+    NeonTextDrawer.drawNeonText(draw, `Round ${round} Complete!`, width / 2, 55, '#00ffff', '#ffffff','bold 48px Arial, sans-serif');
 
     // Sort players by score
     const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
 
-    // Draw scoreboard
-    const startY = 120;
-    const rowHeight = 50;
+    // Scoreboard layout
+    const colPlayer = width * 0.15;
+    const colRound  = width * 0.42;
+    const colTotal  = width * 0.62;
+    const colReady  = width * 0.82;
+    const startY = 130;
+    const rowHeight = 60;
 
-    // Header
-    draw.drawText('Player', { x: 100, y: startY }, '#888', 'bold 18px Arial, sans-serif');
-    draw.drawText('This Round', { x: 300, y: startY }, '#888', 'bold 18px Arial, sans-serif');
-    draw.drawText('Total', { x: 450, y: startY }, '#888', 'bold 18px Arial, sans-serif');
+    // Header row
+    const headerY = startY;
+    NeonTextDrawer.drawNeonText(draw, 'PLAYER',     colPlayer, headerY, '#ffffff','#888888', 'bold 16px Arial, sans-serif', 4, 2, 1);
+    NeonTextDrawer.drawNeonText(draw, 'THIS ROUND', colRound,  headerY, '#ffffff', '#888888','bold 16px Arial, sans-serif', 4, 2, 1);
+    NeonTextDrawer.drawNeonText(draw, 'TOTAL',      colTotal,  headerY, '#ffffff', '#888888','bold 16px Arial, sans-serif', 4, 2, 1);
+    NeonTextDrawer.drawNeonText(draw, 'READY',      colReady,  headerY, '#ffffff', '#888888','bold 16px Arial, sans-serif', 4, 2, 1);
 
     sortedPlayers.forEach((player, index) => {
       const y = startY + (index + 1) * rowHeight;
       const lastRoundScore = player.roundScores[player.roundScores.length - 1] ?? 0;
-      
-      draw.drawText(
-        `P${Number(player.controllerId) + 1}`,
-        { x: 100, y },
-        player.fillColor ?? '#fff',
-        'bold 24px Arial, sans-serif'
-      );
-      draw.drawText(
-        `+${lastRoundScore}`,
-        { x: 300, y },
-        '#22c55e',
-        '24px Arial, sans-serif'
-      );
-      draw.drawText(
-        `${player.score}`,
-        { x: 450, y },
-        '#ffffff',
-        'bold 24px Arial, sans-serif'
-      );
-    });
-
-    // Ready status
-    const readyY = height - 100;
-    players.forEach((player, index) => {
+      const playerColor = player.borderColor ?? player.fillColor?? '#ffffff';
       const isReady = player.readyForNextRound;
-      const x = 100 + index * 120;
-      const color = isReady ? '#16a34a' : '#374151';
-      const label = isReady ? 'Ready!' : 'Press △';
-      
-      draw.drawText(`P${Number(player.controllerId) + 1}`, { x, y: readyY }, player.fillColor ?? '#fff', 'bold 16px Arial');
-      draw.drawText(label, { x, y: readyY + 25 }, color, '14px Arial');
-    });
 
-    draw.drawText(
-      'Press △ to toggle ready',
-      { x: width / 2 - 120, y: height - 40 },
-      '#888',
-      '18px Arial, sans-serif'
-    );
+      // Player name in their own color
+      NeonTextDrawer.drawNeonText(
+        draw,
+        player.name ?? `P${Number(player.controllerId) + 1}`,
+        colPlayer, y,
+        playerColor,
+        playerColor,
+        'bold 30px Arial, sans-serif',
+        4, 2, 1
+      );
+
+      // Round score in green
+      NeonTextDrawer.drawNeonText(
+        draw,
+        `+${lastRoundScore}`,
+        colRound, y,
+        '#ffffff',
+        '#39ff14',
+        'bold 26px Arial, sans-serif',
+        6, 3, 1
+      );
+
+      // Total score in white
+      NeonTextDrawer.drawNeonText(
+        draw,
+        `${player.score}`,
+        colTotal, y,
+        '#ffffff',
+        '#ffffff',
+        'bold 28px Arial, sans-serif',
+        6, 3, 1
+      );
+
+      // Ready status at end of row, large
+      const readyColor = isReady ? '#39ff14' : '#ff0080';
+      const readyLabel = isReady ? '✓ READY' : 'Press △';
+      NeonTextDrawer.drawNeonText(
+        draw,
+        readyLabel,
+        colReady, y,
+        '#ffffff',
+        readyColor,
+        'bold 26px Arial, sans-serif',
+        isReady ? 14 : 8, isReady ? 8 : 4, isReady ? 4 : 2
+      );
+    });
   }
 }

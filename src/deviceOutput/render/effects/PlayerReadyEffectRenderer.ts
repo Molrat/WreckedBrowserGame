@@ -3,6 +3,7 @@ import { GameEvent } from "../../../game/events/eventTypes/GameEvent";
 import { IEffectRenderer } from "./IEffectRenderer";
 import type { IScreenRenderAPI } from "../common/IScreenRenderAPI";
 import { Vector2 } from "@/math/Vector2";
+import { StartMenuSlotLayout } from "../gameState/ui/StartMenuSlotLayout";
 
 export class PlayerReadyEffectRenderer implements IEffectRenderer {
   private effectsState: EffectsState = {};
@@ -15,7 +16,8 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerReady') {
         const duration = 600; // ms
-        const e = { slot: ev.slot, startTime: now, duration, x: ev.x, y: ev.y, width: ev.width, height: ev.height };
+        const { x, y, width, height } = StartMenuSlotLayout.getSlotRect(ev.slot, ev.totalSlots, this.draw.getWidth(), this.draw.getHeight());
+        const e = { slot: ev.slot, startTime: now, duration, x, y, width, height };
         (this.effectsState.readyEffects ??= []).push(e);
       }
     }
