@@ -15,6 +15,7 @@ export class PlayerReadyEffectRenderer implements IEffectRenderer {
     const now = performance.now();
     for (const ev of events) {
       if (ev.type === 'StartMenuPlayerReady') {
+        if (ev.soundOnly === true) continue;
         const duration = 600; // ms
         const { x, y, width, height } = StartMenuSlotLayout.getSlotRect(ev.slot, ev.totalSlots, this.draw.getWidth(), this.draw.getHeight());
         const e = { slot: ev.slot, startTime: now, duration, x, y, width, height };

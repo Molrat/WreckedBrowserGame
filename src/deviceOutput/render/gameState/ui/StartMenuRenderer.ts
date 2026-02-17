@@ -27,7 +27,7 @@ export class StartMenuRenderer implements IScreenRenderer {
 
             // Neon colors
             const playerColor = PLAYER_COLOR_PALETTE[i][0];
-            const tileColor = st === 'ready' ? '#1cb800' : st === 'joined' ? playerColor : '#1a0a2e';
+            const tileColor = st === 'ready' ? this.darkenColor(playerColor) : st === 'joined' ? playerColor : '#1a0a2e';
             const tileShape: Vector2[] = [
                 { x: 0, y: 0 },
                 { x: rectW, y: 0 },
@@ -56,5 +56,16 @@ export class StartMenuRenderer implements IScreenRenderer {
                 draw.drawCenteredText(label, { x: x + rectW / 2, y: y + rectH / 2 + 20 }, '#111111', 'bold 14px Arial, sans-serif');
             }
         }
+
+        
+    }
+
+    darkenColor(color: string): string {
+        // Simple function to darken a hex color by 50%
+        const c = color.substring(1); // remove '#'
+        const r = Math.floor(parseInt(c.substring(0, 2), 16) * 0.5);
+        const g = Math.floor(parseInt(c.substring(2, 4), 16) * 0.5);
+        const b = Math.floor(parseInt(c.substring(4, 6), 16) * 0.5);
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 }

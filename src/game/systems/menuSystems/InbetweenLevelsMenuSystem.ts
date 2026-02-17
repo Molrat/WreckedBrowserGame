@@ -17,6 +17,8 @@ export class InbetweenLevelsMenuSystem implements ISystem {
       const justPressedTriangle = player.currentGamepad.triangle && !player.previousGamepad.triangle;
       if (justPressedTriangle) {
         player.readyForNextRound = !player.readyForNextRound;
+        _eventBus.emit({ type: 'StartMenuPlayerReady', slot: 0, totalSlots: 0, soundOnly: true });
+
       }
     }
 
