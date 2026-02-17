@@ -21,7 +21,7 @@ export class DriveIntentComputer implements IDriveIntentComputer{
     return {
       throttle: this.throttleIntentComputer.compute(controllableDrivable.currentGamepad.rightTrigger, controllableDrivable.velocity),
       brake: this.brakeIntentComputer.compute(controllableDrivable.currentGamepad.leftTrigger, controllableDrivable.velocity),
-      handBrake: this.handbrakeIntentComputer.compute(controllableDrivable.currentGamepad.cross ? 1 : 0, controllableDrivable.velocity),
+      handBrake: this.handbrakeIntentComputer.compute(controllableDrivable.currentGamepad.circle ? 1 : 0, controllableDrivable.velocity),
       steeringWheelAngle: this.steeringIntentComputer.compute(controllableDrivable.currentGamepad.leftStick.x, controllableDrivable.velocity)
     }
   }

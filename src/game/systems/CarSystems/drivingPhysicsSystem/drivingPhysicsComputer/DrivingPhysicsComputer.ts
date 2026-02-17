@@ -1,7 +1,7 @@
 import { ICarState } from "@/game/queries/WithCarPhysics/ICarState";
 import { Vector2, add, scale, rotate } from "@/math/Vector2";
 import { IDrivingPhysicsComputer } from "./IDrivingPhysicsComputer";
-import { perpendicular, length } from "@/math/Vector2";
+import { perpendicular } from "@/math/Vector2";
 import { ILocalWheelForceComputer } from "./wheelForce/ILocalWheelForceComputer";
 import { updateWheelOmega } from "./wheelForce/updateWheelOmega";
 import { wheelForceToWorld } from "./wheelForce/wheelForceToWorld";
@@ -30,7 +30,7 @@ export class DrivingPhysicsComputer implements IDrivingPhysicsComputer {
     const brakeForce = car.brake * car.brakeForce;
     const engineTorquePerWheel = engineForce * car.wheelRadius / 4;
     const brakeTorquePerWheel = brakeForce * car.wheelRadius / 4;
-    const handbrakeRear = car.handBrake * car.brakeForce * car.wheelRadius / 4;
+    const handbrakeRear = car.handBrake * car.brakeForce * 2 *  car.wheelRadius / 4;
     const wheelInertia = 0.7 * 10 * car.wheelRadius * car.wheelRadius;
 
     const appliedForces: AppliedForce[] = [];
