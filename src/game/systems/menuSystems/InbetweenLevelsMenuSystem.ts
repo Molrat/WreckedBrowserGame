@@ -6,6 +6,7 @@ import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { generateInitialPlatforms } from '@/game/systems/platformSystems/PlatformChainGenerator';
 import { isWeapon } from '@/game/queries/Weapon/isWeapon';
 import { isDamagingPhysical } from '@/game/queries/DamagingPhysical/isDamagingPhysical';
+import { subtract, vectorToAngle } from '@/math/Vector2';
 
 export class InbetweenLevelsMenuSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
@@ -28,7 +29,8 @@ export class InbetweenLevelsMenuSystem implements ISystem {
 
     const newPlatforms = generateInitialPlatforms();
     const firstPlatform = newPlatforms[0];
-
+    const secondPlatform = newPlatforms[1];
+    const initialDirection = vectorToAngle(subtract(secondPlatform.position, firstPlatform.position));
     for (const entity of state.entities) {
       if (!isPlayer(entity)) continue;
       entity.position.x = firstPlatform.position.x;
@@ -36,7 +38,10 @@ export class InbetweenLevelsMenuSystem implements ISystem {
       entity.velocity.x = 0;
       entity.velocity.y = 0;
       entity.angularVelocity = 0;
-      entity.orientation = 0;
+      entity.orientation = initialDirection;
+      entity.throttle = 0;
+      entity.brake = 0;
+      entity.handBrake = 0;
       entity.health = entity.maxHealth;
       entity.placement = 0;
       entity.readyForNextRound = false;

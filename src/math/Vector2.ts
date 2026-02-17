@@ -28,7 +28,7 @@ export const angleToUnitVector = (angle: number): Vector2 => ({
   y: Math.sin(angle),
 });
 
-export const velocityToAngle = (velocity: Vector2): number => Math.atan2(velocity.y, velocity.x);
+export const vectorToAngle = (vector: Vector2): number => Math.atan2(vector.y, vector.x);
 
 export const perpendicular = (v: Vector2): Vector2 => ({
   x: -v.y,

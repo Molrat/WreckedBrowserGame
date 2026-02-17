@@ -1,4 +1,4 @@
-import type { Wheel } from '@/game/state/entities/Wheel';
+import type { CarPart } from '@/game/state/entities/player/CarPart';
 import { nextId } from '@/utils/id';
 import {
   TIRE_SHAPE,
@@ -19,7 +19,7 @@ const WHEEL_OFFSETS: Record<WheelPosition, { x: number; y: number; isFront: bool
   RR: { x: -CAR_PHYSICS.lengthToRearAxle, y: -CAR_PHYSICS.trackHalfWidth, isFront: false },
 };
 
-function createWheel(playerId: string, pos: WheelPosition): Wheel {
+function createWheel(playerId: string, pos: WheelPosition): CarPart {
   const offset = WHEEL_OFFSETS[pos];
   return {
     id: nextId(),
@@ -37,7 +37,7 @@ function createWheel(playerId: string, pos: WheelPosition): Wheel {
   };
 }
 
-export function createWheelsForPlayer(playerId: string): Wheel[] {
+export function createWheelsForPlayer(playerId: string): CarPart[] {
   return [
     createWheel(playerId, 'FL'),
     createWheel(playerId, 'FR'),

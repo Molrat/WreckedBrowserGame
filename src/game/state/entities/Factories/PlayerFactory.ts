@@ -1,9 +1,10 @@
-import type { Player } from '@/game/state/entities/Player';
-import type { Wheel } from '@/game/state/entities/Wheel';
+import type { Player } from '@/game/state/entities/player/Player';
+import type { CarPart } from '@/game/state/entities/player/CarPart';
 import { nextId } from '@/utils/id';
 import { CAR_PHYSICS } from '@/game/config/carPhysicsConstants';
 import { PLAYER_COLOR_PALETTE, CAR_SHAPE, CAR_BORDER_WIDTH, CAR_DEPTH, CAR_FILL_COLOR } from '@/game/config/carAppearanceConstants';
 import { createWheelsForPlayer } from '@/game/state/entities/Factories/WheelFactory';
+import { Vector2 } from '@/math/Vector2';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
@@ -123,7 +124,7 @@ export class PlayerFactory {
     };
   }
 
-  static createWithWheels(controllerId: string): [Player, ...Wheel[]] {
+  static createWithWheels(controllerId: string): [Player, ...CarPart[]] {
     const player = PlayerFactory.create(controllerId);
     const wheels = createWheelsForPlayer(player.id);
     return [player, ...wheels];

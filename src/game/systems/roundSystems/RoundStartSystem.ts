@@ -4,6 +4,7 @@ import type { EventBus } from '@/game/events/EventBus';
 import { isPlayer } from '@/game/queries/Player/isPlayer';
 import { isPlatform } from '@/game/queries/Platform/isPlatform';
 import { generateInitialPlatforms } from '@/game/systems/platformSystems/PlatformChainGenerator';
+import { subtract, vectorToAngle } from '@/math/Vector2';
 
 export class RoundStartSystem implements ISystem {
   private wasMenuOpen = true;
@@ -19,9 +20,13 @@ export class RoundStartSystem implements ISystem {
     if (platforms.length === 0) {
       const newPlatforms = generateInitialPlatforms();
       const firstPlatform = newPlatforms[0];
-      
+      const secondPlatform = newPlatforms[1];
+      const initialDirection = vectorToAngle(subtract(secondPlatform.position, firstPlatform.position));
       for (const entity of state.entities) {
-        if (!isPlayer(entity)) continue;
+        if (!isPlayer(entity)){
+          continue;
+        }
+        entity.orientation = initialDirection;
         entity.position.x = firstPlatform.position.x;
         entity.position.y = firstPlatform.position.y;
         entity.velocity.x = 0;

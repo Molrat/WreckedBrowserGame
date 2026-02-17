@@ -3,7 +3,7 @@ import { GameState } from '@/game/state/GameState';
 import { EventBus } from '@/game/events/EventBus';
 import { isHomingProjectile } from '@/game/queries/HomingProjectile/isHomingProjectile';
 import { isPlayer } from '@/game/queries/Player/isPlayer';
-import { subtract, normalize, scale, dotProduct, angleToUnitVector, length, perpendicular, velocityToAngle, add } from '@/math/Vector2';
+import { subtract, normalize, scale, dotProduct, angleToUnitVector, length, perpendicular, vectorToAngle, add } from '@/math/Vector2';
 import { estimateInterceptTime } from '@/math/estimateInterceptTime';
 import { MISSILE_HOMING_FORCE, MISSILE_HOMING_RANGE, MISSILE_HOMING_FOV, MISSILE_THRUST_FORCE, MISSILE_ACTIVATION_DELAY } from '@/game/config/weaponConstants';
 import { IHomingProjectile } from '@/game/queries/HomingProjectile/IHomingProjectile';
@@ -19,7 +19,7 @@ export class HomingMissileSystem implements ISystem {
     const players = state.entities.filter(isPlayer);
     let newMissileTargetPairs: Map<string, string> = new Map(); // [missileId, targetPlayerId]
     for (const missile of missiles) {
-      missile.orientation = velocityToAngle(missile.velocity);
+      missile.orientation = vectorToAngle(missile.velocity);
       const active = state.time.total - missile.spawnTime >= MISSILE_ACTIVATION_DELAY;
       if (!active) continue;
       this.applyThrust(missile);
