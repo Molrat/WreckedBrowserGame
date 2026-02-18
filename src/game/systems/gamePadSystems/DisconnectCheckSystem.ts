@@ -9,7 +9,7 @@ export class DisconnectCheckSystem implements ISystem {
     const connectedPads = pads.filter(p => !!p).length;
     const playerCount = state.entities.filter(e => isControllable(e)).length;
 
-    if (state.ui.openMenu !== 'start' && state.ui.openMenu !== 'reconnectControllerMenu') {
+    if (state.ui.openMenu !== 'start' && state.ui.openMenu !== 'reconnectControllerMenu' && state.ui.openMenu !== 'intro') {
       if (playerCount > connectedPads) {
         state.ui.previousMenuBeforeDisconnect = state.ui.openMenu;
         state.ui.openMenu = 'reconnectControllerMenu';

@@ -6,7 +6,7 @@ export type MenuType = 'intro' | 'start' | 'pause' | 'reconnectControllerMenu' |
 export type UIState = {
   openMenu: MenuType;
   // Stores the menu that was active before switching to reconnectControllerMenu
-  previousMenuBeforeDisconnect: 'start' | 'pause' | null;
+  previousMenuBeforeDisconnect: 'start' | 'pause' | 'endOfGame' | 'inbetweenLevels' | null;
   startMenu: StartMenuState;
   currentRound: number;     // 1-5
   maxRounds: number;        // 5
