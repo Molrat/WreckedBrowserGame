@@ -1,22 +1,29 @@
-Browser Game Engine (TypeScript, ECS-Style)
+# Neon Strike: Carmageddon
+Welcome developer and gamer!
+This is a controller based local multiplayer browser game, made in typescript.
+for open to do's, see TODO.md
 
-Overview
-- Deterministic, data-oriented core with plain types for state.
-- Systems are classes that mutate state deterministically.
-- Input adapters buffer external input; an InputSystem copies into GameState each frame.
-- Renderer reads state only and draws to Canvas 2D; events trigger side effects.
+## ECS architecture
+- GameState is plain data, no logic!
+- Systems are classes that mutate state deterministically. Each frame they do this in series.
+- Device inputs are captured into the state at the start of each frame
+- After systems modified state, the renderers render the screen
+- Systems can also emit events to the eventBus. those are captured by graphic effects and soundplayers. The events do not modify the state!
+- the game loop orchestrates all this each frame: first state is updated with systems, the gamestate is renderered on the screen, then effects are drawn and sounds are played based on emitted events by the systems.
 
-Quick Start
-- Prerequisites: Node.js 18+ and npm.
+## Quick Start
 
-Install and run:
+### Prerequisites: 
+- Node.js 18+ and npm.
+
+### Install and run:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the auto-launched URL. Move the green square with WASD/Arrow keys.
+Open the auto-launched URL.
 
 Test:
 
@@ -24,35 +31,11 @@ Test:
 npm run test
 ```
 
-Project Structure
-- [src/main.ts](src/main.ts): App entry, wires state, loop, input, renderers.
-- [src/game/state](src/game/state): Pure data types and factories.
-- [src/game/systems](src/game/systems): Deterministic systems (no DOM).
-- [src/game/queries](src/game/queries): Runtime type guards for safe filtering.
-- [src/game/loop](src/game/loop): Orchestrates frame update and render order.
-- [src/game/events](src/game/events): EventBus for side-effect-only events.
-- [src/input](src/input): Input adapters (keyboard/gamepad) buffering input.
-	- InputState lives in GameState: [src/game/state/InputState.ts](src/game/state/InputState.ts)
-- [src/render/world](src/render/world): World renderer for entities with Renderable.
-- [src/render/ui](src/render/ui): UI renderer driven by UIState inside GameState.
-- [src/render/animations](src/render/animations): Visual-only state (not part of GameState).
-- [src/math](src/math): Vector math and collision helpers.
-- [src/utils](src/utils): General utilities (e.g., id generator).
-- [assets](assets): Sprites/assets placeholder.
-
-Key Files
-- [src/game/state/GameState.ts](src/game/state/GameState.ts): GameState and factory.
-- [src/game/state/Entity.ts](src/game/state/Entity.ts): Base entity composition.
-- [src/game/state/components](src/game/state/components): Movable, Damageable, Renderable.
-- [src/game/state/entities/Player.ts](src/game/state/entities/Player.ts): Player factory.
-- [src/game/systems/InputSystem.ts](src/game/systems/InputSystem.ts): Copies input buffer → GameState.
-- [src/game/systems/PlayerControlSystem.ts](src/game/systems/PlayerControlSystem.ts): Maps input to velocity.
-- [src/game/systems/MovementSystem.ts](src/game/systems/MovementSystem.ts): Applies velocity to position.
-- [src/game/queries](src/game/queries): Type guards like isMovable/isRenderable.
-- [src/game/loop/GameLoop.ts](src/game/loop/GameLoop.ts): Frame orchestration.
-- [src/render/world/WorldRenderer.ts](src/render/world/WorldRenderer.ts): Geometric world rendering.
-- [src/render/ui/UIRenderer.ts](src/render/ui/UIRenderer.ts): UI overlay based on UIState.
-
-Notes
-- State = truth, plain data. Systems = deterministic rules. Events = side effects only. Renderers = pure consumers.
-- Files and functions aim to stay small and focused (<100 lines preferred).
+## Develop pro tips:
+- Any entity in the gamestate entities with the Physical type will be drawn automatically!
+- Any entity with Movable type can be moved around by changing velocity, position, angular 
+velocity etc. OR you can add forces/impulses to them and let the physics do the work!
+- Any entity with the Mountable type can be picked up by players and the entity will be mounted on the roof of the car.
+- Use the ICameraRendererAPI interface to draw world coordinates.
+- Use the IScreenRendererAPI interface to draw stuff directly on the screen, in pixel coordinates.
+- facing up in the world is increasing Y! We use the mathematical coordinate system for the world coordinates, so vector calculations are simple. No worries: The ICameraRendererAPI implementation already makes sure y is mirrored when the world coordinates are transformed to pixel coordinates.
