@@ -43,16 +43,22 @@ export class IntroRenderer implements IScreenRenderer {
 
     this.links = [];
     this.renderAttribution(draw, width, height);
+    this.renderContributeLink(draw, width, height);
     this.renderMusicCredits(draw, width, height);
   }
 
   private renderAttribution(draw: IScreenRenderAPI, width: number, height: number): void {
-    const rect = draw.drawLink('Made by Sharp Lines Developments', width / 2, height * 0.65, LINK_COLOR, ATTRIBUTION_FONT);
+    const rect = draw.drawLink('Made by Sharp Lines Developments', width / 2, height * 0.6, LINK_COLOR, ATTRIBUTION_FONT);
     this.links.push({ rect, url: 'https://sharplines.nl' });
   }
 
+  private renderContributeLink(draw: IScreenRenderAPI, width: number, height: number): void {
+    const rect = draw.drawLink('Click here to help develop this open sourced game!', width / 2, height * 0.65, LINK_COLOR, LINK_FONT);
+    this.links.push({ rect, url: 'https://github.com/Molrat/WreckedBrowserGame' });
+  }
+
   private renderMusicCredits(draw: IScreenRenderAPI, width: number, height: number): void {
-    const startY = height * 0.7;
+    const startY = height * 0.72;
     const lineHeight = 40;
     NeonTextDrawer.drawNeonText(draw, 'MUSIC', width / 2, startY, '#ffffff', '#00ffff', 'bold 16px Arial, sans-serif');
 
