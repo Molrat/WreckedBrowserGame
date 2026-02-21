@@ -1,5 +1,6 @@
 import { GameLoop } from '@/game/loop/GameLoop';
 import { MovementSystem } from '@/game/systems/MovementSystem';
+import { SideBoostSystem } from '@/game/systems/sideBoostSystem/SideBoostSystem';
 import { DisconnectCheckSystem } from '@/game/systems/gamePadSystems/DisconnectCheckSystem';
 import { PlayerJoinedEffectRenderer } from '@/deviceoutput/graphics/effects/PlayerJoinedEffectRenderer';
 import { PlayerReadyEffectRenderer } from '@/deviceoutput/graphics/effects/PlayerReadyEffectRenderer';
@@ -68,7 +69,6 @@ import { WeaponFireEffectRenderer } from './deviceoutput/graphics/effects/weapon
 import { FrontWheelEntitySteeringSystem } from './game/systems/CarSystems/FrontWheelEntitySteeringSystem';
 import { CountdownSystem } from './game/systems/roundSystems/CountdownSystem';
 import { CountdownRenderer } from './deviceoutput/graphics/gameState/ui/CountdownRenderer';
-import { CarControlSoundPlayer } from './deviceOutput/audio/continuousSounds/CarControlSoundPlayer';
 import { IContinuousSoundPlayer } from './deviceOutput/audio/continuousSounds/IContinuousSoundPlayer';
 import { MusicPlayer } from './deviceOutput/audio/continuousSounds/MusicPlayer';
 
@@ -133,6 +133,7 @@ const systems = [
     new FrontWheelEntitySteeringSystem(),
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
+    new SideBoostSystem(),
     new MovementSystem(),
     new WeaponSpawnSystem(),
     new WeaponPickupSystem(),
