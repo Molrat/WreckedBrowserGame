@@ -6,11 +6,11 @@ import { PlayerReadyEffectRenderer } from '@/deviceoutput/graphics/effects/Playe
 import { PlayerDeathEffectRenderer } from '@/deviceoutput/graphics/effects/deathExplosion/PlayerDeathEffectRenderer';
 import { WorldBackgroundRenderer } from '@/deviceoutput/graphics/gameState/world/WorldBackgroundRenderer';
 import { DepthSortedRenderer } from '@/deviceoutput/graphics/gameState/world/DepthSortedRenderer';
-import { AudioCache } from '@/deviceOutput/soundPlayers/eventBasedSounds/AudioCache';
-import { StartMenuSoundPlayer } from '@/deviceOutput/soundPlayers/eventBasedSounds/StartMenuSoundPlayer';
-import { WeaponSoundPlayer } from '@/deviceOutput/soundPlayers/eventBasedSounds/WeaponSoundPlayer';
-import { GameplaySoundPlayer } from '@/deviceOutput/soundPlayers/eventBasedSounds/GameplaySoundPlayer';
-import { CarSoundPlayer } from '@/deviceOutput/soundPlayers/eventBasedSounds/CarSoundPlayer';
+import { AudioCache } from '@/deviceOutput/audio/eventBasedSounds/AudioCache';
+import { StartMenuSoundPlayer } from '@/deviceOutput/audio/eventBasedSounds/StartMenuSoundPlayer';
+import { WeaponSoundPlayer } from '@/deviceOutput/audio/eventBasedSounds/WeaponSoundPlayer';
+import { GameplaySoundPlayer } from '@/deviceOutput/audio/eventBasedSounds/GameplaySoundPlayer';
+import { CarSoundPlayer } from '@/deviceOutput/audio/eventBasedSounds/CarSoundPlayer';
 import { ControllersInjector } from '@/deviceInput/controllerInput/ControllersInjector';
 import { BrowserGamepadProvider as FourPlayerGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/BrowserGamepadProvider';
 import { WebHIDGamepadProvider as EightPlayerGamepadProvider } from '@/deviceInput/controllerInput/controllerProviders/WebHIDGamepadProvider/WebHIDGamepadProvider';
@@ -68,9 +68,9 @@ import { WeaponFireEffectRenderer } from './deviceoutput/graphics/effects/weapon
 import { FrontWheelEntitySteeringSystem } from './game/systems/CarSystems/FrontWheelEntitySteeringSystem';
 import { CountdownSystem } from './game/systems/roundSystems/CountdownSystem';
 import { CountdownRenderer } from './deviceoutput/graphics/gameState/ui/CountdownRenderer';
-import { CarControlSoundPlayer } from './deviceOutput/soundPlayers/continuousSounds/CarControlSoundPlayer';
-import { IContinuousSoundPlayer } from './deviceOutput/soundPlayers/continuousSounds/IContinuousSoundPlayer';
-import { MusicPlayer } from './deviceOutput/soundPlayers/continuousSounds/MusicPlayer';
+import { CarControlSoundPlayer } from './deviceOutput/audio/continuousSounds/CarControlSoundPlayer';
+import { IContinuousSoundPlayer } from './deviceOutput/audio/continuousSounds/IContinuousSoundPlayer';
+import { MusicPlayer } from './deviceOutput/audio/continuousSounds/MusicPlayer';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
