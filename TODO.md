@@ -12,7 +12,7 @@
   [ ] ammo multiplier?
    - when picked up, your current ammo is multiplied by 3 or something.
 [ ] abilities:
-  [ ] bash sideways (and forward/backwards ?)
+  [X] bash sideways (and forward/backwards ?)
     - ability to dash sideways with maybe the right stick of the controller, to bash other players of the cliff and make sharper turns.
   [ ] jump? not sure about this one.
 
