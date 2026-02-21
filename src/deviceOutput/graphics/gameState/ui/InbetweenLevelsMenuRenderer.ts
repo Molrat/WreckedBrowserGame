@@ -1,8 +1,8 @@
-import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
+import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
 import { isPlayer } from "@/game/queries/Player/isPlayer";
-import { NeonTextDrawer } from "@/deviceOutput/render/common/NeonTextDrawer";
+import { NeonTextDrawer } from "@/deviceoutput/graphics/common/NeonTextDrawer";
 
 export class InbetweenLevelsMenuRenderer implements IScreenRenderer {
   render(gameState: GameState, draw: IScreenRenderAPI): void {

@@ -1,8 +1,8 @@
-import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
+import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
 import type { Vector2 } from "@/math/Vector2";
-import { NeonTextDrawer } from "@/deviceOutput/render/common/NeonTextDrawer";
+import { NeonTextDrawer } from "@/deviceoutput/graphics/common/NeonTextDrawer";
 import { PLAYER_COLOR_PALETTE } from "@/game/config/carAppearanceConstants";
 import { StartMenuSlotLayout } from "./StartMenuSlotLayout";
 export class StartMenuRenderer implements IScreenRenderer {

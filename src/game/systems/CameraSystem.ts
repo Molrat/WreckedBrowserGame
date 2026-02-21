@@ -3,7 +3,7 @@ import { ISystem } from '@/game/systems/ISystem';
 import type { GameState } from '@/game/state/GameState';
 import { isControllablePositionable } from '@/game/queries/ControllablePositionable/isControllablePositionable';
 import type { IControllablePositionable } from '@/game/queries/ControllablePositionable/IControllablePositionable';
-import type { ICameraConfig } from '@/deviceOutput/render/ICameraConfig';
+import type { ICameraConfig } from '@/deviceoutput/graphics/ICameraConfig';
 import type { Vector2 } from '@/math/Vector2';
 import { scale, normalize, angleToUnitVector, length, rotate, add, subtract } from '@/math/Vector2';
 import { computeBoundingBox } from '@/math/boundingBox';

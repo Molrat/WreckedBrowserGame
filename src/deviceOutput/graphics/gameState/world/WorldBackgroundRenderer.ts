@@ -1,6 +1,6 @@
 import { IRenderer } from "../../IRenderer";
 import { LightningStormManager } from "../../common/lightning/LightningStormManager";
-import { lightningBoltStrokes } from "@/deviceOutput/render/common/lightning/lightningBoltStrokes";
+import { lightningBoltStrokes } from "@/deviceoutput/graphics/common/lightning/lightningBoltStrokes";
 import type { GameState } from "../../../../game/state/GameState";
 import type { ICameraRenderAPI } from "../../common/ICameraRenderAPI";
 

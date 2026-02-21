@@ -1,9 +1,9 @@
-import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
-import type { LinkRect } from "@/deviceOutput/render/common/LinkRect";
-import { LinkDrawer } from "@/deviceOutput/render/common/LinkDrawer";
-import { NeonTextDrawer } from "@/deviceOutput/render/common/NeonTextDrawer";
+import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
+import type { LinkRect } from "@/deviceoutput/graphics/common/LinkRect";
+import { LinkDrawer } from "@/deviceoutput/graphics/common/LinkDrawer";
+import { NeonTextDrawer } from "@/deviceoutput/graphics/common/NeonTextDrawer";
 import musicContributions from "@/assets/music/music_contributions.json";
 
 const LINK_FONT = 'bold 14px Arial, sans-serif';

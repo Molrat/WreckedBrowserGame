@@ -1,6 +1,6 @@
-import { IScreenRenderer } from "@/deviceOutput/render/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceOutput/render/common/IScreenRenderAPI";
+import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
 import { isWithCarPhysics } from "@/game/queries/WithCarPhysics/isWithCarPhysics";
 import { length } from "@/math/Vector2";
 
