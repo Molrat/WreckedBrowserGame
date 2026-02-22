@@ -10,10 +10,10 @@ export const CAR_PHYSICS = {
   wheelRadius: 0.3,           // m
   maxSteeringAngle: Math.PI / 6, // rad (30°)
 
-  engineForce: 9000,           // N (AWD)
-  brakeForce: 10000,           // N
+  engineForce: 14000,           // N (AWD)
+  brakeForce: 15000,           // N
   tireStiffness: 200000,       // 
-  tireMu: 3,                 // friction coefficient
+  tireMu: 2.5,                 // friction coefficient
   airDragCoefficient: 3.0,     // used with v² - gives ~200 km/h top speed
 };
 

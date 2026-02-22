@@ -30,7 +30,9 @@ export class DrivingPhysicsComputer implements IDrivingPhysicsComputer {
     const brakeForce = car.brake * car.brakeForce;
     const engineTorquePerWheel = engineForce * car.wheelRadius / 4;
     const brakeTorquePerWheel = brakeForce * car.wheelRadius / 4;
-    const handbrakeRear = car.handBrake * car.brakeForce * 2 *  car.wheelRadius / 4;
+    if (car.handBrake > 0){
+      wheels.forEach((w, i) => { if (i >= 2) w.omega = 0; }); // lock rear wheels for simplicity when handbrake is applied
+    }
     const wheelInertia = 0.7 * 10 * car.wheelRadius * car.wheelRadius;
 
     const appliedForces: AppliedForce[] = [];
@@ -54,7 +56,7 @@ export class DrivingPhysicsComputer implements IDrivingPhysicsComputer {
         lateralStiffness: car.tireStiffness,
       });
 
-      const brakeTorque = brakeTorquePerWheel + (i >= 2 ? handbrakeRear : 0);
+      const brakeTorque = brakeTorquePerWheel;
       newOmegas.push(updateWheelOmega({
         groundForceLongitudinal: localForce.y,
         wheelRadius: car.wheelRadius,

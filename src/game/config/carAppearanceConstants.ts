@@ -17,6 +17,7 @@ export const CAR_SHAPE: Vector2[] = [
   { x: -1.5, y: -0.8 },  // rear-right
   { x: -1.5, y: 0.8 },   // rear-left
   { x: 1.5, y: 0.8 },    // front-left
+  { x: 1.8, y: 0.0 },   // front-center
   { x: 1.5, y: -0.8 },   // front-right
 ];
 

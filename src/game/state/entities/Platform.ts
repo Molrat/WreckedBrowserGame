@@ -1,6 +1,5 @@
 import type { Identifiable } from '@/game/state/components/Identifiable';
 import type { Physical } from '@/game/state/components/Physical';
-import type { Textable } from '@/game/state/components/Textable';
 
 export type Platform = Identifiable & Physical & {
   platformIndex: number;  // Sequential index (1, 2, 3, ...)

@@ -1,7 +1,7 @@
 import { scale, Vector2 } from "@/math/Vector2";
 
 // ── General ─────────────────────────────────────
-export const SPIN_ON_HIT_MULTIPLIER = 3; // Increase this for more dramatic spins when hit by a projectile
+export const SPIN_ON_HIT_MULTIPLIER = 2; // Increase this for more dramatic spins when hit by a projectile
 
 // ── Laser Cannon ─────────────────────────────────────
 export const LASER_CANNON_SHAPE: Vector2[] = [
@@ -19,11 +19,11 @@ export const LASER_CANNON_DEPTH = 4;
 
 // ── Laser Beam ─────────────────────────────────────
 export const LASER_BEAM_LENGTH = 50;
-export const LASER_BEAM_WIDTH = 0.2;
+export const LASER_BEAM_WIDTH = 1;
 export const LASER_BEAM_SPEED = 300; // m/s
-export const LASER_BEAM_LIFETIME = 0.3;
+export const LASER_BEAM_LIFETIME = 1;
 export const LASER_BEAM_DAMAGE = 20;
-export const LASER_BEAM_IMPULSE = 8000;
+export const LASER_BEAM_IMPULSE = 6000;
 export const LASER_BEAM_FILL = '#ff00ff';
 export const LASER_BEAM_BORDER = '#ff0080';
 export const LASER_BEAM_DEPTH = 5;
@@ -91,7 +91,7 @@ export const MINE_SHAPE: Vector2[] = [
 ];
 export const MINE_LIFETIME = 30;
 export const MINE_DAMAGE = 25;
-export const MINE_IMPULSE = 20000;
+export const MINE_IMPULSE = 30000;
 export const MINE_FILL = '#1a0a2a';
 export const MINE_BORDER = '#ff00ff';
 export const MINE_DEPTH = 1;
@@ -117,13 +117,13 @@ export const MISSILE_WIDTH = 0.6;
 export const MISSILE_SPEED = 0;
 export const MISSILE_LIFETIME = 8;
 export const MISSILE_DAMAGE = 30;
-export const MISSILE_IMPULSE = 15000;
+export const MISSILE_IMPULSE = 3000;
 export const MISSILE_FILL = '#ff2200';
 export const MISSILE_BORDER = '#ff8800';
 export const MISSILE_DEPTH = 5;
-export const MISSILE_HOMING_FORCE = 600;
+export const MISSILE_HOMING_FORCE = 300;
 export const MISSILE_THRUST_FORCE = 50;
 export const MISSILE_HOMING_RANGE = 80;
-export const MISSILE_HOMING_FOV = Math.PI * 0.75; // 135° cone
-export const MISSILE_LAUNCH_IMPULSE = 50;
+export const MISSILE_HOMING_FOV = Math.PI * 0.4; // 72° cone
+export const MISSILE_LAUNCH_IMPULSE = 150;
 export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate

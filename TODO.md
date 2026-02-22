@@ -1,3 +1,10 @@
+# user feedback
+[ ] platforms break of instead of dissapear suddenly
+[ ] platforms become smaller over time
+[ ] slightly less weapons
+[ ] more grip?
+[ ] choose physics: slow and skiddy, fast and grippy etc.
+
 # gameplay
 [ ] weapons:
   [ ] shield 
