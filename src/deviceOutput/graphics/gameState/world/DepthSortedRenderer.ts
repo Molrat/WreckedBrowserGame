@@ -1,6 +1,6 @@
-import { IRenderer } from "@/deviceoutput/graphics/IRenderer";
+import { IRenderer } from "@/deviceOutput/graphics/IRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { ICameraRenderAPI } from "@/deviceoutput/graphics/common/ICameraRenderAPI";
+import type { ICameraRenderAPI } from "@/deviceOutput/graphics/common/ICameraRenderAPI";
 import { isRenderable } from "@/game/queries/Renderable/isRenderable";
 import { isTextable } from "@/game/queries/Textable/isTextable";
 import type { IRenderable } from "@/game/queries/Renderable/IRenderable";

@@ -1,13 +1,13 @@
 import { EventBus } from '@/game/events/EventBus';
-import { IRenderer} from '@/deviceoutput/graphics/IRenderer';
-import { IScreenRenderer } from '@/deviceoutput/graphics/IScreenRenderer';
-import { IEffectRenderer } from '@/deviceoutput/graphics/effects/IEffectRenderer';
+import { IRenderer} from '@/deviceOutput/graphics/IRenderer';
+import { IScreenRenderer } from '@/deviceOutput/graphics/IScreenRenderer';
+import { IEffectRenderer } from '@/deviceOutput/graphics/effects/IEffectRenderer';
 import { ISoundPlayer } from '@/deviceOutput/audio/eventBasedSounds/ISoundPlayer';
 import { ISystem } from '@/game/systems/ISystem';
 import { IInputInjector } from '@/deviceInput/IInputInjector';
 import { GameState } from '@/game/state/GameState';
-import { ICameraRenderAPI } from '@/deviceoutput/graphics/common/ICameraRenderAPI';
-import { IScreenRenderAPI } from '@/deviceoutput/graphics/common/IScreenRenderAPI';
+import { ICameraRenderAPI } from '@/deviceOutput/graphics/common/ICameraRenderAPI';
+import { IScreenRenderAPI } from '@/deviceOutput/graphics/common/IScreenRenderAPI';
 import { IContinuousSoundPlayer } from '@/deviceOutput/audio/continuousSounds/IContinuousSoundPlayer';
 
 

@@ -1,8 +1,8 @@
 import { GameEvent } from "@/game/events/eventTypes/GameEvent";
-import { IEffectRenderer } from "@/deviceoutput/graphics/effects/IEffectRenderer";
-import { DeathExplosionEffect } from "@/deviceoutput/graphics/effects/deathExplosion/DeathExplosionEffect";
-import { createExplosionParticles } from "@/deviceoutput/graphics/effects/deathExplosion/createExplosionParticles";
-import { ICameraRenderAPI } from "@/deviceoutput/graphics/common/ICameraRenderAPI";
+import { IEffectRenderer } from "@/deviceOutput/graphics/effects/IEffectRenderer";
+import { DeathExplosionEffect } from "@/deviceOutput/graphics/effects/deathExplosion/DeathExplosionEffect";
+import { createExplosionParticles } from "@/deviceOutput/graphics/effects/deathExplosion/createExplosionParticles";
+import { ICameraRenderAPI } from "@/deviceOutput/graphics/common/ICameraRenderAPI";
 
 export class WeaponFireEffectRenderer implements IEffectRenderer {
   private effects: DeathExplosionEffect[] = [];

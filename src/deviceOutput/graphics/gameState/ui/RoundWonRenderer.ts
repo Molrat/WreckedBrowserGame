@@ -1,7 +1,7 @@
-import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceOutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
-import { NeonTextDrawer } from "@/deviceoutput/graphics/common/NeonTextDrawer";
+import type { IScreenRenderAPI } from "@/deviceOutput/graphics/common/IScreenRenderAPI";
+import { NeonTextDrawer } from "@/deviceOutput/graphics/common/NeonTextDrawer";
 
 export class RoundWonRenderer implements IScreenRenderer {
   render(gameState: GameState, draw: IScreenRenderAPI): void {

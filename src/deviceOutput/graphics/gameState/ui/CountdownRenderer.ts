@@ -1,6 +1,6 @@
-import { IScreenRenderer } from "@/deviceoutput/graphics/IScreenRenderer";
+import { IScreenRenderer } from "@/deviceOutput/graphics/IScreenRenderer";
 import type { GameState } from "@/game/state/GameState";
-import type { IScreenRenderAPI } from "@/deviceoutput/graphics/common/IScreenRenderAPI";
+import type { IScreenRenderAPI } from "@/deviceOutput/graphics/common/IScreenRenderAPI";
 
 export class CountdownRenderer implements IScreenRenderer {
   render(gameState: GameState, draw: IScreenRenderAPI): void {

@@ -1,6 +1,6 @@
 import type { GameState } from "@/game/state/GameState";
-import { IRenderer } from "@/deviceoutput/graphics/IRenderer";
-import type { ICameraRenderAPI } from "@/deviceoutput/graphics/common/ICameraRenderAPI";
+import { IRenderer } from "@/deviceOutput/graphics/IRenderer";
+import type { ICameraRenderAPI } from "@/deviceOutput/graphics/common/ICameraRenderAPI";
 import { isWithCarPhysics } from "@/game/queries/WithCarPhysics/isWithCarPhysics";
 import { add, scale, type Vector2 } from "@/math/Vector2";
 
