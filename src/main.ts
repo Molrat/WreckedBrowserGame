@@ -69,6 +69,7 @@ import { WeaponFireEffectRenderer } from './deviceoutput/graphics/effects/weapon
 import { FrontWheelEntitySteeringSystem } from './game/systems/CarSystems/FrontWheelEntitySteeringSystem';
 import { CountdownSystem } from './game/systems/roundSystems/CountdownSystem';
 import { CountdownRenderer } from './deviceoutput/graphics/gameState/ui/CountdownRenderer';
+import { RoundWonRenderer } from './deviceoutput/graphics/gameState/ui/RoundWonRenderer';
 import { IContinuousSoundPlayer } from './deviceOutput/audio/continuousSounds/IContinuousSoundPlayer';
 import { MusicPlayer } from './deviceOutput/audio/continuousSounds/MusicPlayer';
 
@@ -163,6 +164,7 @@ const screenRenderers = [
     new StartMenuRenderer(),
     new InbetweenLevelsMenuRenderer(),
     new EndOfGameMenuRenderer(),
+    new RoundWonRenderer(),
     new CountdownRenderer(),
 ];
 

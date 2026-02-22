@@ -15,6 +15,7 @@ export class StateInitializer {
         maxRounds: 5,
         highestPlatformWithSpawnedWeapon: 0,
         countdown: null,
+        roundWon: null,
       },
       time: { total: 0 },
       input: {
