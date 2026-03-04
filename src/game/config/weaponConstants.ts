@@ -135,3 +135,31 @@ export const MISSILE_HOMING_RANGE = 80;
 export const MISSILE_HOMING_FOV = Math.PI * 0.4; // 72° cone
 export const MISSILE_LAUNCH_IMPULSE = 150;
 export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate
+
+// ── Cannon ────────────────────────────────────────────
+export const CANNON_SHAPE: Vector2[] = [
+  { x: -0.5, y: -0.4 },
+  { x: 0.3, y: -0.35 },
+  { x: 0.7, y: -0.15 },
+  { x: 0.9, y: 0 },
+  { x: 0.7, y: 0.15 },
+  { x: 0.3, y: 0.35 },
+  { x: -0.5, y: 0.4 },
+].map(v => scale(v, 2.5));
+
+export const CANNON_MOUNT_OFFSET: Vector2 = { x: 0, y: 0 };
+export const CANNON_FILL = '#2a2a0a';
+export const CANNON_BORDER = '#ffdd00';
+export const CANNON_DEPTH = 4;
+export const CANNON_AMMO = 5;
+
+// ── Cannonball Projectile ─────────────────────────────
+export const CANNONBALL_RADIUS = 0.8;
+export const CANNONBALL_SEGMENTS = 12;
+export const CANNONBALL_SPEED = 60;
+export const CANNONBALL_LIFETIME = 4;
+export const CANNONBALL_DAMAGE = 30;
+export const CANNONBALL_IMPULSE = 3000;
+export const CANNONBALL_FILL = '#3a3a0a';
+export const CANNONBALL_BORDER = '#ffdd00';
+export const CANNONBALL_DEPTH = 5;

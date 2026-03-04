@@ -6,6 +6,7 @@ import { createLaserBeam } from "@/game/state/entities/Factories/ProjectileFacto
 import { createMachineGunBullet } from "@/game/state/entities/Factories/ProjectileFactories/MachineGunBulletFactory";
 import { createMine } from "./MineFactory";
 import { createMissile } from "./MissileFactory";
+import { createCannonball } from "./CannonballFactory";
 
 export class ProjectileFactory implements IProjectileFactory {
   create(
@@ -25,6 +26,8 @@ export class ProjectileFactory implements IProjectileFactory {
         return createMine(position, orientation, ownerPlayerId);
       case 'missile':
         return createMissile(position, orientation, ownerPlayerId, playerVelocity, gameTime);
+      case 'cannonball':
+        return createCannonball(position, orientation, ownerPlayerId, playerVelocity);
     }
   }
 }

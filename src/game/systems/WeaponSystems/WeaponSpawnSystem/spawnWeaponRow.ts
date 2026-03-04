@@ -5,11 +5,12 @@ import { createLaserCannon } from "@/game/state/entities/Factories/WeaponFactori
 import { createMachineGun } from "@/game/state/entities/Factories/WeaponFactories/MachineGunFactory";
 import { createMineDropper } from "@/game/state/entities/Factories/WeaponFactories/MineDropperFactory";
 import { createMissileLauncher } from "@/game/state/entities/Factories/WeaponFactories/MissileLauncherFactory";
+import { createCannon } from "@/game/state/entities/Factories/WeaponFactories/CannonFactory";
 import { WEAPON_COUNT } from "@/game/config/weaponConstants";
 import { PLATFORM_SIZE } from "@/game/config/platformConstants";
 
 type WeaponCreator = (pos: Vector2, spawnPlatformIndex: number) => WeaponWithAmmo;
-const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun, createMineDropper, createMissileLauncher];
+const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun, createMineDropper, createMissileLauncher, createCannon];
 
 
 export function spawnWeaponRow(

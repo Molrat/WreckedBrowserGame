@@ -8,6 +8,7 @@ const weaponSoundKeys: Record<ProjectileType, { fire: string; impact: string }> 
   missile:          { fire: 'missile_launch', impact: 'explosion' },
   laserBeam:        { fire: 'laser_beam_fire', impact: 'sonic_boom' },
   mine:             { fire: 'drop_mine', impact: 'explosion' },
+  cannonball:       { fire: 'explosion', impact: 'explosion' },
 };
 
 export class WeaponSoundPlayer implements ISoundPlayer {
