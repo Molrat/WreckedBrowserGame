@@ -78,10 +78,15 @@ export const MINE_DROPPER_DEPTH = 4;
 export const MINE_DROPPER_AMMO = 3;
 
 // ── Mine Projectile ──────────────────────────────────
-
+const B_2 = B / 2;
+const A_4 = A * 4;
 export const MINE_SHAPE: Vector2[] = [
   { x: A, y: B },
   { x: B, y: A },
+  { x: B_2, y: A},
+  { x: B_2, y: A_4 },
+  { x: -B_2, y: A_4 },
+  { x: -B_2, y: A},
   { x: -B, y: A },
   { x: -A, y: B },
   { x: -A, y: -B },
@@ -95,6 +100,7 @@ export const MINE_IMPULSE = 30000;
 export const MINE_FILL = '#1a0a2a';
 export const MINE_BORDER = '#ff00ff';
 export const MINE_DEPTH = 1;
+export const MINE_ANGULAR_SPEED = Math.PI * 2 / 3; // 1 rotation every 3 seconds
 
 // ── Missile Launcher ─────────────────────────────────
 export const MISSILE_LAUNCHER_SHAPE: Vector2[] = [

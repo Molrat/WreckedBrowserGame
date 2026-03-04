@@ -9,6 +9,7 @@ import {
   MINE_FILL,
   MINE_BORDER,
   MINE_DEPTH,
+  MINE_ANGULAR_SPEED,
 } from "@/game/config/weaponConstants";
 
 export function createMine(
@@ -23,7 +24,7 @@ export function createMine(
     position: { x: position.x, y: position.y },
     orientation,
     velocity: { x: 0, y: 0 },
-    angularVelocity: 0,
+    angularVelocity: MINE_ANGULAR_SPEED,
     mass: 50,
     momentOfInertia: 10,
     forces: [],
