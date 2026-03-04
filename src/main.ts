@@ -58,6 +58,7 @@ import { SimpleCarCollisionComputer } from './game/systems/CarSystems/carCollisi
 import { CarCollisionSystem } from './game/systems/CarSystems/carCollisionSystem/CarCollisionSystem';
 import { WeaponSpawnSystem } from './game/systems/WeaponSystems/WeaponSpawnSystem/WeaponSpawnSystem';
 import { WeaponPickupSystem } from './game/systems/WeaponSystems/WeaponPickupSystem';
+import { WeaponDropSystem } from './game/systems/WeaponSystems/WeaponDropSystem';
 import { WeaponMountSyncSystem } from './game/systems/WeaponSystems/WeaponMountSyncSystem';
 import { AmmoBasedFireSystem } from './game/systems/WeaponSystems/AmmoBasedFireSystem/AmmoBasedFireSystem';
 import { ProjectileFactory } from './game/state/entities/Factories/ProjectileFactories/ProjectileFactory';
@@ -137,6 +138,7 @@ const systems = [
     new MovementSystem(),
     new WeaponSpawnSystem(),
     new WeaponPickupSystem(),
+    new WeaponDropSystem(),
     new WeaponMountSyncSystem(),
     new AmmoBasedFireSystem(new ProjectileFactory()),
     new HomingMissileSystem(),

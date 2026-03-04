@@ -68,7 +68,7 @@ export class AmmoBasedFireSystem implements ISystem {
     eventBus.emit({
       type: 'ProjectileFired',
       projectileType: weapon.projectileType,
-      position: { x: origin.x, y: origin.y },
+      position: origin,
     });
     weapon.currentAmmo -= 1;
     if (weapon.fireRate !== null) {
@@ -78,9 +78,9 @@ export class AmmoBasedFireSystem implements ISystem {
       state.entities = state.entities.filter(e => e.id !== weapon.id);
       eventBus.emit({
       type: 'OutOfAmmo',
-      position: { x: origin.x, y: origin.y },
+      position: origin,
       color: player.fillColor ?? '#ff8800',
-    });
+      });
     }
     
   }
