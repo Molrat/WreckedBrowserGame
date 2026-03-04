@@ -5,12 +5,12 @@ import { createLaserCannon } from "@/game/state/entities/Factories/WeaponFactori
 import { createMachineGun } from "@/game/state/entities/Factories/WeaponFactories/MachineGunFactory";
 import { createMineDropper } from "@/game/state/entities/Factories/WeaponFactories/MineDropperFactory";
 import { createMissileLauncher } from "@/game/state/entities/Factories/WeaponFactories/MissileLauncherFactory";
+import { WEAPON_COUNT } from "@/game/config/weaponConstants";
+import { PLATFORM_SIZE } from "@/game/config/platformConstants";
 
 type WeaponCreator = (pos: Vector2, spawnPlatformIndex: number) => WeaponWithAmmo;
 const WEAPON_CREATORS: WeaponCreator[] = [createLaserCannon, createMachineGun, createMineDropper, createMissileLauncher];
 
-const WEAPON_COUNT = 4;
-const WEAPON_SPACING = 6;
 
 export function spawnWeaponRow(
   state: GameState,
@@ -18,11 +18,11 @@ export function spawnWeaponRow(
   direction: Vector2,
   spawnPlatformIndex: number
 ): void {
-  const totalLength = WEAPON_SPACING * (WEAPON_COUNT - 1);
+  const weaponSpacing = PLATFORM_SIZE * 0.6 / WEAPON_COUNT;
+  const totalLength = weaponSpacing * (WEAPON_COUNT - 1);
   const startOffset = -totalLength / 2;
-
   for (let j = 0; j < WEAPON_COUNT; j++) {
-    const t = startOffset + j * WEAPON_SPACING;
+    const t = startOffset + j * weaponSpacing;
     const pos = {
       x: center.x + direction.x * t,
       y: center.y + direction.y * t,

@@ -2,6 +2,8 @@ import { scale, Vector2 } from "@/math/Vector2";
 
 // ── General ─────────────────────────────────────
 export const SPIN_ON_HIT_MULTIPLIER = 2; // Increase this for more dramatic spins when hit by a projectile
+export const NR_OF_PLATFORMS_BETWEEN_WEAPON_SPAWNS = 6; // Minimum number of platforms that must be between weapon spawns to prevent overcrowding
+export const WEAPON_COUNT = 4;
 
 // ── Laser Cannon ─────────────────────────────────────
 export const LASER_CANNON_SHAPE: Vector2[] = [

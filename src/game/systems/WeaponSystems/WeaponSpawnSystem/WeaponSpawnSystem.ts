@@ -6,6 +6,7 @@ import { IPlatform } from "@/game/queries/Platform/IPlatform";
 import { isWeapon } from "@/game/queries/Weapon/isWeapon";
 import { getWeaponRowDirection } from "./getWeaponRowDirection";
 import { spawnWeaponRow } from "./spawnWeaponRow";
+import { NR_OF_PLATFORMS_BETWEEN_WEAPON_SPAWNS } from "@/game/config/weaponConstants";
 
 export class WeaponSpawnSystem implements ISystem {
   
@@ -20,7 +21,7 @@ export class WeaponSpawnSystem implements ISystem {
   private spawnNewWeapons(state: GameState, platforms: IPlatform[]): void {
     const highestSpawnedIndex = state.ui.highestPlatformWithSpawnedWeapon || 0;
     const candidates = platforms
-      .filter(p => p.platformIndex > highestSpawnedIndex && p.platformIndex % 4 === 0)
+      .filter(p => p.platformIndex > highestSpawnedIndex && p.platformIndex % NR_OF_PLATFORMS_BETWEEN_WEAPON_SPAWNS === 0)
       .sort((a, b) => a.platformIndex - b.platformIndex);
 
     for (const trigger of candidates) {
