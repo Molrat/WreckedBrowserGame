@@ -98,7 +98,7 @@ export const MINE_SHAPE: Vector2[] = [
 ];
 export const MINE_LIFETIME = 30;
 export const MINE_DAMAGE = 25;
-export const MINE_IMPULSE = 30000;
+export const MINE_IMPULSE = 20000;
 export const MINE_FILL = '#1a0a2a';
 export const MINE_BORDER = '#ff00ff';
 export const MINE_DEPTH = 1;
@@ -124,7 +124,7 @@ export const MISSILE_LENGTH = 2;
 export const MISSILE_WIDTH = 0.6;
 export const MISSILE_SPEED = 0;
 export const MISSILE_LIFETIME = 8;
-export const MISSILE_DAMAGE = 30;
+export const MISSILE_DAMAGE = 10;
 export const MISSILE_IMPULSE = 3000;
 export const MISSILE_FILL = '#ff2200';
 export const MISSILE_BORDER = '#ff8800';
@@ -145,7 +145,7 @@ export const CANNON_SHAPE: Vector2[] = [
   { x: 0.7, y: 0.15 },
   { x: 0.3, y: 0.35 },
   { x: -0.5, y: 0.4 },
-].map(v => scale(v, 2.5));
+].map(v => scale(v, 1.5));
 
 export const CANNON_MOUNT_OFFSET: Vector2 = { x: 0, y: 0 };
 export const CANNON_FILL = '#2a2a0a';
@@ -158,8 +158,8 @@ export const CANNONBALL_RADIUS = 0.8;
 export const CANNONBALL_SEGMENTS = 12;
 export const CANNONBALL_SPEED = 60;
 export const CANNONBALL_LIFETIME = 4;
-export const CANNONBALL_DAMAGE = 30;
-export const CANNONBALL_IMPULSE = 3000;
+export const CANNONBALL_DAMAGE = 15;
+export const CANNONBALL_IMPULSE = 6000;
 export const CANNONBALL_FILL = '#3a3a0a';
 export const CANNONBALL_BORDER = '#ffdd00';
 export const CANNONBALL_DEPTH = 5;
