@@ -25,7 +25,7 @@ export const LASER_BEAM_WIDTH = 1;
 export const LASER_BEAM_SPEED = 300; // m/s
 export const LASER_BEAM_LIFETIME = 1;
 export const LASER_BEAM_DAMAGE = 20;
-export const LASER_BEAM_IMPULSE = 6000;
+export const LASER_BEAM_IMPULSE = 10000;
 export const LASER_BEAM_FILL = '#ff00ff';
 export const LASER_BEAM_BORDER = '#ff0080';
 export const LASER_BEAM_DEPTH = 5;
@@ -81,13 +81,13 @@ export const MINE_DROPPER_AMMO = 3;
 
 // ── Mine Projectile ──────────────────────────────────
 const B_2 = B / 2;
-const A_4 = A * 4;
+const A_long = A * 8;
 export const MINE_SHAPE: Vector2[] = [
   { x: A, y: B },
   { x: B, y: A },
   { x: B_2, y: A},
-  { x: B_2, y: A_4 },
-  { x: -B_2, y: A_4 },
+  { x: B_2, y: A_long },
+  { x: -B_2, y: A_long },
   { x: -B_2, y: A},
   { x: -B, y: A },
   { x: -A, y: B },
@@ -125,15 +125,15 @@ export const MISSILE_WIDTH = 0.6;
 export const MISSILE_SPEED = 0;
 export const MISSILE_LIFETIME = 8;
 export const MISSILE_DAMAGE = 10;
-export const MISSILE_IMPULSE = 3000;
+export const MISSILE_IMPULSE = 6000;
 export const MISSILE_FILL = '#ff2200';
 export const MISSILE_BORDER = '#ff8800';
 export const MISSILE_DEPTH = 5;
-export const MISSILE_HOMING_FORCE = 300;
-export const MISSILE_THRUST_FORCE = 50;
+export const MISSILE_HOMING_FORCE = 800;
+export const MISSILE_THRUST_FORCE = 20;
 export const MISSILE_HOMING_RANGE = 80;
 export const MISSILE_HOMING_FOV = Math.PI * 0.4; // 72° cone
-export const MISSILE_LAUNCH_IMPULSE = 150;
+export const MISSILE_LAUNCH_IMPULSE = 100;
 export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate
 
 // ── Cannon ────────────────────────────────────────────

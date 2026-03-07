@@ -12,7 +12,7 @@ export class StateInitializer {
           playerConnections: Array.from({ length: 4 }, () => ({ status: 'notJoined', controllerId: null }))
         },
         currentRound: 1,
-        maxPoints: 30,
+        maxPoints:24,
         highestPlatformWithSpawnedWeapon: 0,
         countdown: null,
         roundWon: null,

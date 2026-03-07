@@ -11,6 +11,7 @@ import {
   MINE_DEPTH,
   MINE_ANGULAR_SPEED,
 } from "@/game/config/weaponConstants";
+import { randomSign } from "@/utils/randomSign";
 
 export function createMine(
   position: Vector2,
@@ -24,7 +25,7 @@ export function createMine(
     position: { x: position.x, y: position.y },
     orientation,
     velocity: { x: 0, y: 0 },
-    angularVelocity: MINE_ANGULAR_SPEED,
+    angularVelocity: MINE_ANGULAR_SPEED * randomSign(),
     mass: 50,
     momentOfInertia: 10,
     forces: [],
