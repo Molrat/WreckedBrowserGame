@@ -26,8 +26,8 @@ export class PlayerDeathSystem implements ISystem {
     state.ui.roundWon = null;
     state.entities.push(...state.deadEntities);
     state.deadEntities.length = 0;
-    const nextRound = state.ui.currentRound + 1;
-    state.ui.openMenu = nextRound > state.ui.maxRounds ? 'endOfGame' : 'inbetweenLevels';
+    const maxPoints = Math.max(...state.entities.filter(isPlayer).map(p => p.score));
+    state.ui.openMenu = maxPoints >= state.ui.maxPoints ? 'endOfGame' : 'inbetweenLevels';
     return true;
   }
 
@@ -81,9 +81,18 @@ export class PlayerDeathSystem implements ISystem {
 
   private assignRoundScores(state: GameState): void {
     const allPlayers = [...state.entities, ...state.deadEntities].filter(isPlayer);
+    const numPlayers = allPlayers.length;
+    let points: number[];
+    if (numPlayers === 2) {
+      points = [6, 0];
+    } else if (numPlayers === 3) {
+      points = [6, 2, 0];
+    } else {
+      points = PLACEMENT_POINTS;
+    }
     for (const player of allPlayers) {
-      const pointsIndex = Math.min(player.placement - 1, PLACEMENT_POINTS.length - 1);
-      const roundPoints = PLACEMENT_POINTS[pointsIndex] ?? 0;
+      const placementIdx = Math.min(player.placement - 1, points.length - 1);
+      const roundPoints = points[placementIdx] ?? 0;
       player.score += roundPoints;
       player.roundScores.push(roundPoints);
     }
