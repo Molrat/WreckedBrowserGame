@@ -1,6 +1,6 @@
 import type { Identifiable } from '@/game/state/components/Identifiable';
-import type { ISideBoostable } from './ISideBoostable';
+import type { IBoostable } from './IBoostable';
 
-export function isSideBoostable(e: Identifiable): e is Identifiable & ISideBoostable {
+export function isBoostable(e: Identifiable): e is Identifiable & IBoostable {
   return 'impulses' in e && 'currentGamepad' in e && 'sideBoostCooldown' in e;
 }

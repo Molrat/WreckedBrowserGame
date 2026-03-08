@@ -1,6 +1,6 @@
 import { GameLoop } from '@/game/loop/GameLoop';
 import { MovementSystem } from '@/game/systems/MovementSystem';
-import { SideBoostSystem } from '@/game/systems/sideBoostSystem/SideBoostSystem';
+import { BoostSystem } from '@/game/systems/BoostSystem/BoostSystem';
 import { DisconnectCheckSystem } from '@/game/systems/gamePadSystems/DisconnectCheckSystem';
 import { PlayerJoinedEffectRenderer } from '@/deviceOutput/graphics/effects/PlayerJoinedEffectRenderer';
 import { PlayerReadyEffectRenderer } from '@/deviceOutput/graphics/effects/PlayerReadyEffectRenderer';
@@ -134,7 +134,7 @@ const systems = [
     new FrontWheelEntitySteeringSystem(),
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
     new CarCollisionSystem(carCollisionComputer),
-    new SideBoostSystem(),
+    new BoostSystem(),
     new MovementSystem(),
     new WeaponSpawnSystem(),
     new WeaponPickupSystem(),
