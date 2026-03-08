@@ -11,14 +11,14 @@ export function applyBoost(e: IBoostable): void {
   if (l1) {
     // Left boost (sideways)
     const sideways = perpendicular(forward); // left of forward
-    impulse = scale(sideways, 1 * e.boostImpuls);
+    impulse = scale(sideways, 1 * e.boostImpulse);
   } else if (r1) {
     // Right boost (sideways)
     const sideways = perpendicular(forward); // left of forward
-    impulse = scale(sideways, -1 * e.boostImpuls);
+    impulse = scale(sideways, -1 * e.boostImpulse);
   } else if (square) {
     // Backwards boost
-    impulse = scale(forward, -1 * e.boostImpuls);
+    impulse = scale(forward, -1 * e.boostImpulse);
   }
 
   if (impulse) {

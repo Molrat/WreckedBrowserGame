@@ -4,7 +4,7 @@ import { nextId } from '@/utils/id';
 import { CAR_PHYSICS } from '@/game/config/carPhysicsConstants';
 import { PLAYER_COLOR_PALETTE, CAR_SHAPE, CAR_BORDER_WIDTH, CAR_DEPTH, CAR_FILL_COLOR } from '@/game/config/carAppearanceConstants';
 import { createWheelsForPlayer } from '@/game/state/entities/Factories/WheelFactory';
-import { SIDE_BOOST } from '@/game/config/sideBoostConstants';
+import { BOOST } from '@/game/config/boostConstants';
 
 export class PlayerFactory {
   static create(controllerId: string): Player {
@@ -122,9 +122,9 @@ export class PlayerFactory {
       placement: 0,
       readyForNextRound: false,
       // SideBoostable
-      sideBoostCooldown: 0,
-      sideBoostCooldownMax: SIDE_BOOST.cooldown,
-      sideBoostImpulse: SIDE_BOOST.impulse,
+      boostCooldown: 0,
+      boostCooldownMax: BOOST.cooldown,
+      boostImpulse: BOOST.impulse,
     };
   }
 

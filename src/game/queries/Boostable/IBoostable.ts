@@ -6,6 +6,6 @@ export interface IBoostable {
   currentGamepad: GamepadState;
   boostCooldown: number;
   boostCooldownMax: number;
-  boostImpuls: number;
+  boostImpulse: number;
   orientation: number;
 }

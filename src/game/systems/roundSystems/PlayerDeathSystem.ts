@@ -58,7 +58,7 @@ export class PlayerDeathSystem implements ISystem {
     }
 
     if (state.ui.roundWon) return;
-    const remaining = state.entities.filter(isPlayer).filter(p => p.health > 0 && p.placement === 0);
+    const remaining = state.entities.filter(isPlayer);
     if (remaining.length > 1) return;
 
     this.finalizeRound(state, remaining);
@@ -72,7 +72,7 @@ export class PlayerDeathSystem implements ISystem {
 
   private assignWinnerPlacement(state: GameState, remaining: IPlayer[]): [string, string] {
     for (const p of remaining) {
-      if (p.placement === 0 && p.health > 0) p.placement = 1;
+      p.placement = 1;
     }
     return remaining.length > 0
       ? ([remaining[0].name ?? 'Unknown', remaining[0].borderColor ?? '#ffffff'])
