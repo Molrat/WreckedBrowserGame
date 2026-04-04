@@ -9,11 +9,18 @@ export class StateInitializer {
         openMenu: 'intro',
         previousMenuBeforeDisconnect: null,
         startMenu:{
-          playerConnections: Array.from({ length: 4 }, () => ({ status: 'notJoined', controllerId: null }))
+          playerConnections: Array.from({ length: 4 }, () => ({ status: 'notJoined', controllerId: null })),
+        },
+        settings: {
+          carouselEnabled: false,
+        },
+        settingsMenu: {
+          selectedIndex: 0,
         },
         currentRound: 1,
         maxPoints:24,
         highestPlatformWithSpawnedWeapon: 0,
+        highestPlatformWithCarouselDecision: 0,
         countdown: null,
         roundWon: null,
       },

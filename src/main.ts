@@ -21,12 +21,14 @@ import { SetPreviousButtonsSystem } from '@/game/systems/gamePadSystems/SetPrevi
 import { ReconnectControllerRenderer } from '@/deviceOutput/graphics/gameState/ui/ReconnectControllerRenderer';
 import { IntroRenderer } from '@/deviceOutput/graphics/gameState/ui/IntroRenderer';
 import { StartMenuRenderer } from '@/deviceOutput/graphics/gameState/ui/StartMenuRenderer';
+import { SettingsMenuRenderer } from '@/deviceOutput/graphics/gameState/ui/SettingsMenuRenderer';
 import { CameraRenderAPI } from '@/deviceOutput/graphics/common/CameraRenderAPI';
 import { ScreenRenderAPI } from '@/deviceOutput/graphics/common/ScreenRenderAPI';
 import { AspectRatioInjector } from '@/deviceInput/windowInput/AspectRatioInjector';
 import { CameraSystem } from '@/game/systems/CameraSystem';
 import { CAMERA_CONSTANTS } from '@/deviceOutput/config/cameraConstants';
 import { StartMenuSystem } from '@/game/systems/menuSystems/StartMenuSystem';
+import { SettingsMenuSystem } from '@/game/systems/menuSystems/SettingsMenuSystem';
 import { AssignButtonsToPlayerSystem } from '@/game/systems/gamePadSystems/AssignButtonsToPlayerSystem';
 import { CarControlSystem } from '@/game/systems/CarSystems/carControlSystem/CarControlSystem';
 import { DriveIntentComputer } from '@/game/systems/CarSystems/carControlSystem/driveIntentComputer/DriveIntentComputer';
@@ -72,6 +74,9 @@ import { CountdownRenderer } from './deviceOutput/graphics/gameState/ui/Countdow
 import { RoundWonRenderer } from './deviceOutput/graphics/gameState/ui/RoundWonRenderer';
 import { IContinuousSoundPlayer } from './deviceOutput/audio/continuousSounds/IContinuousSoundPlayer';
 import { MusicPlayer } from './deviceOutput/audio/continuousSounds/MusicPlayer';
+import { CarouselRotationSystem } from './game/systems/CarouselSystem/CarouselRotationSystem';
+import { CarouselCollisionSystem } from './game/systems/CarouselSystem/CarouselCollisionSystem';
+import { CarouselSpawnSystem } from './game/systems/platformSystems/CarouselSpawnSystem';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -123,6 +128,7 @@ const carCollisionComputer = new SimpleCarCollisionComputer(COLLISION_CONFIG);
 const systems = [
     new IntroMenuSystem(),
     new StartMenuSystem(),
+    new SettingsMenuSystem(),
     new InbetweenLevelsMenuSystem(),
     new EndOfGameMenuSystem(),
     new AssignButtonsToPlayerSystem(),
@@ -133,7 +139,9 @@ const systems = [
     carControlSystem,
     new FrontWheelEntitySteeringSystem(),
     new DrivingPhysicsSystem(new DrivingPhysicsComputer(pacejkaModel)),
+    new CarouselRotationSystem(),
     new CarCollisionSystem(carCollisionComputer),
+    new CarouselCollisionSystem(),
     new BoostSystem(),
     new MovementSystem(),
     new WeaponSpawnSystem(),
@@ -145,6 +153,7 @@ const systems = [
     new LifeSpanSystem(),
     new DamagingCollisionSystem(),
     new PlatformProgressionSystem(),
+    new CarouselSpawnSystem(),
     new OffPlatformDamageSystem(),
     new PlayerDeathSystem(),
     new SetPreviousButtonsSystem(),
@@ -163,6 +172,7 @@ const screenRenderers = [
     new IntroRenderer(),
     new ReconnectControllerRenderer(),
     new StartMenuRenderer(),
+    new SettingsMenuRenderer(),
     new InbetweenLevelsMenuRenderer(),
     new EndOfGameMenuRenderer(),
     new RoundWonRenderer(),

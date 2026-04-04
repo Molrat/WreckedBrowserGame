@@ -1,5 +1,4 @@
 import { EventBus } from "../../events/EventBus";
-import { PlayerFactory } from "../../state/entities/Factories/PlayerFactory";
 import { GameState } from "../../state/GameState";
 import { PlayerConnectionState } from "../../state/ui/StartMenuState";
 import { ISystem } from "../ISystem";
@@ -42,12 +41,7 @@ export class StartMenuSystem implements ISystem {
 
         const allReady = this.checkAllReady(connections);
         if (allReady) {
-            connections.forEach( pc => {
-                if (pc.status === 'ready' && pc.controllerId) {
-                state.entities.push(...PlayerFactory.createWithWheels(pc.controllerId));
-                }
-            });
-            state.ui.openMenu = null;
+            state.ui.openMenu = 'settingsMenu';
         }
     }
 

@@ -56,8 +56,6 @@ export class StartMenuRenderer implements IScreenRenderer {
                 draw.drawCenteredText(label, { x: x + rectW / 2, y: y + rectH / 2 + 20 }, '#111111', 'bold 14px Arial, sans-serif');
             }
         }
-
-        
     }
 
     darkenColor(color: string): string {
