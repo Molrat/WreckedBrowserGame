@@ -1,8 +1,8 @@
 import { scale, Vector2 } from "@/math/Vector2";
 
 // ── General ─────────────────────────────────────
-export const SPIN_ON_HIT_MULTIPLIER = 2; // Increase this for more dramatic spins when hit by a projectile
-export const NR_OF_PLATFORMS_BETWEEN_WEAPON_SPAWNS = 6; // Minimum number of platforms that must be between weapon spawns to prevent overcrowding
+export const SPIN_ON_HIT_MULTIPLIER = 2;
+export const NR_OF_PLATFORMS_BETWEEN_WEAPON_SPAWNS = 6;
 export const WEAPON_COUNT = 4;
 
 // ── Laser Cannon ─────────────────────────────────────
@@ -12,24 +12,12 @@ export const LASER_CANNON_SHAPE: Vector2[] = [
   { x: 0.7, y: 0 },
   { x: 0.5, y: 0.2 },
   { x: -0.5, y: 0.3 },
-].map(v => scale(v, 2)); // Scale up for better visibility
+].map(v => scale(v, 2));
 
 export const LASER_CANNON_MOUNT_OFFSET: Vector2 = { x: 0, y: 0 };
 export const LASER_CANNON_FILL = '#0a2a4a';
 export const LASER_CANNON_BORDER = '#00ffff';
 export const LASER_CANNON_DEPTH = 4;
-
-// ── Laser Beam ─────────────────────────────────────
-export const LASER_BEAM_LENGTH = 50;
-export const LASER_BEAM_WIDTH = 1;
-export const LASER_BEAM_SPEED = 300; // m/s
-export const LASER_BEAM_LIFETIME = 1;
-export const LASER_BEAM_DAMAGE = 50;
-export const LASER_BEAM_IMPULSE = 10000;
-export const LASER_BEAM_FILL = '#ff00ff';
-export const LASER_BEAM_BORDER = '#ff0080';
-export const LASER_BEAM_DEPTH = 5;
-export const LASER_BEAM_RECOIL = 8000;
 
 // ── Machine Gun ──────────────────────────────────────
 export const MACHINE_GUN_SHAPE: Vector2[] = [
@@ -45,34 +33,18 @@ export const MACHINE_GUN_FILL = '#1a3a1a';
 export const MACHINE_GUN_BORDER = '#39ff14';
 export const MACHINE_GUN_DEPTH = 4;
 export const MACHINE_GUN_AMMO = 30;
-export const MACHINE_GUN_FIRE_RATE = 10; // shots per second
+export const MACHINE_GUN_FIRE_RATE = 10;
 
-// ── Machine Gun Bullet ───────────────────────────────
-export const BULLET_LENGTH = 0.4;
-export const BULLET_WIDTH = 0.15;
-export const BULLET_SPEED = 80;    // m/s
-export const BULLET_LIFETIME = 5;
-export const BULLET_DAMAGE = 4;
-export const BULLET_IMPULSE = 3000;
-export const BULLET_FILL = '#1a0a2a';
-export const BULLET_BORDER = '#ffff00';
-export const BULLET_DEPTH = 5;
-export const BULLET_RECOIL = 0;
-
+// ── Mine Dropper ─────────────────────────────────────
 const OCT_R = 1.0;
 const A = OCT_R * Math.cos(Math.PI / 8);
 const B = OCT_R * Math.sin(Math.PI / 8);
 
-// ── Mine Dropper ─────────────────────────────────────
 export const MINE_DROPPER_SHAPE: Vector2[] = [
-  { x: A, y: B },
-  { x: B, y: A },
-  { x: -B, y: A },
-  { x: -A, y: B },
-  { x: -A, y: -B },
-  { x: -B, y: -A },
-  { x: B, y: -A },
-  { x: A, y: -B },
+  { x: A, y: B }, { x: B, y: A },
+  { x: -B, y: A }, { x: -A, y: B },
+  { x: -A, y: -B }, { x: -B, y: -A },
+  { x: B, y: -A }, { x: A, y: -B },
 ];
 
 export const MINE_DROPPER_MOUNT_OFFSET: Vector2 = { x: -1.5, y: 0 };
@@ -80,32 +52,6 @@ export const MINE_DROPPER_FILL = '#1a0a2a';
 export const MINE_DROPPER_BORDER = '#ff00ff';
 export const MINE_DROPPER_DEPTH = 4;
 export const MINE_DROPPER_AMMO = 3;
-
-// ── Mine Projectile ──────────────────────────────────
-const B_2 = B / 2;
-const A_long = A * 8;
-export const MINE_SHAPE: Vector2[] = [
-  { x: A, y: B },
-  { x: B, y: A },
-  { x: B_2, y: A},
-  { x: B_2, y: A_long },
-  { x: -B_2, y: A_long },
-  { x: -B_2, y: A},
-  { x: -B, y: A },
-  { x: -A, y: B },
-  { x: -A, y: -B },
-  { x: -B, y: -A },
-  { x: B, y: -A },
-  { x: A, y: -B },
-];
-export const MINE_LIFETIME = 30;
-export const MINE_DAMAGE = 25;
-export const MINE_IMPULSE = 20000;
-export const MINE_FILL = '#1a0a2a';
-export const MINE_BORDER = '#ff00ff';
-export const MINE_DEPTH = 1;
-export const MINE_ANGULAR_SPEED = Math.PI * 2 / 3; // 1 rotation every 3 seconds
-export const MINE_RECOIL = 0;
 
 // ── Missile Launcher ─────────────────────────────────
 export const MISSILE_LAUNCHER_SHAPE: Vector2[] = [
@@ -122,23 +68,12 @@ export const MISSILE_LAUNCHER_BORDER = '#ff4400';
 export const MISSILE_LAUNCHER_DEPTH = 4;
 export const MISSILE_LAUNCHER_AMMO = 3;
 
-// ── Missile Projectile ───────────────────────────────
-export const MISSILE_LENGTH = 2;
-export const MISSILE_WIDTH = 0.6;
-export const MISSILE_SPEED = 0;
-export const MISSILE_LIFETIME = 8;
-export const MISSILE_DAMAGE = 10;
-export const MISSILE_IMPULSE = 6000;
-export const MISSILE_FILL = '#ff2200';
-export const MISSILE_BORDER = '#ff8800';
-export const MISSILE_DEPTH = 5;
+// ── Missile Homing System ────────────────────────────
 export const MISSILE_HOMING_FORCE = 800;
 export const MISSILE_THRUST_FORCE = 20;
 export const MISSILE_HOMING_RANGE = 80;
-export const MISSILE_HOMING_FOV = Math.PI * 0.4; // 72° cone
-export const MISSILE_LAUNCH_IMPULSE = 100;
-export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate
-export const MISSILE_RECOIL = 4000;
+export const MISSILE_HOMING_FOV = Math.PI * 0.4;
+export const MISSILE_ACTIVATION_DELAY = 1;
 
 // ── Cannon ────────────────────────────────────────────
 export const CANNON_SHAPE: Vector2[] = [
@@ -157,18 +92,6 @@ export const CANNON_BORDER = '#ffdd00';
 export const CANNON_DEPTH = 4;
 export const CANNON_AMMO = 5;
 
-// ── Cannonball Projectile ─────────────────────────────
-export const CANNONBALL_RADIUS = 0.8;
-export const CANNONBALL_SEGMENTS = 12;
-export const CANNONBALL_SPEED = 60;
-export const CANNONBALL_LIFETIME = 4;
-export const CANNONBALL_DAMAGE = 15;
-export const CANNONBALL_IMPULSE = 6000;
-export const CANNONBALL_FILL = '#3a3a0a';
-export const CANNONBALL_BORDER = '#ffdd00';
-export const CANNONBALL_DEPTH = 5;
-export const CANNONBALL_RECOIL = 6000;
-
 // ── Booster ───────────────────────────────────────────
 export const BOOSTER_SHAPE: Vector2[] = [
   { x: -0.4, y: -0.3 },
@@ -184,15 +107,3 @@ export const BOOSTER_BORDER = '#ff6600';
 export const BOOSTER_DEPTH = 4;
 export const BOOSTER_AMMO = 40;
 export const BOOSTER_FIRE_RATE = 15;
-
-// ── Booster Flame Projectile ──────────────────────────
-export const BOOSTER_FLAME_LENGTH = 0.6;
-export const BOOSTER_FLAME_WIDTH = 0.3;
-export const BOOSTER_FLAME_SPEED = 30;
-export const BOOSTER_FLAME_LIFETIME = 0.15;
-export const BOOSTER_FLAME_DAMAGE = 0;
-export const BOOSTER_FLAME_IMPULSE = 0;
-export const BOOSTER_FLAME_FILL = '#ff4400';
-export const BOOSTER_FLAME_BORDER = '#ff8800';
-export const BOOSTER_FLAME_DEPTH = 5;
-export const BOOSTER_FLAME_RECOIL = 6000;

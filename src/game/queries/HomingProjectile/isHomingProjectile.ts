@@ -2,5 +2,5 @@ import { Identifiable } from '@/game/state/components/Identifiable';
 import { IHomingProjectile } from './IHomingProjectile';
 
 export function isHomingProjectile(e: Identifiable): e is Identifiable & IHomingProjectile {
-  return 'isHeatSeeking' in e;
+  return 'isHeatSeeking' in e && (e as Identifiable & IHomingProjectile).isHeatSeeking === true;
 }

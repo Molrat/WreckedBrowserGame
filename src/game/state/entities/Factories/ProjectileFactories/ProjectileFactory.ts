@@ -1,13 +1,9 @@
 import { IProjectileFactory } from "./IProjectileFactory";
 import { ProjectileType } from "@/game/state/components/ProjectileType";
 import { Vector2 } from "@/math/Vector2";
-import { createLaserBeam } from "@/game/state/entities/Factories/ProjectileFactories/LaserBeamFactory";
-import { createMachineGunBullet } from "@/game/state/entities/Factories/ProjectileFactories/MachineGunBulletFactory";
-import { createMine } from "./MineFactory";
-import { createMissile } from "./MissileFactory";
-import { createCannonball } from "./CannonballFactory";
-import { createBoosterFlame } from "./BoosterFlameFactory";
 import { FireResult } from "./FireResult";
+import { createProjectile } from "./createProjectile";
+import { getProjectileSettings } from "@/game/config/projectileSettings/projectileSettingsMap";
 
 export class ProjectileFactory implements IProjectileFactory {
   create(
@@ -18,19 +14,7 @@ export class ProjectileFactory implements IProjectileFactory {
     playerVelocity: Vector2,
     gameTime: number
   ): FireResult {
-    switch (type) {
-      case 'laserBeam':
-        return createLaserBeam(position, orientation, ownerPlayerId, playerVelocity);
-      case 'machineGunBullet':
-        return createMachineGunBullet(position, orientation, ownerPlayerId, playerVelocity);
-      case 'mine':
-        return createMine(position, orientation, ownerPlayerId);
-      case 'missile':
-        return createMissile(position, orientation, ownerPlayerId, playerVelocity, gameTime);
-      case 'cannonball':
-        return createCannonball(position, orientation, ownerPlayerId, playerVelocity);
-      case 'boosterFlame':
-        return createBoosterFlame(position, orientation, ownerPlayerId, playerVelocity);
-    }
+    const settings = getProjectileSettings(type);
+    return createProjectile(settings, position, orientation, ownerPlayerId, playerVelocity, gameTime);
   }
 }
