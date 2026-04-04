@@ -1,6 +1,6 @@
-import { Projectile } from "@/game/state/entities/Projectile";
 import { ProjectileType } from "@/game/state/components/ProjectileType";
 import { Vector2 } from "@/math/Vector2";
+import { FireResult } from "./FireResult";
 
 export interface IProjectileFactory {
   create(
@@ -10,5 +10,5 @@ export interface IProjectileFactory {
     ownerPlayerId: string,
     playerVelocity: Vector2,
     gameTime: number
-  ): Projectile;
+  ): FireResult;
 }

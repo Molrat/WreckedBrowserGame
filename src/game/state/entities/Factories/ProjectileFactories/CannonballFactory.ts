@@ -11,7 +11,9 @@ import {
   CANNONBALL_FILL,
   CANNONBALL_BORDER,
   CANNONBALL_DEPTH,
+  CANNONBALL_RECOIL,
 } from "@/game/config/weaponConstants";
+import { FireResult } from "./FireResult";
 
 function buildCircleShape(radius: number, segments: number): Vector2[] {
   const points: Vector2[] = [];
@@ -27,13 +29,13 @@ export function createCannonball(
   orientation: number,
   ownerPlayerId: string,
   playerVelocity: Vector2
-): Projectile {
+): FireResult {
   const velocity = add(
     playerVelocity,
     scale(angleToUnitVector(orientation), CANNONBALL_SPEED)
   );
 
-  return {
+  const projectile: Projectile = {
     id: nextId(),
     health: 1,
     maxHealth: 1,
@@ -59,4 +61,5 @@ export function createCannonball(
     maxLifetime: CANNONBALL_LIFETIME,
     fades: false,
   };
+  return { projectile, recoil: CANNONBALL_RECOIL };
 }

@@ -24,11 +24,12 @@ export const LASER_BEAM_LENGTH = 50;
 export const LASER_BEAM_WIDTH = 1;
 export const LASER_BEAM_SPEED = 300; // m/s
 export const LASER_BEAM_LIFETIME = 1;
-export const LASER_BEAM_DAMAGE = 20;
+export const LASER_BEAM_DAMAGE = 50;
 export const LASER_BEAM_IMPULSE = 10000;
 export const LASER_BEAM_FILL = '#ff00ff';
 export const LASER_BEAM_BORDER = '#ff0080';
 export const LASER_BEAM_DEPTH = 5;
+export const LASER_BEAM_RECOIL = 8000;
 
 // ── Machine Gun ──────────────────────────────────────
 export const MACHINE_GUN_SHAPE: Vector2[] = [
@@ -56,6 +57,7 @@ export const BULLET_IMPULSE = 3000;
 export const BULLET_FILL = '#1a0a2a';
 export const BULLET_BORDER = '#ffff00';
 export const BULLET_DEPTH = 5;
+export const BULLET_RECOIL = 0;
 
 const OCT_R = 1.0;
 const A = OCT_R * Math.cos(Math.PI / 8);
@@ -103,6 +105,7 @@ export const MINE_FILL = '#1a0a2a';
 export const MINE_BORDER = '#ff00ff';
 export const MINE_DEPTH = 1;
 export const MINE_ANGULAR_SPEED = Math.PI * 2 / 3; // 1 rotation every 3 seconds
+export const MINE_RECOIL = 0;
 
 // ── Missile Launcher ─────────────────────────────────
 export const MISSILE_LAUNCHER_SHAPE: Vector2[] = [
@@ -135,6 +138,7 @@ export const MISSILE_HOMING_RANGE = 80;
 export const MISSILE_HOMING_FOV = Math.PI * 0.4; // 72° cone
 export const MISSILE_LAUNCH_IMPULSE = 100;
 export const MISSILE_ACTIVATION_DELAY = 1; // seconds before homing + thrust activate
+export const MISSILE_RECOIL = 4000;
 
 // ── Cannon ────────────────────────────────────────────
 export const CANNON_SHAPE: Vector2[] = [
@@ -163,3 +167,4 @@ export const CANNONBALL_IMPULSE = 6000;
 export const CANNONBALL_FILL = '#3a3a0a';
 export const CANNONBALL_BORDER = '#ffdd00';
 export const CANNONBALL_DEPTH = 5;
+export const CANNONBALL_RECOIL = 6000;

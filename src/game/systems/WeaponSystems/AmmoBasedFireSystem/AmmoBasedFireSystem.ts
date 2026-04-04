@@ -7,7 +7,7 @@ import { isWeapon } from "@/game/queries/Weapon/isWeapon";
 import { IWeapon } from "@/game/queries/Weapon/IWeapon";
 import { Identifiable } from "@/game/state/components/Identifiable";
 import { IProjectileFactory } from "../../../state/entities/Factories/ProjectileFactories/IProjectileFactory";
-import { rotate, add } from "@/math/Vector2";
+import { rotate, add, angleToUnitVector, scale } from "@/math/Vector2";
 import { canFireSingleShot } from "./canFireSingleShot";
 import { canFireAutomatic } from "./canFireAutomatic";
 
@@ -61,10 +61,17 @@ export class AmmoBasedFireSystem implements ISystem {
       player.position,
       rotate(weapon.relativePosition, player.orientation)
     );
-    const projectile = this.projectileFactory.create(
+    const { projectile, recoil } = this.projectileFactory.create(
       weapon.projectileType, origin, weapon.orientation, player.id, player.velocity, state.time.total
     );
     state.entities.push(projectile);
+    if (recoil > 0) {
+      const dir = angleToUnitVector(weapon.orientation);
+      player.impulses.push({
+        impulse: scale(dir, -recoil),
+        localContactPoint: weapon.relativePosition,
+      });
+    }
     eventBus.emit({
       type: 'ProjectileFired',
       projectileType: weapon.projectileType,

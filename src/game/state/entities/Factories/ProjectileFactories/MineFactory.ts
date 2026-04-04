@@ -10,15 +10,17 @@ import {
   MINE_BORDER,
   MINE_DEPTH,
   MINE_ANGULAR_SPEED,
+  MINE_RECOIL,
 } from "@/game/config/weaponConstants";
 import { randomSign } from "@/utils/randomSign";
+import { FireResult } from "./FireResult";
 
 export function createMine(
   position: Vector2,
   orientation: number,
   ownerPlayerId: string
-): Projectile {
-  return {
+): FireResult {
+  const projectile: Projectile = {
     id: nextId(),
     health: 1,
     maxHealth: 1,
@@ -44,4 +46,5 @@ export function createMine(
     maxLifetime: MINE_LIFETIME,
     fades: false,
   };
+  return { projectile, recoil: MINE_RECOIL };
 }

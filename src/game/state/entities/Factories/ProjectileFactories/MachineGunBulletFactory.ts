@@ -11,17 +11,19 @@ import {
   BULLET_FILL,
   BULLET_BORDER,
   BULLET_DEPTH,
+  BULLET_RECOIL,
 } from "@/game/config/weaponConstants";
+import { FireResult } from "./FireResult";
 
 export function createMachineGunBullet(
   position: Vector2,
   orientation: number,
   ownerPlayerId: string,
   playerVelocity: Vector2
-): Projectile {
+): FireResult {
   const halfW = BULLET_WIDTH / 2;
   const bulletVel = add(playerVelocity, scale(angleToUnitVector(orientation), BULLET_SPEED));
-  return {
+  const projectile: Projectile = {
     id: nextId(),
     health: 1,
     maxHealth: 1,
@@ -52,4 +54,5 @@ export function createMachineGunBullet(
     maxLifetime: BULLET_LIFETIME,
     fades: false,
   };
+  return { projectile, recoil: BULLET_RECOIL };
 }

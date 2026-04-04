@@ -12,7 +12,9 @@ import {
   MISSILE_BORDER,
   MISSILE_DEPTH,
   MISSILE_LAUNCH_IMPULSE,
+  MISSILE_RECOIL,
 } from "@/game/config/weaponConstants";
+import { FireResult } from "./FireResult";
 
 export function createMissile(
   position: Vector2,
@@ -20,13 +22,13 @@ export function createMissile(
   ownerPlayerId: string,
   playerVelocity: Vector2,
   spawnTime: number
-): Projectile & HeatSeaking {
+): FireResult {
   const halfL = MISSILE_LENGTH / 2;
   const halfW = MISSILE_WIDTH / 2;
   const velocity = add(playerVelocity, scale(angleToUnitVector(orientation), MISSILE_SPEED));
   const launchImpulse = scale(angleToUnitVector(orientation), MISSILE_LAUNCH_IMPULSE);
 
-  return {
+  const projectile: Projectile & HeatSeaking = {
     isHeatSeeking: true,
     spawnTime,
     id: nextId(),
@@ -60,4 +62,5 @@ export function createMissile(
     maxLifetime: MISSILE_LIFETIME,
     fades: false,
   };
+  return { projectile, recoil: MISSILE_RECOIL };
 }

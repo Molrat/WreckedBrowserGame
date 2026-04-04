@@ -11,19 +11,21 @@ import {
   LASER_BEAM_BORDER,
   LASER_BEAM_DEPTH,
   LASER_BEAM_SPEED,
+  LASER_BEAM_RECOIL,
 } from "@/game/config/weaponConstants";
+import { FireResult } from "./FireResult";
 
 export function createLaserBeam(
   position: Vector2,
   orientation: number,
   ownerPlayerId: string,
   playerVelocity: Vector2
-): Projectile {
+): FireResult {
   const halfW = LASER_BEAM_WIDTH / 2;
   const halfL = LASER_BEAM_LENGTH / 2;
   const laserBeamVelocity = add(playerVelocity, scale(angleToUnitVector(orientation), LASER_BEAM_SPEED));
   
-  return {
+  const projectile: Projectile = {
     id: nextId(),
     health: 100,
     maxHealth: 100,
@@ -54,4 +56,5 @@ export function createLaserBeam(
     maxLifetime: LASER_BEAM_LIFETIME,
     fades: true,
   };
+  return { projectile, recoil: LASER_BEAM_RECOIL };
 }
