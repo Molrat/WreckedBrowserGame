@@ -1,7 +1,7 @@
 import { ProjectileSettings } from "./ProjectileSettings";
 
 const length = 0.6;
-const halfW = 0.15;
+const halfW = 0.6;
 
 export const boosterFlameSettings: ProjectileSettings = {
   projectileType: 'boosterFlame',

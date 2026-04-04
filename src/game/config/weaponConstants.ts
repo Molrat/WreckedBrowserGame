@@ -94,16 +94,15 @@ export const CANNON_AMMO = 5;
 
 // ── Booster ───────────────────────────────────────────
 export const BOOSTER_SHAPE: Vector2[] = [
-  { x: -0.4, y: -0.3 },
-  { x: 0.3, y: -0.2 },
-  { x: 0.5, y: 0 },
-  { x: 0.3, y: 0.2 },
-  { x: -0.4, y: 0.3 },
+  { x: -0.5, y: -0.4 },
+  { x: 0.4, y: -0.5 },
+  { x: 0.4, y: 0.5 },
+  { x: -0.5, y: 0.3 },
 ].map(v => scale(v, 1.8));
 
 export const BOOSTER_MOUNT_OFFSET: Vector2 = { x: -1.5, y: 0 };
-export const BOOSTER_FILL = '#2a0a0a';
-export const BOOSTER_BORDER = '#ff6600';
+export const BOOSTER_FILL = '#2a2a0a';
+export const BOOSTER_BORDER = '#ff0000';
 export const BOOSTER_DEPTH = 4;
-export const BOOSTER_AMMO = 40;
+export const BOOSTER_AMMO = 20;
 export const BOOSTER_FIRE_RATE = 15;
