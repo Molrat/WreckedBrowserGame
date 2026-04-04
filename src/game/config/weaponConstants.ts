@@ -168,3 +168,31 @@ export const CANNONBALL_FILL = '#3a3a0a';
 export const CANNONBALL_BORDER = '#ffdd00';
 export const CANNONBALL_DEPTH = 5;
 export const CANNONBALL_RECOIL = 6000;
+
+// ── Booster ───────────────────────────────────────────
+export const BOOSTER_SHAPE: Vector2[] = [
+  { x: -0.4, y: -0.3 },
+  { x: 0.3, y: -0.2 },
+  { x: 0.5, y: 0 },
+  { x: 0.3, y: 0.2 },
+  { x: -0.4, y: 0.3 },
+].map(v => scale(v, 1.8));
+
+export const BOOSTER_MOUNT_OFFSET: Vector2 = { x: -1.5, y: 0 };
+export const BOOSTER_FILL = '#2a0a0a';
+export const BOOSTER_BORDER = '#ff6600';
+export const BOOSTER_DEPTH = 4;
+export const BOOSTER_AMMO = 40;
+export const BOOSTER_FIRE_RATE = 15;
+
+// ── Booster Flame Projectile ──────────────────────────
+export const BOOSTER_FLAME_LENGTH = 0.6;
+export const BOOSTER_FLAME_WIDTH = 0.3;
+export const BOOSTER_FLAME_SPEED = 30;
+export const BOOSTER_FLAME_LIFETIME = 0.15;
+export const BOOSTER_FLAME_DAMAGE = 0;
+export const BOOSTER_FLAME_IMPULSE = 0;
+export const BOOSTER_FLAME_FILL = '#ff4400';
+export const BOOSTER_FLAME_BORDER = '#ff8800';
+export const BOOSTER_FLAME_DEPTH = 5;
+export const BOOSTER_FLAME_RECOIL = 6000;

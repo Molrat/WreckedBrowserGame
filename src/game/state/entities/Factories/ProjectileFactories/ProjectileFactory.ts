@@ -6,6 +6,7 @@ import { createMachineGunBullet } from "@/game/state/entities/Factories/Projecti
 import { createMine } from "./MineFactory";
 import { createMissile } from "./MissileFactory";
 import { createCannonball } from "./CannonballFactory";
+import { createBoosterFlame } from "./BoosterFlameFactory";
 import { FireResult } from "./FireResult";
 
 export class ProjectileFactory implements IProjectileFactory {
@@ -28,6 +29,8 @@ export class ProjectileFactory implements IProjectileFactory {
         return createMissile(position, orientation, ownerPlayerId, playerVelocity, gameTime);
       case 'cannonball':
         return createCannonball(position, orientation, ownerPlayerId, playerVelocity);
+      case 'boosterFlame':
+        return createBoosterFlame(position, orientation, ownerPlayerId, playerVelocity);
     }
   }
 }

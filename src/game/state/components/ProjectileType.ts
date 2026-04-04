@@ -1,1 +1,1 @@
-export type ProjectileType = 'laserBeam' | 'machineGunBullet' | 'mine' | 'missile' | 'cannonball';
+export type ProjectileType = 'laserBeam' | 'machineGunBullet' | 'mine' | 'missile' | 'cannonball' | 'boosterFlame';

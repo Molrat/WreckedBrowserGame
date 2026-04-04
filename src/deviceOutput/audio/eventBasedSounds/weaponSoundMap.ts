@@ -16,4 +16,5 @@ export const weaponSoundMap: Record<ProjectileType, SoundPair> = {
   laserBeam:        { fire: laserBeamFireUrl,   impact: sonicBoomUrl },
   mine:             { fire: dropMineUrl,        impact: explosionUrl },
   cannonball:       { fire: explosionUrl,       impact: explosionUrl },
+  boosterFlame:     { fire: machineGunFireUrl,   impact: bulletImpactUrl },
 };
