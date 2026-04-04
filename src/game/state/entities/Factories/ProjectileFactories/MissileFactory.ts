@@ -27,6 +27,7 @@ export function createMissile(
   const halfW = MISSILE_WIDTH / 2;
   const velocity = add(playerVelocity, scale(angleToUnitVector(orientation), MISSILE_SPEED));
   const launchImpulse = scale(angleToUnitVector(orientation), MISSILE_LAUNCH_IMPULSE);
+  const spawnPos = add(position, scale(angleToUnitVector(orientation), halfL));
 
   const projectile: Projectile & HeatSeaking = {
     isHeatSeeking: true,
@@ -34,7 +35,7 @@ export function createMissile(
     id: nextId(),
     health: 1,
     maxHealth: 1,
-    position: { x: position.x, y: position.y },
+    position: { x: spawnPos.x, y: spawnPos.y },
     orientation,
     velocity,
     angularVelocity: 0,

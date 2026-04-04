@@ -23,11 +23,12 @@ export function createMachineGunBullet(
 ): FireResult {
   const halfW = BULLET_WIDTH / 2;
   const bulletVel = add(playerVelocity, scale(angleToUnitVector(orientation), BULLET_SPEED));
+  const spawnPos = add(position, scale(angleToUnitVector(orientation), BULLET_LENGTH / 2));
   const projectile: Projectile = {
     id: nextId(),
     health: 1,
     maxHealth: 1,
-    position: { x: position.x, y: position.y },
+    position: { x: spawnPos.x, y: spawnPos.y },
     orientation,
     velocity: bulletVel,
     angularVelocity: 0,

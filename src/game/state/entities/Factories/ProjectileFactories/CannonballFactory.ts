@@ -34,12 +34,13 @@ export function createCannonball(
     playerVelocity,
     scale(angleToUnitVector(orientation), CANNONBALL_SPEED)
   );
+  const spawnPos = add(position, scale(angleToUnitVector(orientation), CANNONBALL_RADIUS));
 
   const projectile: Projectile = {
     id: nextId(),
     health: 1,
     maxHealth: 1,
-    position: { x: position.x, y: position.y },
+    position: { x: spawnPos.x, y: spawnPos.y },
     orientation,
     velocity,
     angularVelocity: 0,

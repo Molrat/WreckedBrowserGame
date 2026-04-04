@@ -24,12 +24,13 @@ export function createLaserBeam(
   const halfW = LASER_BEAM_WIDTH / 2;
   const halfL = LASER_BEAM_LENGTH / 2;
   const laserBeamVelocity = add(playerVelocity, scale(angleToUnitVector(orientation), LASER_BEAM_SPEED));
+  const spawnPos = add(position, scale(angleToUnitVector(orientation), halfL));
   
   const projectile: Projectile = {
     id: nextId(),
     health: 100,
     maxHealth: 100,
-    position: { x: position.x, y: position.y },
+    position: { x: spawnPos.x, y: spawnPos.y },
     orientation,
     velocity: laserBeamVelocity,
     angularVelocity: 0,
