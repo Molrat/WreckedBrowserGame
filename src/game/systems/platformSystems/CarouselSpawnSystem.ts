@@ -11,7 +11,7 @@ const CAROUSEL_SPAWN_PROBABILITY = 0.1;
 export class CarouselSpawnSystem implements ISystem {
   update(state: GameState, _eventBus: EventBus, _dt: number): void {
     if (state.ui.openMenu !== null) return;
-    if (!state.ui.settings.carouselEnabled) return;
+    if (!state.settings.carouselEnabled) return;
 
     const platforms = state.entities.filter(isPlatform);
     this.spawnNewCarousels(state, platforms);

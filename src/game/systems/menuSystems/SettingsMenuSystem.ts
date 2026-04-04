@@ -41,7 +41,7 @@ export class SettingsMenuSystem implements ISystem {
     private handleToggle(state: GameState, menu: { selectedIndex: number }, current: boolean, previous: boolean): void {
         if (!current || previous) return;
         if (menu.selectedIndex === 0) {
-            state.ui.settings.carouselEnabled = !state.ui.settings.carouselEnabled;
+            state.settings.carouselEnabled = !state.settings.carouselEnabled;
         }
     }
 

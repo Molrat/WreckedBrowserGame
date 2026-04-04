@@ -16,9 +16,9 @@ export class SettingsMenuRenderer implements IScreenRenderer {
 
         NeonTextDrawer.drawNeonText(draw, 'GET READY', w / 2, 40, '#ffffff', '#00ffff', 'bold 36px Arial, sans-serif', 10, 6, 3);
 
-        SettingsToggleDrawer.draw(draw, gameState.ui.settings, gameState.ui.settingsMenu.selectedIndex, w * 0.25, h * 0.35);
+        SettingsToggleDrawer.draw(draw, gameState.settings, gameState.ui.settingsMenu.selectedIndex, w * 0.25, h * 0.25);
 
-        NeonTextDrawer.drawNeonText(draw, 'CONTROLS', w * 0.7, h * 0.2, '#ffffff', '#ff00ff', 'bold 22px Arial, sans-serif', 8, 5, 3);
+        NeonTextDrawer.drawNeonText(draw, 'CONTROLS', w * 0.7, h * 0.25, '#ffffff', '#00ffff', 'bold 22px Arial, sans-serif', 8, 5, 3);
         ControllerDiagramDrawer.draw(draw, w * 0.7, h * 0.55);
 
         NeonTextDrawer.drawNeonText(draw, 'Press △ to start!', w / 2, h - 40, '#ffffff', '#00ff88', 'bold 22px Arial, sans-serif', 8, 5, 3);

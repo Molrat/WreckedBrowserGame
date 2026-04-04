@@ -26,6 +26,7 @@ export class EndOfGameMenuSystem implements ISystem {
     
     state.entities.length = 0;
     Object.assign(state.ui, freshState.ui);
+    Object.assign(state.settings, freshState.settings);
     state.time.total = 0;
     Object.assign(state.camera, freshState.camera);
   }

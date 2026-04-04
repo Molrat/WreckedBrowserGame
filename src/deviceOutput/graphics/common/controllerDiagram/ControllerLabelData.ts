@@ -8,8 +8,8 @@ export type ControllerLabel = {
 };
 
 export const BUMPER_LABELS: ControllerLabel[] = [
-    { offset: { x: -100, y: -50 }, label: 'L1: dash left', labelOffset: { x: -220, y: -95 } },
-    { offset: { x: 100, y: -50 }, label: 'R1: dash right', labelOffset: { x: 155, y: -95 } },
+    { offset: { x: -80, y: -50 }, label: 'L1: dash left', labelOffset: { x: -220, y: -95 } },
+    { offset: { x: 80, y: -50 }, label: 'R1: dash right', labelOffset: { x: 155, y: -95 } },
 ];
 
 export const FACE_BUTTON_LABELS: ControllerLabel[] = [
@@ -20,10 +20,10 @@ export const FACE_BUTTON_LABELS: ControllerLabel[] = [
 ];
 
 export const TRIGGER_LABELS: ControllerLabel[] = [
-    { offset: { x: -100, y: -65 }, label: 'L2: brake', labelOffset: { x: -100, y: -130 } },
-    { offset: { x: 100, y: -65 }, label: 'R2: throttle', labelOffset: { x: 100, y: -130 } },
+    { offset: { x: -80, y: -75 }, label: 'L2: brake', labelOffset: { x: -80, y: -130 } },
+    { offset: { x: 80, y: -75 }, label: 'R2: throttle', labelOffset: { x: 80, y: -130 } },
 ];
 
 export const STICK_LABEL: ControllerLabel = {
-    offset: { x: -55, y: 30 }, label: 'L stick: steer', labelOffset: { x: -230, y: 55 },
+    offset: { x: -55, y: 15 }, label: 'L stick: steer', labelOffset: { x: -55, y: 55 },
 };

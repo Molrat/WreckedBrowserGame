@@ -33,9 +33,9 @@ export class ControllerLabelDrawer {
     }
 
     static drawStickLabel(api: IScreenRenderAPI, cx: number, cy: number, label: ControllerLabel): void {
-        const from = { x: cx + label.offset.x - 20, y: cy + label.offset.y };
+        const from = { x: cx + label.offset.x, y: cy + label.offset.y + 20 };
         const to = { x: cx + label.labelOffset.x, y: cy + label.labelOffset.y };
         api.drawLine(from, to, LINE_COLOR, 1.5);
-        api.drawText(label.label, to, TEXT_COLOR, FONT);
+        api.drawCenteredText(label.label, to, TEXT_COLOR, FONT);
     }
 }

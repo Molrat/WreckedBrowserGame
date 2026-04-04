@@ -11,9 +11,6 @@ export class StateInitializer {
         startMenu:{
           playerConnections: Array.from({ length: 4 }, () => ({ status: 'notJoined', controllerId: null })),
         },
-        settings: {
-          carouselEnabled: false,
-        },
         settingsMenu: {
           selectedIndex: 0,
         },
@@ -23,6 +20,9 @@ export class StateInitializer {
         highestPlatformWithCarouselDecision: 0,
         countdown: null,
         roundWon: null,
+      },
+      settings: {
+        carouselEnabled: false,
       },
       time: { total: 0 },
       input: {
